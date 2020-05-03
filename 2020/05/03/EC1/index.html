@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>EC1 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>EC1</h1>
+    </header>
+
+    <section>
+      <p>电赛培训1</p>
+<a id="more"></a>
+
+<h1 id="单片机应用系统综合设计"><a href="#单片机应用系统综合设计" class="headerlink" title="单片机应用系统综合设计"></a>单片机应用系统综合设计</h1><p>掌握以单片机及嵌入式系统为核心的数模综合智能测控电子系统的全套设计、编程及调试等实际实现技术</p>
+<p>历年电子设计竞赛题目<a href="ftp://eda:eda@10.71.72.84:111">ftp://eda:eda@10.71.72.84:111</a></p>
+<ul>
+<li>单片机系统，软件编程仿真</li>
+<li>从简单到复杂的单片机应用小系统</li>
+<li>设计、选元器件、焊接、调试、<strong>脱机</strong>运行</li>
+</ul>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="电子系统概述"><a href="#电子系统概述" class="headerlink" title="电子系统概述"></a>电子系统概述</h2><p>电子系统</p>
+<ul>
+<li>由电子部件按照一定的规律组成的、有组织的、有序的且满足一定功能的整体，是可以完成一定功能的完整的电子装置。</li>
+<li><img src="E:\ZJU\Markdown\figures\image-20200328143643668.png" alt="image-20200328143643668" style="zoom: 33%;" />
+
+</li>
+</ul>
+<p>负反馈、前向通道的放大变换、后向通道的放大变换、AD DA</p>
+<p>信息处理决策：MCU FPGA</p>
+<h2 id="数字系统的实现"><a href="#数字系统的实现" class="headerlink" title="数字系统的实现"></a>数字系统的实现</h2><p>控制单元和数据处理单元</p>
+<p>实现方法</p>
+<ul>
+<li>经典：中小规模的组合、时序逻辑芯片搭建<ul>
+<li>运行速度快实时性好</li>
+<li>灵活度不好</li>
+<li>自顶向下</li>
+</ul>
+</li>
+<li>MCU + 接口芯片<ul>
+<li>硬件电路设计、版图设计简单</li>
+<li>运行速度相对较FPGA慢（串行运行）</li>
+<li>适合做控制器、不适合复杂高速数据处理</li>
+</ul>
+</li>
+<li>FPGA + 接口芯片<ul>
+<li>HDL 语言</li>
+<li>版图设计容易、芯片消耗少</li>
+<li>运行速度快（并行运行）</li>
+<li>继承性好、开发效率高</li>
+<li>适合接口高速数据运算 倍频 e.g. FFT </li>
+<li>复杂控制单元的编程效率较低、不适合做复杂控制任务</li>
+</ul>
+</li>
+<li>FPGA + MCU<ul>
+<li>复杂控制单元MCU 高速数据运算和大部分接口 FPGA</li>
+<li>系统芯片消耗少、排版容易、运行速度快、编程容易</li>
+<li>特别注意FPGA 和 MCU之间的接口设计 IIC SPI等</li>
+</ul>
+</li>
+</ul>
+<h2 id="模拟系统的设计过程"><a href="#模拟系统的设计过程" class="headerlink" title="模拟系统的设计过程"></a>模拟系统的设计过程</h2><ol>
+<li>总体方案</li>
+<li>总体原理框图</li>
+<li>以集成块为中心 各功能单元配置外电路 计算外围元件</li>
+<li>级间耦合 系统电原理图<ol>
+<li>前级为后级的源、后级为前级的负载</li>
+<li>前级 + 隔离级buffer + 后级</li>
+</ol>
+</li>
+<li>留裕量<ul>
+<li>磁滞回线</li>
+<li>迟滞比较器</li>
+</ul>
+</li>
+<li>系统布局布线、PCB印刷、测试、总结报告</li>
+</ol>
+<h1 id="电子设计竞赛题目"><a href="#电子设计竞赛题目" class="headerlink" title="电子设计竞赛题目"></a>电子设计竞赛题目</h1><h2 id="仪器仪表"><a href="#仪器仪表" class="headerlink" title="仪器仪表"></a>仪器仪表</h2><p>信号产生、采集、存储、分析、处理、显示、控制</p>
+<p>时域频域</p>
+<p>速度、处理能力、显示性能</p>
+<h2 id="电路系统"><a href="#电路系统" class="headerlink" title="电路系统"></a>电路系统</h2><p>经典单元模块电路</p>
+<p>强调指标</p>
+<p>程控放大器、程控滤波器、振荡器、DDS等</p>
+<h2 id="高频-通信方向"><a href="#高频-通信方向" class="headerlink" title="高频/通信方向"></a>高频/通信方向</h2><p>特殊信道上以某种调制、解调方式传递信息</p>
+<hr>
+<h3 id="LC谐振放大器-2011D"><a href="#LC谐振放大器-2011D" class="headerlink" title="LC谐振放大器 2011D"></a>LC谐振放大器 2011D</h3><h3 id="数字信号传输性能分析仪-2011E"><a href="#数字信号传输性能分析仪-2011E" class="headerlink" title="数字信号传输性能分析仪 2011E"></a>数字信号传输性能分析仪 2011E</h3><h4 id="眼图"><a href="#眼图" class="headerlink" title="眼图"></a>眼图</h4><p>传输系统无码间串扰和噪声的理想情况下，波形无失真，眼开启的最大</p>
+<h3 id="射频宽带放大器-2013D"><a href="#射频宽带放大器-2013D" class="headerlink" title="射频宽带放大器 2013D"></a>射频宽带放大器 2013D</h3><h3 id="简易频率特性测试仪-2013E"><a href="#简易频率特性测试仪-2013E" class="headerlink" title="简易频率特性测试仪 2013E"></a>简易频率特性测试仪 2013E</h3><h3 id="红外光通信-2013F"><a href="#红外光通信-2013F" class="headerlink" title="红外光通信 2013F"></a>红外光通信 2013F</h3><h3 id="手写绘图板-2013D"><a href="#手写绘图板-2013D" class="headerlink" title="手写绘图板 2013D"></a>手写绘图板 2013D</h3><h3 id="检测微弱信号的锁定放大器-2014C"><a href="#检测微弱信号的锁定放大器-2014C" class="headerlink" title="检测微弱信号的锁定放大器 2014C"></a>检测微弱信号的锁定放大器 2014C</h3><h4 id="锁定放大器"><a href="#锁定放大器" class="headerlink" title="锁定放大器"></a>锁定放大器</h4><p>采用相敏检波器的交流电压表：信号通道、低通滤波和参考通道</p>
+<p>只检出同频同相、可确定微弱信号</p>
+<h4 id="相敏检波"><a href="#相敏检波" class="headerlink" title="相敏检波"></a>相敏检波</h4><p>对两个信号之间的相位进行检波、鉴相、同频信号的相位差</p>
+<h3 id="数字频率计-2015F"><a href="#数字频率计-2015F" class="headerlink" title="数字频率计 2015F"></a>数字频率计 2015F</h3><p>100MHz 10mV 高速FPGA与单片机综合系统设计</p>
+<h3 id="增益可控射频放大器-2015D"><a href="#增益可控射频放大器-2015D" class="headerlink" title="增益可控射频放大器 2015D"></a>增益可控射频放大器 2015D</h3><p>摆率指标</p>
+<p>末级运放是功率放大</p>
+<h3 id="简易电子秤2016G"><a href="#简易电子秤2016G" class="headerlink" title="简易电子秤2016G"></a>简易电子秤2016G</h3><p>电阻应变膜片</p>
+<h3 id="位同步时钟提取电路-2016F"><a href="#位同步时钟提取电路-2016F" class="headerlink" title="位同步时钟提取电路 2016F"></a>位同步时钟提取电路 2016F</h3><h3 id="脉冲信号参数测量仪-2016E"><a href="#脉冲信号参数测量仪-2016E" class="headerlink" title="脉冲信号参数测量仪 2016E"></a>脉冲信号参数测量仪 2016E</h3><h3 id="调幅信号处理实验电路-2017F"><a href="#调幅信号处理实验电路-2017F" class="headerlink" title="调幅信号处理实验电路 2017F"></a>调幅信号处理实验电路 2017F</h3><h3 id="远程幅频特性测试装置-2017H"><a href="#远程幅频特性测试装置-2017H" class="headerlink" title="远程幅频特性测试装置 2017H"></a>远程幅频特性测试装置 2017H</h3><h3 id="自适应滤波器-2017E"><a href="#自适应滤波器-2017E" class="headerlink" title="自适应滤波器 2017E"></a>自适应滤波器 2017E</h3><h3 id="电流信号检测装置-2018A"><a href="#电流信号检测装置-2018A" class="headerlink" title="电流信号检测装置 2018A"></a>电流信号检测装置 2018A</h3><h3 id="手势识别装置-2018D"><a href="#手势识别装置-2018D" class="headerlink" title="手势识别装置 2018D"></a>手势识别装置 2018D</h3><h3 id="简易电路特性测试仪-2019D"><a href="#简易电路特性测试仪-2019D" class="headerlink" title="简易电路特性测试仪 2019D"></a>简易电路特性测试仪 2019D</h3><h3 id="双路语音同传的无线收发系统-2019G"><a href="#双路语音同传的无线收发系统-2019G" class="headerlink" title="双路语音同传的无线收发系统 2019G"></a>双路语音同传的无线收发系统 2019G</h3>
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T11:33:36.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/s/">s</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

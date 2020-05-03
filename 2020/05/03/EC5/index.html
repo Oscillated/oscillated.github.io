@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>EC5 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>EC5</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>电赛培训5</p>
+<a id="more"></a>
+
+<h1 id="集成运放设计基础"><a href="#集成运放设计基础" class="headerlink" title="集成运放设计基础"></a>集成运放设计基础</h1><h3 id="跟随器电路"><a href="#跟随器电路" class="headerlink" title="跟随器电路"></a>跟随器电路</h3><ul>
+<li>用作隔离级<ul>
+<li>增益为1</li>
+<li>输入阻抗高（相当于对前级开路）、输出阻抗低（相当于对后级的电压源、内阻近乎零）</li>
+<li>使前后级电路之间互不干扰</li>
+<li>反馈回路有保护电阻的适合于输入端内已并接两组保护二极管的运放，避免波形出现奇异高次谐波</li>
+</ul>
+</li>
+</ul>
+<h3 id="积分、微分电路"><a href="#积分、微分电路" class="headerlink" title="积分、微分电路"></a>积分、微分电路</h3><h4 id="积分器"><a href="#积分器" class="headerlink" title="积分器"></a>积分器</h4><ul>
+<li>无源的：RC低通<ul>
+<li>无增益、有衰减</li>
+</ul>
+</li>
+<li>有源的：运放结构的反馈回路加上电容<ul>
+<li>输出电压与输入电压的积分成正比</li>
+<li>线性良好的扫描电路</li>
+</ul>
+</li>
+</ul>
+<h4 id="微分器"><a href="#微分器" class="headerlink" title="微分器"></a>微分器</h4><ul>
+<li>无源的：RC高通</li>
+<li>有源的：有源积分器内将R和C调换位置<ul>
+<li>输出电压与输入电压的微分成正比</li>
+</ul>
+</li>
+</ul>
+<p>有源更接近实际情况，更加精确</p>
+<h3 id="精密半波整流电路"><a href="#精密半波整流电路" class="headerlink" title="精密半波整流电路"></a>精密半波整流电路</h3><p>正半周去除，负半周反向</p>
+<h4 id="有源滤波器Active-Filter-——-使用运放"><a href="#有源滤波器Active-Filter-——-使用运放" class="headerlink" title="有源滤波器Active Filter —— 使用运放"></a>有源滤波器Active Filter —— 使用运放</h4><p>无源滤波——仅使用电阻电感电容</p>
+<h4 id="有源低通"><a href="#有源低通" class="headerlink" title="有源低通"></a>有源低通</h4><p>反相型、同相型 电容并反馈电阻</p>
+<h4 id="有源高通"><a href="#有源高通" class="headerlink" title="有源高通"></a>有源高通</h4><p>电容串传入位置电阻</p>
+<h4 id="带通、带阻"><a href="#带通、带阻" class="headerlink" title="带通、带阻"></a>带通、带阻</h4><h3 id="单电源应用电路"><a href="#单电源应用电路" class="headerlink" title="单电源应用电路"></a>单电源应用电路</h3><p>一般双电源供电，以便在静态时输出端直流电位为零。</p>
+<p>交流放大器中因为输入输出都可加隔直电容，为了供电方便也可改用单电源供电。</p>
+<p>放大微弱信号一般还是要用双电源。</p>
+<p>“只能用0-5V电源”</p>
+<h4 id="单电源供电"><a href="#单电源供电" class="headerlink" title="单电源供电"></a>单电源供电</h4><p>为了平衡，要求运放输出端的直流电位为$\frac{1}{2}V_{cc}$（双电源供电时要求运放输出端直流电位为0），所以反向端的直流电位也为$\frac{1}{2}V_{cc}$，为使运放正常工作，同相端也应加$\frac{1}{2}V_{cc}$直流电位，以保证集成运放的两个输入端有相同的直流电位</p>
+<h3 id="比较器电路"><a href="#比较器电路" class="headerlink" title="比较器电路"></a>比较器电路</h3><h4 id="过零比较器"><a href="#过零比较器" class="headerlink" title="过零比较器"></a>过零比较器</h4><p>齐纳二极管、反相输入，运放工作在非线性区</p>
+<p>$V_i&gt;0，V_o$为负，$V_i&lt;0，V_o$为正</p>
+<h4 id="单限比较器"><a href="#单限比较器" class="headerlink" title="单限比较器"></a>单限比较器</h4><p>同相输入，与参考电压$U_r$比较，需要上拉电阻才能输出高电平</p>
+<p>OC - 集电极开路</p>
+<h3 id="迟滞比较器"><a href="#迟滞比较器" class="headerlink" title="迟滞比较器"></a>迟滞比较器</h3><p>相当于加正反馈的单限比较器</p>
+<p>反相输入</p>
+<p>克服了单限比较器在$V_r$附近剧烈抖动的缺点</p>
+<p>施密特Schmitt触发器</p>
+<p>类比磁滞回线，跳变电压值附近干扰不超过$\Delta V$，输出电压就是稳定的</p>
+<p>同相输入：$V_i$超过上界后，输出为较大值</p>
+<p>反相输入：$V_i$超过上界后，输出为较小值</p>
+<p>缺点是分辨率降低（差别小于$\Delta V$的两个输入电压值）</p>
+<p>计算迟滞比较器的输入上下限，已知$V_{OH},V_{OL}$</p>
+<ul>
+<li>重点是临界条件$V_+=V_-$</li>
+</ul>
+<p>没有稳压二极管时，输出$V_0=运放电源电压范围$对于R-R轨到轨运放</p>
+<h5 id="方波三角波发生器-积分器-同相输入迟滞比较器"><a href="#方波三角波发生器-积分器-同相输入迟滞比较器" class="headerlink" title="方波三角波发生器 = 积分器+同相输入迟滞比较器"></a>方波三角波发生器 = 积分器+同相输入迟滞比较器</h5><p>第一级对第二级输出的方波进行积分得到三角波，第二级对第一级输出的三角波进行迟滞比较得到方波 <strong>Multisim仿真</strong></p>
+<h3 id="电压电流转换器"><a href="#电压电流转换器" class="headerlink" title="电压电流转换器"></a>电压电流转换器</h3><p>电压传输会有衰减，那么可以转换成电流来传。</p>
+<p>在信号源附近先将信号电压放大，然后将放大了的电压转换成一个与其成正比的恒流源，再传送到负载两端</p>
+<h4 id="霍兰德恒流源"><a href="#霍兰德恒流源" class="headerlink" title="霍兰德恒流源"></a>霍兰德恒流源</h4><p>既有负反馈又有正反馈，负载电流与负载值无关，满足了横流要求</p>
+<h3 id="数据放大器"><a href="#数据放大器" class="headerlink" title="数据放大器"></a>数据放大器</h3><p>采集微弱信号（小差模电压、一定共模电压输出、输出电流较小）</p>
+<p>要求高增益、高共模抑制比、高精度（失调漂移小）、高速（频带宽、摆率大）</p>
+<h4 id="三运放仪表放大器"><a href="#三运放仪表放大器" class="headerlink" title="三运放仪表放大器"></a>三运放仪表放大器</h4><p>运放差动组态，差分输入比例运算电路</p>
+<p>输入电阻极高、共模抑制比极高、增益调节方便，放大差模电压、抵消共模电压、放大器对被测电路影响很小</p>
+<p>可编程数据放大器 BB3606</p>
+<h3 id="隔离放大器"><a href="#隔离放大器" class="headerlink" title="隔离放大器"></a>隔离放大器</h3><p>输入输出之间没有直接电路耦合（无公共地端）</p>
+<p>变压器耦合隔离放大器、光电耦合隔离放大器</p>
+<h4 id="光电耦合隔离放大器"><a href="#光电耦合隔离放大器" class="headerlink" title="光电耦合隔离放大器"></a>光电耦合隔离放大器</h4><p>浮地（三角号）——不接大地，与大地无关绝缘的电压，用于隔离和避免干扰，参考地</p>
+<h1 id="运放器件datasheet阅读"><a href="#运放器件datasheet阅读" class="headerlink" title="运放器件datasheet阅读"></a>运放器件datasheet阅读</h1><h3 id="输入阻抗-Impedance、Resistance"><a href="#输入阻抗-Impedance、Resistance" class="headerlink" title="输入阻抗 Impedance、Resistance"></a>输入阻抗 Impedance、Resistance</h3><p>要考虑信源（被放大对象）的内阻</p>
+<p>信源内阻忽略不计的误差为10% -&gt; 选择10倍内阻以上输入阻抗</p>
+<p>信源内阻忽略不计的误差为1% -&gt; 选择100倍内阻以上输入阻抗</p>
+<p>原则：信源内阻尽量忽略不计，选择足够大的运放输入阻抗（两者是串联关系）</p>
+<h3 id="带宽-Bandwidth、GBW、Frequency-Response"><a href="#带宽-Bandwidth、GBW、Frequency-Response" class="headerlink" title="带宽 Bandwidth、GBW、Frequency Response"></a>带宽 Bandwidth、GBW、Frequency Response</h3><p>GBW = Gain*Bandwidth 一般不是常数，要查手册</p>
+<p>对电流反馈型CFB，根本不是常数</p>
+<p>对电流反馈型VFB，不总是常数，查手册</p>
+<h3 id="共模抑制比-CMRR-Common-mode-Rejection-Ratio"><a href="#共模抑制比-CMRR-Common-mode-Rejection-Ratio" class="headerlink" title="共模抑制比 CMRR(Common-mode Rejection Ratio)"></a>共模抑制比 CMRR(Common-mode Rejection Ratio)</h3><h3 id="输入失调电压Input-Offset-Voltage"><a href="#输入失调电压Input-Offset-Voltage" class="headerlink" title="输入失调电压Input Offset Voltage"></a>输入失调电压Input Offset Voltage</h3><p>直流指标，对运放直流精度的影响最为直观</p>
+<p>$V_{OS}$ 因同相端和反相端失配（工艺问题）而产生的输入级固有电压差，越小越好；有些运放的调零端可以使其为零，或使用另一个电压反向抵消</p>
+<p>对高倍放大的精密电路重要</p>
+<h3 id="输入偏置电流-Input-Bias-Current"><a href="#输入偏置电流-Input-Bias-Current" class="headerlink" title="输入偏置电流 Input Bias Current"></a>输入偏置电流 Input Bias Current</h3><p>直流指标，对运放直流精度的影响最为直观</p>
+<p>$I_B$ 输入级为了能正常工作而对输入晶体管进行偏置所需要的基极电流或栅极电流，越小越好</p>
+<p>对高阻信源放大时非常重要，因为偏置电流乘以高阻产生很大误差电压</p>
+<h3 id="输入电压范围-Input-Voltage、Range"><a href="#输入电压范围-Input-Voltage、Range" class="headerlink" title="输入电压范围 Input Voltage、Range"></a>输入电压范围 Input Voltage、Range</h3><p>将运放用于单电源供电时要特别注意</p>
+<ol>
+<li>VCC和GND电压差较小，输入不是轨到轨的话将限制输入电压的范围</li>
+<li>输入信号小或信号中直流分量小的时候，就相当于输入逼近GND轨，如果不满足最小输入电压范围将不能正常工作</li>
+</ol>
+<h4 id="轨到轨"><a href="#轨到轨" class="headerlink" title="轨到轨"></a>轨到轨</h4><p>运放的输入电位通常要求高于负电源某一数值，而低于正电源某一数值。经过特殊设计的运放可以允许输入电位在从负电源到正电源的整个区间变化，甚至稍微高于正电源或稍微低于负电源也被允许。这种运放称为轨到轨。</p>
+<p>为了防止出现削顶削底，只能让输入电位区间小于正负电压区间，空出部分称净空</p>
+<p>输入电压范围正负电源轨都达不到的运放，不适合在单电源中应用</p>
+<p>输入电压范围能达到负电源轨、但达不到正电源轨的运放，调节直流偏置即可应用在单电源中</p>
+<h3 id="噪声特性-Noise、Noise-Density"><a href="#噪声特性-Noise、Noise-Density" class="headerlink" title="噪声特性 Noise、Noise Density"></a>噪声特性 Noise、Noise Density</h3><p>在频率上积分后得到电压，再经过平方除以电阻，就可以得到功率</p>
+<h3 id="输出驱动能力-Current、Output"><a href="#输出驱动能力-Current、Output" class="headerlink" title="输出驱动能力 Current、Output"></a>输出驱动能力 Current、Output</h3><p>运放带负载的能力，作为最后一级时要考虑其驱动能力</p>
+<p>current sourcing 拉电流：输出VCC时输出端对负载提供电流</p>
+<p>current sinking 灌电流：输出GND时输出端从负载吸收电流</p>
+<h3 id="输出电压范围-Output-Swing"><a href="#输出电压范围-Output-Swing" class="headerlink" title="输出电压范围 Output Swing"></a>输出电压范围 Output Swing</h3><p>在单电源供电的场合中选择轨到轨运放更方便使用</p>
+<p>“swing from rail” 时 值就是净空</p>
+<p>在最大输出幅度和供电电源轨之间必须有一定的裕量或净空，保证输出不被削顶削底，对输入也是一样（特殊工艺弥补三极管0.7V后，轨到轨的运放贵）</p>
+<h3 id="压摆率-Slew-Rate"><a href="#压摆率-Slew-Rate" class="headerlink" title="压摆率 Slew Rate"></a>压摆率 Slew Rate</h3><p>运放输出信号的最大斜率、表示运放输出大幅度信号的能力</p>
+<p>结合GBW可以计算运放在输出最高频率信号时幅度的最大值</p>
+<p>$s(t)=Asin(2\pi ft)$ ，$SR=A*2\pi f$不变时，幅值A（非峰峰值）越大，频率f就越小，需要A和f都大的应用场合，就需要选择压摆率大的运放</p>
+<h3 id="供电范围和静态电流-Power-Supply、Quiescent-Current"><a href="#供电范围和静态电流-Power-Supply、Quiescent-Current" class="headerlink" title="供电范围和静态电流 Power Supply、Quiescent Current"></a>供电范围和静态电流 Power Supply、Quiescent Current</h3><p>供电电压可以看出器件是否适合在单电源低电压下使用</p>
+<p>静态电流可以看出器件是否适合在低功耗应用中使用</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T11:33:47.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Electronic-Competition/">Electronic Competition</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

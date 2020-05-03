@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>EC6 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>EC6</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>电赛培训6</p>
+<a id="more"></a>
+
+<h1 id="自激"><a href="#自激" class="headerlink" title="自激"></a>自激</h1><p>自激振荡现象</p>
+<ul>
+<li>无输入，输出端发现有信号</li>
+<li>有低频信号输入，输出端为带包络的高频信号</li>
+</ul>
+<p>闭环增益$A_f=\frac{X_o}{X_i}=\frac{A}{1+AF}$</p>
+<h2 id="自激条件"><a href="#自激条件" class="headerlink" title="自激条件"></a>自激条件</h2><p>$\vert 1+AF\vert = 0$</p>
+<p>即满足：</p>
+<ul>
+<li>幅度平衡条件$\vert AF\vert=1$</li>
+<li>相位平衡条件$\phi_{AF}=\phi_A+\phi_F=\pm(2n+1)\pi$</li>
+</ul>
+<h2 id="自激原因"><a href="#自激原因" class="headerlink" title="自激原因"></a>自激原因</h2><p>附加相移$\phi_{AF}$使负反馈变成正反馈</p>
+<ul>
+<li>$\vert 1+AF\vert &gt; 1$ —— 负反馈</li>
+<li>$\vert 1+AF\vert &lt; 1$ —— 正反馈</li>
+<li>$\vert 1+AF\vert = 0$ —— 振荡</li>
+</ul>
+<p>另外$\vert AF \vert &gt; 1$ 时系统不稳定，$X_i^{‘}=X_i-X_f$会越变越大，最好有$\vert AF\vert &lt; 1$</p>
+<p>起振条件：</p>
+<ul>
+<li>幅度起振条件$\vert AF\vert &gt; 1$</li>
+<li>相位起振条件$\phi_{AF}=\phi_A+\phi_F=\pm(2n+1)\pi$</li>
+</ul>
+<p>往往在多级放大、放大倍数高、深度负反馈的场合下产生，级间存在RC相移网络，每通过一个就产生一个附加相移</p>
+<ul>
+<li>单级放大电路只含一个RC网络，附加相移小于90°，稳定</li>
+<li>两级放大电路高频只含两个RC网络，附加相移小于180°，稳定</li>
+<li>两级放大电路附加相移最大可达180°，必然有一个频率点可使附加相移刚好为180°，可能发生振荡</li>
+</ul>
+<p>竞赛题和实际应用常要求放大微弱信号的增益高、频率高，必然需至少三级放大</p>
+<p>三级或三级以上的直接耦合放大电路引入负反馈后有可能产生高频振荡；</p>
+<p>耦合电容、旁路电容等为三个或三个以上的放大<br>电路，引入负反馈后有可能产生低频振荡。</p>
+<p>仅用单级放大？</p>
+<ul>
+<li>放大倍数太大</li>
+<li>高倍数时运放本身失调和噪声对放大输出信号的影响很明显</li>
+<li>多级放大可以加入各种负反馈，合理安排各级工作重点</li>
+<li>级联放大器的初级一般采用低噪声的放大器、中级在基础上适当放大电流，末级主要放大电流</li>
+</ul>
+<h2 id="判断负反馈电路的稳定性"><a href="#判断负反馈电路的稳定性" class="headerlink" title="判断负反馈电路的稳定性"></a>判断负反馈电路的稳定性</h2><p>波特图、扫频仪、仿真</p>
+<p>波特图相频图相位为-180°对应的$f_0$在幅频图内在x轴上方（增益大于1），则会不稳定；在x轴下方（增益小于1），则稳定</p>
+<p>幅值裕度$G_m$：-180°对应$f_0$在幅频图内的纵坐标与x轴距离</p>
+<p>相位裕度$\phi_m$：0增益对应$f_c$在相频图内的纵坐标与-180°水平线距离</p>
+<p>希望$G_m \le -10dB, \phi_m \ge 45° $，这样才有可靠稳定性</p>
+<h2 id="消除自激——相位补偿"><a href="#消除自激——相位补偿" class="headerlink" title="消除自激——相位补偿"></a>消除自激——相位补偿</h2><p>加入C进行相位补偿</p>
+<ul>
+<li>滞后补偿<ul>
+<li>电容滞后</li>
+<li>RC之后</li>
+</ul>
+</li>
+<li>超前补偿<ul>
+<li>密勒效应补偿（并接电容）</li>
+</ul>
+</li>
+</ul>
+<p>一般地，应在多级放大电路的上限频率最低一级加补偿电容</p>
+<p>还可采取的措施：</p>
+<p>适当加大$R_F,R_G$；增大系统噪声增益（相当于增大$R_F$）；PCB布局布线上排除各寄生电容影响</p>
+<h3 id="CFB的稳定性问题"><a href="#CFB的稳定性问题" class="headerlink" title="CFB的稳定性问题"></a>CFB的稳定性问题</h3><p>电流反馈型运放</p>
+<p>关键在于反馈电阻和增益电阻的选择，查datasheet不同增益下的最佳电阻选项</p>
+<h2 id="高速放大电路PCB板布局布线问题"><a href="#高速放大电路PCB板布局布线问题" class="headerlink" title="高速放大电路PCB板布局布线问题"></a>高速放大电路PCB板布局布线问题</h2><p>原因一：反相输入端寄生电容</p>
+<ul>
+<li>将反相输入端附近的地层和电源层挖空</li>
+<li>将电阻电容等元件尽量靠近反相输入端，减少线的长度</li>
+<li>增大$R_F$和$R_G$</li>
+<li>增大噪声增益</li>
+<li>在$R_F$两端增加补偿电容$C_{COMP}$</li>
+</ul>
+<p>原因之二： 输出端寄生电容</p>
+<ul>
+<li><p>将输出节点附近的电源层和地层挖空</p>
+</li>
+<li><p>使用输出串联电阻，增加反馈系数β上的零点，减小寄生电容带来的极点的影响增加β上的零点，相当于增加1/β上的极点</p>
+</li>
+<li><p>尽可能使得连线缩短，特别是串联匹配电阻尽量靠近输出端</p>
+</li>
+<li><p>增加噪声增益</p>
+</li>
+<li><p>使用反馈补偿电容（for VFB）（Do not use for CFB）</p>
+</li>
+</ul>
+<p>其他注意</p>
+<p>电源滤波</p>
+<ul>
+<li>小的0.01~0.1mF电源旁路电容靠近放大器</li>
+<li>大的10~100mF电源旁路电容尽量远离放大器，达到高频电流隔离</li>
+</ul>
+<p>仿真的时候不自激，这是对的，因为这时还没有输入输出端的寄生电容，这时就应该用仿真波特仪去看看频响曲线，看看现在这个电路的增益裕度和相位裕度是否足够稳定安全，不容易引起自激。</p>
+<p>如果这两个裕度不在能够计算得出的安全范围内，就应主动提前加一些补偿电容、补偿电阻等，使两个裕度落到稳定的安全范围内去；同时，在PCB板上相应各点留出可以实际加补偿电容等可能补偿元件的位置以备用。</p>
+<p>总之，认真处理电源和地，以及电源的旁路电容，减小或补偿运放的输入/输出端PCB布局的杂散电容， 可以有效地防止运放电路的自激振荡。</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T11:33:50.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Electronic-Competition/">Electronic Competition</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

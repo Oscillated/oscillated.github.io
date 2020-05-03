@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>EC3 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>EC3</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>电赛培训3</p>
+<a id="more"></a>
+
+<h1 id="各种EDA"><a href="#各种EDA" class="headerlink" title="各种EDA"></a>各种EDA</h1><h2 id="Multisim虚拟仪器库"><a href="#Multisim虚拟仪器库" class="headerlink" title="Multisim虚拟仪器库"></a>Multisim虚拟仪器库</h2><ul>
+<li>去掉网格options - sheet properties - workspace</li>
+</ul>
+<h3 id="扫频仪Bode-Plotter"><a href="#扫频仪Bode-Plotter" class="headerlink" title="扫频仪Bode Plotter"></a>扫频仪Bode Plotter</h3><p>在使用扫频仪时，待测电路输入端必须加载交流信号源（占位），而信号源输入值对频率特性分析结果无影响。</p>
+<h3 id="频谱分析仪-Spectrum-analyzer"><a href="#频谱分析仪-Spectrum-analyzer" class="headerlink" title="频谱分析仪 Spectrum analyzer"></a>频谱分析仪 Spectrum analyzer</h3><p>分析一个信号的不同频率分量</p>
+<h3 id="失真度分析仪Distortion-analyzer"><a href="#失真度分析仪Distortion-analyzer" class="headerlink" title="失真度分析仪Distortion analyzer"></a>失真度分析仪Distortion analyzer</h3><p>给基频，分析失真成分</p>
+<p>音频的频率范围</p>
+<p>$\frac{\sqrt{v_2^2 +v_3^2 + \cdots + v_9^2}}{v_1}$</p>
+<h3 id="仿真Agilent数字示波器"><a href="#仿真Agilent数字示波器" class="headerlink" title="仿真Agilent数字示波器"></a>仿真Agilent数字示波器</h3><h3 id="仿真Tektronix数字示波器"><a href="#仿真Tektronix数字示波器" class="headerlink" title="仿真Tektronix数字示波器"></a>仿真Tektronix数字示波器</h3><h3 id="测量探针-Measurement-Probe"><a href="#测量探针-Measurement-Probe" class="headerlink" title="测量探针 Measurement Probe"></a>测量探针 Measurement Probe</h3><h3 id="示例库example-finder"><a href="#示例库example-finder" class="headerlink" title="示例库example finder"></a>示例库example finder</h3><h3 id="电路设计向导"><a href="#电路设计向导" class="headerlink" title="电路设计向导"></a>电路设计向导</h3><p>设置好参数 自动生成模块化电路</p>
+<ul>
+<li>555 timer wizard</li>
+<li>filter wizard</li>
+<li>opamp wizard</li>
+<li>CE BJT amplifier wizard</li>
+</ul>
+<h2 id="TI-webench-在线"><a href="#TI-webench-在线" class="headerlink" title="TI webench - 在线"></a>TI webench - 在线</h2><p>[WEBENCH][<a href="http://www.ti.com/lsds/ti/analog/webench/overview.page]" target="_blank" rel="noopener">http://www.ti.com/lsds/ti/analog/webench/overview.page]</a></p>
+<h2 id="Filter-Solutions-滤波器设计"><a href="#Filter-Solutions-滤波器设计" class="headerlink" title="Filter Solutions - 滤波器设计"></a>Filter Solutions - 滤波器设计</h2><p>不能指定运放型号</p>
+<p>滤波器设计，实际电路还需调整参数及反复调试</p>
+<h2 id="TINA-TI"><a href="#TINA-TI" class="headerlink" title="TINA-TI"></a>TINA-TI</h2><p>类似OrCAD PSpice</p>
+<p>TI器件仿真支持好 相比multisim</p>
+<h2 id="ADIsimPE"><a href="#ADIsimPE" class="headerlink" title="ADIsimPE"></a>ADIsimPE</h2><h2 id="TI-Selguide-运放选型软件"><a href="#TI-Selguide-运放选型软件" class="headerlink" title="TI Selguide - 运放选型软件"></a>TI Selguide - 运放选型软件</h2><p>输入运放参数范围筛选</p>
+<p>输入运放型号查找</p>
+<p>对比不同运放</p>
+<p>比较器、缓冲器</p>
+<p>建议经常更新</p>
+<h1 id="集成运放设计基础"><a href="#集成运放设计基础" class="headerlink" title="集成运放设计基础"></a>集成运放设计基础</h1><ul>
+<li>高集成度</li>
+<li>简单的外观、众多的指标</li>
+<li>五端口</li>
+</ul>
+<h3 id="运放在电子系统中的位置"><a href="#运放在电子系统中的位置" class="headerlink" title="运放在电子系统中的位置"></a>运放在电子系统中的位置</h3><ul>
+<li><p>用于信号调理 AtoA</p>
+</li>
+<li><p>前向通道中需要运放 - 单片机/FPGA - 后向通道中需要运放</p>
+</li>
+</ul>
+<h3 id="理想运放的条件"><a href="#理想运放的条件" class="headerlink" title="理想运放的条件"></a>理想运放的条件</h3><ul>
+<li>$A_{vd} \rightarrow \infty $</li>
+<li>$R_i \rightarrow \infty $</li>
+<li>$R_o \rightarrow 0 $</li>
+<li>$BW \rightarrow \infty $</li>
+<li>$CMRR \rightarrow \infty $</li>
+<li>偏置电流、失调电压电流、温漂等为0</li>
+<li>实际运放理想化的误差在工程上是允许的</li>
+</ul>
+<p>FTP</p>
+<blockquote>
+<p>《运算放大器权威指南》《TI信号链与电源》《TI Cookbook: Amplifer》《TI Pocket Reference》 </p>
+</blockquote>
+<h3 id="运放的工作准则"><a href="#运放的工作准则" class="headerlink" title="运放的工作准则"></a><strong>运放的工作准则</strong></h3><p><strong>为了使运放的两个输入端上的电压相等，运放将对其输出做所有必须做的事情。这个准则可以用来推到所有运放在所有应用中的所有行为</strong></p>
+<h3 id="回流通路"><a href="#回流通路" class="headerlink" title="回流通路"></a>回流通路</h3><p>可以解释成运放是全差分型，一个输出用作另一个输出的回流通路</p>
+<h3 id="特性曲线"><a href="#特性曲线" class="headerlink" title="特性曲线"></a>特性曲线</h3><h4 id="线性应用"><a href="#线性应用" class="headerlink" title="线性应用"></a>线性应用</h4><ul>
+<li>放大电路、深度负反馈</li>
+<li>“虚短“”虚断”成立</li>
+</ul>
+<h4 id="非线性应用"><a href="#非线性应用" class="headerlink" title="非线性应用"></a>非线性应用</h4><ul>
+<li>正反馈的比较器、开环工作</li>
+<li>仍有”虚断“、无”虚短“</li>
+</ul>
+<h3 id="增益带宽积GBW"><a href="#增益带宽积GBW" class="headerlink" title="增益带宽积GBW"></a>增益带宽积GBW</h3><p>$GBW = A_{vd} *f_H$ </p>
+<p>中频开环差模增益 * 上限截止频率</p>
+<p>3dB带宽 - 增益下降至$\frac{1}{\sqrt{2}}$最大值的频率范围</p>
+<p>GBW不一定为常数，以手册为准</p>
+<p>仪器datasheet的BW很可能只适用于小信号情况</p>
+<p>GBW主要用于计算截止频率</p>
+<h3 id="摆率（转换速度）-S-R"><a href="#摆率（转换速度）-S-R" class="headerlink" title="摆率（转换速度）$S_R$"></a>摆率（转换速度）$S_R$</h3><p>运放所允许的输出电压对时间变化率的最大值</p>
+<p>$2\pi fV_{om}≤S_R$ $V_{om}$是幅值</p>
+<p>运放用于直流，不需考虑带宽，主要考虑精度和干扰问题</p>
+<p>小信号带宽主要考虑GBW</p>
+<p>大信号带宽主要考虑$S_R$</p>
+<h3 id="共模抑制比CMRR"><a href="#共模抑制比CMRR" class="headerlink" title="共模抑制比CMRR"></a>共模抑制比CMRR</h3><p>$CMRR=20lg|A_{vd}/A_{vc}|(dB)$</p>
+<p>运放对共模信号的抑制能力，为开环差模增益和开环共模增益之比，常用分贝（dB）表示</p>
+<h3 id="集成运放应用电路"><a href="#集成运放应用电路" class="headerlink" title="集成运放应用电路"></a>集成运放应用电路</h3><ul>
+<li><p>反相放大</p>
+<ul>
+<li>深度电压并联负反馈</li>
+</ul>
+</li>
+<li><p>同相放大</p>
+</li>
+<li><p>差动放大</p>
+</li>
+<li><p>直流补偿电路</p>
+</li>
+<li><p>叠加定理的灵活运用</p>
+<ul>
+<li>其余电源不作用的含义：对电压源置零即短路，电流源置零即开路</li>
+<li>任何一个独立电源作用时，受控源都保留在电路中。</li>
+<li>只适用于线性电路</li>
+<li>反向放大与同相放大的情况不同</li>
+<li>同向叠加，不能将另一路输入的电阻忽略</li>
+</ul>
+</li>
+<li><p>差分输入比例运算电路（减法器</p>
+<ul>
+<li>$R_1 = R_2, R_3 = r_4 $</li>
+</ul>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T11:33:42.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Electronic-Competition/">Electronic Competition</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

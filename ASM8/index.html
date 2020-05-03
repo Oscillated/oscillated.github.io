@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ASM8 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>ASM8</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>白洪欢《汇编语言程序设计基础》笔记8</p>
+<a id="more"></a>
+
+<h1 id="如何定义和调用一个函数"><a href="#如何定义和调用一个函数" class="headerlink" title="如何定义和调用一个函数"></a>如何定义和调用一个函数</h1><h2 id="用标号来定义函数名称"><a href="#用标号来定义函数名称" class="headerlink" title="用标号来定义函数名称"></a>用标号来定义函数名称</h2><p>被调用了 <code>call f</code></p>
+<p>结尾通常有返回 <code>ret</code></p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><code class="hljs awk">f:	; f是函数名<br>	inc ax<br>	ret<br>main:<br>	mov ax, <span class="hljs-number">3</span><br>	call f;<br><span class="hljs-keyword">exit</span>:<br>	; 输出返回值<span class="hljs-number">4</span>，仅限个位数（al等价ax）时<br>	; mov ah, <span class="hljs-number">2</span><br>	; mov dl, al<br>	; add dl, <span class="hljs-string">'0'</span><br>	; int <span class="hljs-number">21</span>h<br>	<br>	mov ah, <span class="hljs-number">4</span>Ch<br>    int <span class="hljs-number">21</span>h<br></code></pre></td></tr></table></figure>
+
+<h2 id="用proc定义"><a href="#用proc定义" class="headerlink" title="用proc定义"></a>用proc定义</h2><figure class="highlight plain"><table><tr><td class="code"><pre><code class="hljs 、">f proc ; procedure过程，可以理解为函数function<br>	inc ax<br>	ret<br>f endp; end of procedure<br><br>main:<br>	mov ax, 3<br>	call f;<br>exit:<br>	mov ah, 4Ch<br>    int 21h<br></code></pre></td></tr></table></figure>
+
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-comment">;输入2个2位的16进制数,输出它们的和.</span><br><span class="hljs-comment">;例如输入FF02,则输出0101。</span><br><span class="hljs-comment">;调用两次分别输入FF、02，输出结果0101</span><br><br><span class="hljs-comment">; A ==&gt; B ==&gt; C</span><br><span class="hljs-comment">; A &lt;== B &lt;== ret</span><br><span class="hljs-meta">.386</span><br>code <span class="hljs-meta">segment</span> <span class="hljs-meta">use16</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code<br><span class="hljs-symbol">input:</span> <span class="hljs-comment">;input作为函数使用，输入1位十六进制数</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">1</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><span class="hljs-comment">; AL=getchar()</span><br>   <span class="hljs-keyword">cmp</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">'A'</span><span class="hljs-comment">; 'A'==41h, '9'==39h</span><br>   <span class="hljs-keyword">jb</span> is_digit<br><span class="hljs-symbol">is_alpha:</span><br>   <span class="hljs-keyword">sub</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">'A'</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">10</span><br>   <span class="hljs-keyword">jmp</span> input_done<br><span class="hljs-symbol">is_digit:</span><br>   <span class="hljs-keyword">sub</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">'0'</span><span class="hljs-comment">; AL是函数的返回值</span><br><span class="hljs-symbol">input_done:</span><br>   <span class="hljs-keyword">ret</span><br><br><span class="hljs-symbol">input_a_number:</span> <span class="hljs-comment">;输入2位十六进制(00h-FFh)，调用2次input实现</span><br>   <span class="hljs-comment">; 用到bl，因此要防止bx被毁坏（bx可能在main等函数中是有意义的）</span><br>   <span class="hljs-comment">; 把用到的寄存器做保护，但显然不能对ax进行堆栈保护，因为要接收函数返回值</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">bx</span><br>   <span class="hljs-keyword">call</span> input <span class="hljs-comment">; 输入'F'，会返回AL=0Fh，十位转移到bl</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bl</span>, <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">call</span> input <span class="hljs-comment">; 输入'F'，会返回AL=0Fh，获得个位</span><br>   <span class="hljs-keyword">shl</span> <span class="hljs-built_in">bl</span>, <span class="hljs-number">4</span> <span class="hljs-comment">;先把之前的十位左移，bl=F0h</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>, <span class="hljs-built_in">bl</span><span class="hljs-comment">; AL是函数的返回值，接受个位</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">bx</span><br>   <span class="hljs-keyword">ret</span><br><br><span class="hljs-symbol">output_a_number:</span><br>   <span class="hljs-comment">; 注意push pop寄存器的顺序对应，先进后出，后进先出</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">dx</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">4</span><br><span class="hljs-comment">;1011 0000 1111 0101 循环左移前</span><br><span class="hljs-comment">;0000 1111 0101 1011 循环左移后</span><br><span class="hljs-symbol">convert_next_digit:</span><br>   <span class="hljs-keyword">rol</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">4</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">and</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">0Fh</span><span class="hljs-comment">; AX=0000 0000 0000 1011</span><br>   <span class="hljs-keyword">cmp</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">10</span><br>   <span class="hljs-keyword">jb</span> output_is_digit<br>   <span class="hljs-keyword">sub</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">10</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">'A'</span><br>   <span class="hljs-keyword">jmp</span> output_a_digit<br><span class="hljs-symbol">output_is_digit:</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">'0'</span><br><span class="hljs-symbol">output_a_digit:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">2</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dl</span>, <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><span class="hljs-comment">; putchar(dl)</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">sub</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">1</span><br>   <span class="hljs-keyword">jnz</span> convert_next_digit<br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">dx</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">ret</span><br><br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">call</span> input_a_number<span class="hljs-comment">; 输入'FF'，返回AL=FFh</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">bh</span>, <span class="hljs-number">0</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bl</span>, <span class="hljs-built_in">al</span><span class="hljs-comment">; BX=00FF</span><br>   <span class="hljs-keyword">call</span> input_a_number<span class="hljs-comment">; 输入'02'，返回AL=02h</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">0</span> <span class="hljs-comment">; AX=0002</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">bx</span><span class="hljs-comment">; 计算两数之和</span><br>   <br>   <span class="hljs-comment">; 参数（和）已经放在AX中</span><br>   <span class="hljs-keyword">call</span> output_a_number<span class="hljs-comment">; 以16进制格式输出AX的值</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span>   <br>code ends<br>end main<br></code></pre></td></tr></table></figure>
+
+<h1 id="32位的间接寻址方式"><a href="#32位的间接寻址方式" class="headerlink" title="32位的间接寻址方式"></a>32位的间接寻址方式</h1><p>32位比16位多了以下寻址方式:</p>
+<p>[寄存器+寄存器*n+常数]</p>
+<p>其中n=2、4、8。</p>
+<p>其中前后寄存器并不要求一定是16位下限定的4个，</p>
+<p>ebx, ebp, esi, edi, eax, ecx, edx, esp都可以，任意组合、可以相同</p>
+<figure class="highlight"><table><tr><td class="code"><pre><code class="hljs c">mov eax, [ebx+esi\*4] ;short int(2), long int(4),float(4), double(8)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript">long a[<span class="hljs-number">4</span>] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>&#125;, y;<br>;想获得y = a[<span class="hljs-number">2</span>]:<br>设ebx=&amp;a[<span class="hljs-number">0</span>], esi=<span class="hljs-number">2</span>是下标<br>mov y, [ebx+esi*<span class="hljs-number">4</span>] ;<span class="hljs-number">4</span>=sizeof(long <span class="hljs-built_in">int</span>)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">main()<br>&#123;<br>   <span class="hljs-keyword">static</span> short <span class="hljs-keyword">int</span> a[<span class="hljs-number">3</span>]=&#123;<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>&#125;;<br>   <span class="hljs-keyword">int</span> i, sum=<span class="hljs-number">0</span>;<br>   <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">3</span>; i++)<br>      sum += a[i];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="段跨越"><a href="#段跨越" class="headerlink" title="段跨越"></a>段跨越</h1><p>segment overriding</p>
+<p>通过在操作数前添加一个段前缀(segment prefix)如CS:、DS:、ES:、SS:来强制改变操作数的段址，这就是段跨越。</p>
+<ul>
+<li><p>省略段地址的中括号寻址，一般是省略了段地址ds。</p>
+</li>
+<li><p>特殊：当[]中包含有寄存器bp时，该变量的段地址一定是ss。</p>
+<ul>
+<li>[bp], [bp+2], [bp+si+2], [bp+di-1]等价于ss:[bp], ss:[bp+2], ss:[bp+si+2], ss:[bp+di-1]</li>
+</ul>
+</li>
+</ul>
+<p>默认的段地址是可以改变的，mov ax, ds:[bp+2]，这条指令的源操作数段地址从默认的ss改成了ds。</p>
+<p>同理，mov ax, [bx+si+2]改成mov ax, cs:[bx+si+2]的话，默认段地址就从ds变成了cs。</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T12:10:31.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/ASM/">ASM</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

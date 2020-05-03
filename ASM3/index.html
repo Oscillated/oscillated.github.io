@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ASM3 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>ASM3</h1>
+    </header>
+
+    <section>
+      <p>白洪欢《汇编语言程序设计基础》笔记3</p>
+<p>operation</p>
+<a id="more"></a>
+
+<h2 id="IEEE754标准单精度小数表示"><a href="#IEEE754标准单精度小数表示" class="headerlink" title="IEEE754标准单精度小数表示"></a>IEEE754标准单精度小数表示</h2><table>
+<thead>
+<tr>
+<th align="center">42</th>
+<th align="center">FE</th>
+<th align="center">C0</th>
+<th align="center">00</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">01000010</td>
+<td align="center">11111110</td>
+<td align="center">11000000</td>
+<td align="center">00000000</td>
+</tr>
+<tr>
+<td align="center">0    1000010</td>
+<td align="center">1   1111110</td>
+<td align="center">11000000</td>
+<td align="center">00000000</td>
+</tr>
+</tbody></table>
+<p>上为大端表示</p>
+<table>
+<thead>
+<tr>
+<th align="center">符号位1位</th>
+<th align="center">偏置指数8位（无符号）</th>
+<th align="center">尾数23位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">100000101(133)</td>
+<td align="center">…</td>
+</tr>
+<tr>
+<td align="center">正</td>
+<td align="center">-127为指数调整方法，133-127=6为实际的指数</td>
+<td align="center">…</td>
+</tr>
+</tbody></table>
+<p>以二进制表示 </p>
+<blockquote>
+<p><strong>1.</strong>1111110  11000000  00000000</p>
+</blockquote>
+<p>实际指数为6，小数点向右移6位：</p>
+<blockquote>
+<p>1111111<strong>.</strong>0 11000000 00000000</p>
+</blockquote>
+<p>转成十进制：</p>
+<blockquote>
+<p>127.375</p>
+</blockquote>
+<p>C语言查看该数内存存储情况：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">float</span> f=<span class="hljs-number">127.375</span>;<br>    <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *p;<br>    <span class="hljs-keyword">int</span> i;<br>    p = (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *)&amp;f;<br>    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">4</span>; i++)<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%02X"</span>,  p[i]);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    <span class="hljs-comment">// 输出 00C0FE42</span><br>    <br>    <span class="hljs-comment">// p[3] |= 0x82; // 若将最高位与1000 0000 做或运算 能改变f的符号</span><br>    <span class="hljs-comment">// printf("\n f=%f \n", f);</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p> 反向输出的原因：PC以小端格式储存，因此输出结果为小端表示。内存中无论是整数还是小数，用多个字节表示时，一定是小端保存法。小数在内存中也以小段方式保存，与整数相同。</p>
+</blockquote>
+<h2 id="算术运算"><a href="#算术运算" class="headerlink" title="算术运算"></a>算术运算</h2><ul>
+<li><p>add 加</p>
+<blockquote>
+<p>add 寄存器, 寄存器 如 add ax, bx</p>
+<p>add 寄存器, 常数  如 add ax, 2</p>
+<p>add 寄存器,变量  如 add ax, ds:[1000h]</p>
+<p>add 变量, 寄存器 如 add ds:[1000h], ax</p>
+<p>add 变量, 常数  如 add word ptr ds:[1000h], 2</p>
+</blockquote>
+<ul>
+<li>小数加法fadd</li>
+<li><strong>不能add 变量, 变量</strong>，因为硬件cpu不支持同时操作两个内存变量。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-comment">;汇编实现 y = y+x</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, x   <br><span class="hljs-keyword">add</span> y, <span class="hljs-built_in">ax</span>    <br><span class="hljs-comment">;或</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, y<br><span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, x<br><span class="hljs-keyword">mov</span> y, <span class="hljs-built_in">ax</span><br></code></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><p>汇编中常数没有宽度 1可以为8位、16位、32位</p>
+</li>
+<li><p>确定运算时变量的宽度，引入ptr。</p>
+<ul>
+<li><p>word ptr ds:[1000h] 表示 ds:1000h所指向的对象是一个word类型的变量，相当于*(short int *)(ds:1000h) 两个字节</p>
+</li>
+<li><p>byte ptr 相当于char* 一个字节</p>
+</li>
+<li><p>dword ptr 相当于long int* 四个字节</p>
+</li>
+<li><pre><code>;错误语法
+add ax, bh
+mov bh, ax
+<figure class="highlight ruby"><table><tr><td class="code"><pre><code class="hljs ruby"><br>- 加法必须保证两数等宽（上述第五例），ptr指示不同，最终加法结果也会不同，因为取的加数范围不同会使进位截断位置变化。<br><br>- sub 减<br><br>  - **sub和mov的语法与add相同**<br><br>- mul 乘<br><br>- div 除<br><br><span class="hljs-comment">## 逻辑运算</span><br><br><span class="hljs-params">|  &amp;   |</span>  \<span class="hljs-params">|  |</span>  ^   <span class="hljs-params">|  ~   |</span>  &lt;&lt;  <span class="hljs-params">|  &gt;&gt;  |</span> _rotl() 循环左移 <span class="hljs-params">| _rotr() 循环右移 |</span><br><span class="hljs-params">| :--: |</span> <span class="hljs-symbol">:--</span>: <span class="hljs-params">| :--: |</span> <span class="hljs-symbol">:--</span>: <span class="hljs-params">| :--: |</span> <span class="hljs-symbol">:--</span>: <span class="hljs-params">| :--------------: |</span> <span class="hljs-symbol">:--------------</span>: <span class="hljs-params">|</span><br><span class="hljs-params">|</span> <span class="hljs-keyword">and</span>  <span class="hljs-params">|  <span class="hljs-keyword">or</span>  |</span> xor  <span class="hljs-params">| <span class="hljs-keyword">not</span>  |</span> shl  <span class="hljs-params">| shr  |</span>       rol        <span class="hljs-params">|       ror        |</span><br><br>&gt; mov ah, <span class="hljs-number">9</span>Dh ; AH=<span class="hljs-number">1001</span> <span class="hljs-number">1101</span><br>&gt;<br>&gt; rol ah, <span class="hljs-number">1</span>  ; AH=<span class="hljs-number">0011</span> <span class="hljs-number">1011</span><br><br><span class="hljs-comment">### 位运算的作用</span><br><br>- 与运算使某些位为<span class="hljs-number">0</span><br>- 或运算使某些位为<span class="hljs-number">1</span><br>- 异或运算使数反转<br><br><span class="hljs-string">``</span><span class="hljs-string">`c</span><br><span class="hljs-string">unsigned long rol(unsigned long x, int n)// 写成unsigned long是为了防止在右移的时候出现问题</span><br><span class="hljs-string">&#123;</span><br><span class="hljs-string">	return x &lt;&lt; n | x &gt;&gt; (sizeof(x)*8-n);</span><br><span class="hljs-string">	// return _lrotl(x,n);</span><br><span class="hljs-string">&#125;</span><br></code></pre></td></tr></table></figure>
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h3 id="16位整数转换成16进制表示"><a href="#16位整数转换成16进制表示" class="headerlink" title="16位整数转换成16进制表示"></a>16位整数转换成16进制表示</h3><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm">data <span class="hljs-meta">segment</span><br>abc <span class="hljs-built_in">dw</span> <span class="hljs-number">32767</span><br>s <span class="hljs-built_in">db</span> <span class="hljs-number">4</span> dup(<span class="hljs-number">0</span>),<span class="hljs-number">0Dh</span>,<span class="hljs-number">0Ah</span>,<span class="hljs-string">'$'</span><br><span class="hljs-comment">;4 dup(0)相当于0,0,0,0</span><br><span class="hljs-comment">;s[0]='7'; s[1]='F'; s[2]='F'; s[3]='F'</span><br>data ends<br>code <span class="hljs-meta">segment</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code, <span class="hljs-built_in">ds</span>:data<br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, abc<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">4</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">di</span>, <span class="hljs-number">0</span><span class="hljs-comment">; 目标数组的下标,可以引用s[di]</span><br><span class="hljs-symbol">again:</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cl</span>, <span class="hljs-number">4</span> <span class="hljs-comment">; 设ax的原值=7A9Dh</span><br>   <span class="hljs-keyword">rol</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">cl</span><span class="hljs-comment">; ax=A9D7, 9D7A, D7A9, 7A9D</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span> <span class="hljs-comment">;压栈，因为之后与操作会改变al值</span><br>   <span class="hljs-keyword">and</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">0000000000001111B</span><span class="hljs-comment">; 000Fh</span><br>   <span class="hljs-keyword">cmp</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">10</span><br>   <span class="hljs-keyword">jb</span> is_digit<br><span class="hljs-symbol">is_alpha:</span><br>   <span class="hljs-keyword">sub</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">10</span>   <span class="hljs-comment">; 判断是小于等于9还是大于10</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">'A'</span> <span class="hljs-comment">;al = al-10+'A' 类似C的加法操作</span><br>   <span class="hljs-keyword">jmp</span> finish_4bits<br><span class="hljs-symbol">is_digit:</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">'0'</span> <span class="hljs-comment">;al = al+'0'</span><br><span class="hljs-symbol">finish_4bits:</span><br>   <span class="hljs-keyword">mov</span> s[<span class="hljs-built_in">di</span>], <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">di</span>, <span class="hljs-number">1</span> // 指向下一个字节<br>   <span class="hljs-keyword">sub</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">1</span> // 进入finish就已经做了一次转换<br>   <span class="hljs-keyword">jnz</span> again // 判断<span class="hljs-built_in">cx</span>当前情况，非零则跳回去继续转换<br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">9</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, offset s<br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span> // 字符输出<br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span> // 结束程序<br>code ends<br>end main<br></code></pre></td></tr></table></figure>
+
+<h3 id="32位整数转化成16进制输出"><a href="#32位整数转化成16进制输出" class="headerlink" title="32位整数转化成16进制输出"></a>32位整数转化成16进制输出</h3><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-meta">.386</span> <span class="hljs-comment">;必须是386以上的CPU</span><br>data <span class="hljs-meta">segment</span> <span class="hljs-meta">use16</span><br>abc <span class="hljs-built_in">dd</span> <span class="hljs-number">2147483647</span><br>s <span class="hljs-built_in">db</span> <span class="hljs-number">8</span> dup(<span class="hljs-number">0</span>),<span class="hljs-number">0Dh</span>,<span class="hljs-number">0Ah</span>,<span class="hljs-string">'$'</span><br>data ends<br>code <span class="hljs-meta">segment</span> <span class="hljs-meta">use16</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code, <span class="hljs-built_in">ds</span>:data<br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>, abc <span class="hljs-comment">;eax高16位没有名字，低16位为原ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">8</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">di</span>, <span class="hljs-number">0</span><span class="hljs-comment">; 目标数组的下标,可以引用s[di]</span><br><span class="hljs-symbol">again:</span><br>   <span class="hljs-keyword">rol</span> <span class="hljs-built_in">eax</span>, <span class="hljs-number">4</span><span class="hljs-comment">; 386以上cpu中, 移位次数大于1时也可使用常数</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">eax</span>  <span class="hljs-comment">; 设eax=12345678h，压栈，因为之后操作会改变al值</span><br>   <span class="hljs-keyword">and</span> <span class="hljs-built_in">eax</span>, <span class="hljs-number">0Fh</span><span class="hljs-comment">; eax=00000008h, al=08h 0F:1111H</span><br>   <span class="hljs-keyword">cmp</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">10</span> <br>   <span class="hljs-keyword">jb</span> is_digit<br><span class="hljs-symbol">is_alpha:</span><br>   <span class="hljs-keyword">sub</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">10</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">'A'</span><br>   <span class="hljs-keyword">jmp</span> finish_4bits<br><span class="hljs-symbol">is_digit:</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">'0'</span><br><span class="hljs-symbol">finish_4bits:</span><br>   <span class="hljs-keyword">mov</span> s[<span class="hljs-built_in">di</span>], <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">eax</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">di</span>, <span class="hljs-number">1</span><br>   <span class="hljs-keyword">sub</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">1</span><br>   <span class="hljs-keyword">jnz</span> again<br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">9</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, offset s<br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>code ends<br>end main<br></code></pre></td></tr></table></figure>
+
+<h4 id="转换过程"><a href="#转换过程" class="headerlink" title="转换过程"></a>转换过程</h4><table>
+<thead>
+<tr>
+<th align="center">0111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">7</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+</tr>
+</tbody></table>
+<p>循环左移4次</p>
+<table>
+<thead>
+<tr>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">0111</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">7</td>
+</tr>
+</tbody></table>
+<p>再与1111做与运算 得到了高次位的0111</p>
+<p>获得次高位</p>
+<p>发现之前步骤做完后</p>
+<p>只要再循环左移4次 </p>
+<p>再与1111做与运算</p>
+<p>…</p>
+<h2 id="杂"><a href="#杂" class="headerlink" title="杂"></a>杂</h2><ul>
+<li>在16位系统下使用32位寄存器如eax<ul>
+<li>.386 置于代码首</li>
+<li>segment 后加上 use16（仍使用16位地址）</li>
+</ul>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T10:25:26.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/ASM/">ASM</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

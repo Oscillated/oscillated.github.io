@@ -114,7 +114,7 @@
 <p>$AA^T$的秩=m，而它又是m*m对称矩阵，所以是可逆的</p>
 <p>A的<strong>右逆</strong>定义为$A_{right}^{-1}=A^T(AA^T)^{-1}$</p>
 <p>将右逆写在左边：$A^T(AA^T)^{-1}A=P$，即A的行空间上的投影矩阵</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找右逆</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">A = np.mat(<span class="string">'1 0 1; 0 1 0'</span>)</span><br><span class="line">print(np.linalg.pinv(A))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 找右逆</span><br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><br>A = np.mat(<span class="hljs-string">'1 0 1; 0 1 0'</span>)<br>print(np.linalg.pinv(A))<br></code></pre></td></tr></table></figure>
 
 
 

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ASM7 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>ASM7</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>白洪欢《汇编语言程序设计基础》笔记7</p>
+<a id="more"></a>
+
+<h1 id="零标志-ZF"><a href="#零标志-ZF" class="headerlink" title="零标志 ZF"></a>零标志 ZF</h1><p>CF ZF都在FL标志寄存器中，</p>
+<p>ZF记录刚刚的计算结果是否等于0</p>
+<p>ZF=1 结果为0</p>
+<p>ZF=0 结果不为0</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><code class="hljs routeros">sub ax, ax; <span class="hljs-attribute">AX</span>=0, <span class="hljs-attribute">ZF</span>=1<br><span class="hljs-builtin-name">add</span> ax, 1; <span class="hljs-attribute">AX</span>=1, <span class="hljs-attribute">ZF</span>=0<br><span class="hljs-builtin-name">add</span> ax, 0FFFFh; <span class="hljs-attribute">AX</span>=0, <span class="hljs-attribute">ZF</span>=1, <span class="hljs-attribute">CF</span>=1<br></code></pre></td></tr></table></figure>
+
+<p>je 与 jz等价，因为跳转的依据是ZF=1</p>
+<p>jne 与 jnz等价，跳转的依据是ZF=0</p>
+<p>je - 两数是否相等，实际通过一个相减操作来判断</p>
+<p><strong>mov指令不影响任何标志位</strong></p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">1234h</span>          		<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">1234h</span>          		<br><span class="hljs-keyword">sub</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">bx</span>              		<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">1</span>	<span class="hljs-comment">; 此mov不影响sub指令产生的ZF状态（猜测相等，之后直接跳转；如果不相等bx之后会赋为0）</span><br><span class="hljs-keyword">jz</span> is_zero 	<span class="hljs-comment">; 是会跳的</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">0</span><br><span class="hljs-keyword">jmp</span> done<br><span class="hljs-symbol">is_zero:</span><br><br><span class="hljs-symbol">done:</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="符号标志-SF"><a href="#符号标志-SF" class="headerlink" title="符号标志 SF"></a>符号标志 SF</h1><p>针对符号数运算，判断当前计算有无产生负数</p>
+<p>运算结果的最高位为1，是负数，SF=1</p>
+<p>js (jump if sign flag) 如果符号标志为1则跳转</p>
+<p>jns (jump if no sign flag)</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript">mov ah, <span class="hljs-number">7</span>Fh<br>add ah, <span class="hljs-number">1</span>; AH=<span class="hljs-number">80</span>h=<span class="hljs-number">1000</span> <span class="hljs-number">0000</span>B, SF=<span class="hljs-number">1</span><br>sub ah, <span class="hljs-number">1</span>; AH=<span class="hljs-number">7</span>Fh=<span class="hljs-number">0111</span> <span class="hljs-number">1111</span>B, SF=<span class="hljs-number">0</span><br>jns positive; 会发生跳转, 因为SF==<span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h1 id="溢出标志-OF"><a href="#溢出标志-OF" class="headerlink" title="溢出标志 OF"></a>溢出标志 OF</h1><p>正+正=负 或 负+负=正 的情况</p>
+<p>正负相加永不溢出</p>
+<p>产生溢出，OF=1</p>
+<p>无溢出，OF=0</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><code class="hljs routeros">mov ah, 7Fh<br><span class="hljs-builtin-name">add</span> ah, 1 ;<span class="hljs-attribute">AH</span>=80h, <span class="hljs-attribute">OF</span>=1, <span class="hljs-attribute">ZF</span>=0, <span class="hljs-attribute">CF</span>=0, <span class="hljs-attribute">SF</span>=1<br>mov ah,  80h (-128)<br><span class="hljs-builtin-name">add</span> ah, 0FFh; 0FFh - -1<br>;<span class="hljs-attribute">AH</span>=7Fh(127), <span class="hljs-attribute">OF</span>=1, <span class="hljs-attribute">ZF</span>=0, <span class="hljs-attribute">CF</span>=1, <span class="hljs-attribute">SF</span>=0<br>mov ah, 80h<br>sub ah, 1; <span class="hljs-attribute">AH</span>=7Fh, <span class="hljs-attribute">OF</span>=1, <span class="hljs-attribute">ZF</span>=0, <span class="hljs-attribute">CF</span>=0, <span class="hljs-attribute">SF</span>=0<br></code></pre></td></tr></table></figure>
+
+<p>jo(jump if overflow)</p>
+<p>jno(jump if no overflow)</p>
+<p>非符号数加法也会有溢出，但是标志是CF：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><code class="hljs routeros">mov ah, 0FFh<br><span class="hljs-builtin-name">add</span> ah, 1; <span class="hljs-attribute">AH</span>=0 <span class="hljs-attribute">CF</span>=1 <span class="hljs-attribute">OF</span>=0 可以把CF当作非符号数的溢出标志255+<span class="hljs-attribute">1</span>=0<br></code></pre></td></tr></table></figure>
+
+<p>cpu在设置各个标志位的时候，既把所有的数看作非符号数运算，又将其看成符号数运算，才可能设定各标志位的状态</p>
+<h1 id="奇偶标志符PF"><a href="#奇偶标志符PF" class="headerlink" title="奇偶标志符PF"></a>奇偶标志符PF</h1><p>parity flag</p>
+<p>统计运算结果低8位</p>
+<p>PF=1表示有偶数个1</p>
+<p>PF=0表示有奇数个1</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript">mov ah, <span class="hljs-number">4</span><br>add ah, <span class="hljs-number">1</span>; AH=<span class="hljs-number">0000</span> <span class="hljs-number">0101</span>B, PF=<span class="hljs-number">1</span> <br>mov ah, <span class="hljs-number">5</span><br>add ah, <span class="hljs-number">2</span>; AH=<span class="hljs-number">0000</span> <span class="hljs-number">0111</span>B, PF=<span class="hljs-number">0</span><br><br>mov ax, <span class="hljs-number">0101</span>h<br>add ax, <span class="hljs-number">0004</span>h; AX=<span class="hljs-number">0105</span>h=<span class="hljs-number">0000</span> <span class="hljs-number">0001</span> <span class="hljs-number">0000</span> <span class="hljs-number">0101</span>B, PF=<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>jp 当PF=1时跳转，jp也可以写成jpe(jump if parity is even)</p>
+<p>jnp 当PF=0时跳转，jnp也可以写成jpo(jump if parity is odd)</p>
+<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>串口的串行通信时的奇校验和偶校验</p>
+<p>串行通信：数据位的传送，按位顺序进行，最少只需一根传输线即可完成；成本低但传送速度慢。串行通讯的距离可以从几米到几千米</p>
+<p>奇校验：数据位+校验位合起来，1的个数必须是奇数</p>
+<p>偶校验：数据位+校验位合起来，1的个数必须是偶数</p>
+<p>‘A’=0100 0001B 若采用奇校验，则把它变成1100 0001B再发送</p>
+<p>对方接收到这个值保存到AL中，验证：</p>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">or </span>al, al <span class="hljs-comment">; AL不变，但会影响标志位</span><br><span class="hljs-keyword">jnp </span>ok<br><span class="hljs-keyword">bad:</span><br><span class="hljs-keyword">...</span><br><span class="hljs-keyword">ok:</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="辅助进位标志符AF"><a href="#辅助进位标志符AF" class="headerlink" title="辅助进位标志符AF"></a>辅助进位标志符AF</h1><p>auxiliary flag</p>
+<p>统计低4位有无向高4位产生进位或者借位</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript">mov ah, <span class="hljs-number">1</span>Fh; 	<span class="hljs-number">0001</span> <span class="hljs-number">1111</span><br>add ah, <span class="hljs-number">1</span>  	;	<span class="hljs-number">0000</span> <span class="hljs-number">0001</span> +)<br>             	; ah=<span class="hljs-number">20</span>h, AF=<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>只要第3位向第4位进位或借位，AF=1</p>
+<p>无相关跳转指令，但有相关的BCD码计算指令，如daa(decimal adjust for add), aaa</p>
+<h2 id="BCD码"><a href="#BCD码" class="headerlink" title="BCD码"></a>BCD码</h2><p>binary coded decimal</p>
+<p>时刻19:11</p>
+<p>计算机保存为19h:11h</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>便于把十位和个位分离开</p>
+<p>19h &gt;&gt; 4 -&gt; 01h 十位</p>
+<p>19h &amp; 0Fh -&gt; 09h 个位</p>
+<p>如果在十进制下提取各位数字：</p>
+<p>19 / 10 = 1 十位</p>
+<p>19 % 10 = 9 个位</p>
+<p>但是除法麻烦、速度慢，不如右移</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>十六进制表示下加法会有错误，需要调整</p>
+<p>11h+09h=1Ah 需要调整，只要+6即可 = 20h (10+6=16可以构成进位);AF=0</p>
+<p>18h+09h=21h 需要调整，只要+6即可 =27h;AF=1</p>
+<p>8h+9h= 16h + 1h = 11h = 10h+1h 逢十六进一 -&gt; 逢十进一，补6</p>
+<h2 id="daa"><a href="#daa" class="headerlink" title="daa"></a>daa</h2><ol>
+<li>判断个位有无大于A</li>
+<li>判断AF是否为1</li>
+</ol>
+<p>所做的调整就是+6</p>
+<p>出现一个是，使用daa调整al中的值</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span> ,<span class="hljs-number">11h</span><br><span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">9</span><br><span class="hljs-keyword">daa</span> <span class="hljs-comment">; decimal adjust for additioin (要求结果一定是在al上的，才能用daa调整)</span><br><span class="hljs-comment">; al = 20h</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>CF ZF SF OF AF PF 6个状态标志 先计算，反映计算后的状态，再通过跳转影响程序</p>
+<p>DF TF IF 3个控制标志 先改变再影响CPU</p>
+<h1 id="方向标志DF"><a href="#方向标志DF" class="headerlink" title="方向标志DF"></a>方向标志DF</h1><p>Direction flag</p>
+<p>影响CPU对字符串的操作方向</p>
+<p>DF=0时为正方向（由低地址到高地址）</p>
+<p>DF=1时为反方向（由高地址到低地址）</p>
+<p>cld指令使DF=0，clear direction</p>
+<p>std指令使DF=1，set direction</p>
+<p>cpu 内存复制指令：<br>rep movsb 逐字节复制内存块<br>rep movsw 逐字复制内存<br>rep movsd 逐双字复制内存</p>
+<h2 id="源和目标有重叠部分时的字符串复制"><a href="#源和目标有重叠部分时的字符串复制" class="headerlink" title="源和目标有重叠部分时的字符串复制"></a>源和目标有重叠部分时的字符串复制</h2><p>（一个一个数据复制）要关注赋值方向</p>
+<h4 id="无重叠部分或完全重叠时不需要关注复制方向"><a href="#无重叠部分或完全重叠时不需要关注复制方向" class="headerlink" title="无重叠部分或完全重叠时不需要关注复制方向"></a>无重叠部分或完全重叠时不需要关注复制方向</h4><h4 id="若源首地址-lt-目标首地址，复制按反方向"><a href="#若源首地址-lt-目标首地址，复制按反方向" class="headerlink" title="若源首地址&lt;目标首地址，复制按反方向"></a>若源首地址&lt;目标首地址，复制按反方向</h4><p>以下的源和目标有重叠部分，方向不对将无法正确赋值，反方向才可以</p>
+<p>正方向结果：ABABA</p>
+<table>
+<thead>
+<tr>
+<th align="center">1000</th>
+<th align="center">‘A’</th>
+<th></th>
+<th align="center">1002</th>
+<th align="center">‘A’</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1001</td>
+<td align="center">‘B’</td>
+<td></td>
+<td align="center">1003</td>
+<td align="center">‘B’</td>
+</tr>
+<tr>
+<td align="center">1002</td>
+<td align="center">‘C’</td>
+<td></td>
+<td align="center">1004</td>
+<td align="center">‘C’</td>
+</tr>
+<tr>
+<td align="center">1003</td>
+<td align="center">‘D’</td>
+<td></td>
+<td align="center">1005</td>
+<td align="center">‘D’</td>
+</tr>
+<tr>
+<td align="center">1004</td>
+<td align="center">‘E’</td>
+<td></td>
+<td align="center">1006</td>
+<td align="center">‘E’</td>
+</tr>
+</tbody></table>
+<h4 id="若源首地址-gt-目标首地址，复制按正方向"><a href="#若源首地址-gt-目标首地址，复制按正方向" class="headerlink" title="若源首地址&gt;目标首地址，复制按正方向"></a>若源首地址&gt;目标首地址，复制按正方向</h4><p>以下的源和目标有重叠部分，方向不对将无法正确赋值，正方向才可以</p>
+<p>反方向结果：EDEDE</p>
+<table>
+<thead>
+<tr>
+<th align="center">1002</th>
+<th align="center">‘A’</th>
+<th></th>
+<th align="center">1000</th>
+<th align="center">‘A’</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1003</td>
+<td align="center">‘B’</td>
+<td></td>
+<td align="center">1001</td>
+<td align="center">‘B’</td>
+</tr>
+<tr>
+<td align="center">1004</td>
+<td align="center">‘C’</td>
+<td></td>
+<td align="center">1002</td>
+<td align="center">‘C’</td>
+</tr>
+<tr>
+<td align="center">1005</td>
+<td align="center">‘D’</td>
+<td></td>
+<td align="center">1003</td>
+<td align="center">‘D’</td>
+</tr>
+<tr>
+<td align="center">1006</td>
+<td align="center">‘E’</td>
+<td></td>
+<td align="center">1004</td>
+<td align="center">‘E’</td>
+</tr>
+</tbody></table>
+<h5 id="C中几个复制函数"><a href="#C中几个复制函数" class="headerlink" title="C中几个复制函数"></a>C中几个复制函数</h5><p>strcpy(target, source) ; 永远按正方向复制</p>
+<p>strncpy(target, source, n) ; 永远按正方向复制  复制min(len(source), n)个</p>
+<p>memcpy(target, source, n) ; 永远按正方向复制</p>
+<p>memmove(target, source, n) ; 能正确处理部分重叠</p>
+<p>str要求一定是’\0’结尾的字符串</p>
+<p>mem无特定要求</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">char</span> a[<span class="hljs-number">100</span>] = <span class="hljs-string">"ABC123xyz"</span>;<br>    <span class="hljs-built_in">strcpy</span>(a, a+<span class="hljs-number">3</span>); % ok<br>	<span class="hljs-built_in">puts</span>(a);<br>    <span class="hljs-built_in">strcpy</span>(a+<span class="hljs-number">3</span>, a); % error<br>	<span class="hljs-built_in">puts</span>(a);<br>    %    ABCABCABC<br>    % ABC123xyz<br>  	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>error情况下为什么程序能停止而不是无限循环输出ABC后崩溃？</p>
+<h1 id="中断标志-IF"><a href="#中断标志-IF" class="headerlink" title="中断标志 IF"></a>中断标志 IF</h1><p>Interrupt flag</p>
+<p>IF=1时允许硬件中断</p>
+<p>IF=0时禁止硬件中断</p>
+<p>cli指令使IF=0</p>
+<p>sti指令使IF=1</p>
+<p>中断：计算机硬件向CPU发出中断请求</p>
+<p>硬件中断：由某一event如敲键触发，cpu自动调用</p>
+<p>软件中断：代码内写好的int指令实现</p>
+<p>时钟中断：每当程序运行1/18秒,则cpu会在此处插入一条int 8h指令，发出呼叫请求cpu暂停，cpu收到呼叫后对cpu内部的变量n自增</p>
+<p>程序运行速度很快用户无法感受到延迟，对于操作系统实现多任务起着不可或缺的作用，操作系统需要在int 8h中做好时间分配。cpu同一时刻实现一个程序，分时执行，控制权切换是由于int 8存在，A在执行过程中一定有int 8，交出控制权给B，DOS同一时间只能运行一个程序 </p>
+<p>同一程序两部分运行——线程thread</p>
+<p>不同程序运行——进程process</p>
+<p>硬件中断有便利也有缺陷，可能会影响程序运行效率</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">0</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">1</span><br><span class="hljs-symbol">next:</span><br><span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">bx</span><br><span class="hljs-comment">;此时若用户敲键,则CPU会在此处插入一条int 9h指令并执行它（捕捉用户输入）</span><br><span class="hljs-comment">;int 9h的功能是读键盘编码并保存到键盘缓冲区中，短暂暂缓程序的执行，执行完后回到下一行继续运行：硬件中断，由某一事件如敲键触发，而非代码内写好的int指令实现（软件中断）</span><br><span class="hljs-comment">;硬件中断，内存中看不见</span><br><span class="hljs-keyword">add</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">1</span><br><span class="hljs-keyword">cmp</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">100</span><br><br><span class="hljs-keyword">jbe</span> next<br></code></pre></td></tr></table></figure>
+
+<p>用cli和sti把一段代码包围起来可以达到该段代码在执行过程中不会被打断的效果：</p>
+<figure class="highlight abnf"><table><tr><td class="code"><pre><code class="hljs abnf">cli<span class="hljs-comment">; clear interrupt禁止硬件中断</span><br>...<span class="hljs-comment">; 重要代码</span><br>sti<span class="hljs-comment">; set interrupt允许硬件中断</span><br></code></pre></td></tr></table></figure>
+
+<p>windows 中 cli 和 sti 为特权指令，用户无法使用这两条指令，除非在.sys驱动程序中使用</p>
+<h1 id="跟踪-陷阱标志-TF"><a href="#跟踪-陷阱标志-TF" class="headerlink" title="跟踪/陷阱标志 TF"></a>跟踪/陷阱标志 TF</h1><p>Trace/Trap flag</p>
+<p>当TF=1时，CPU会进入单步模式single-step mode，CPU在每执行完一条指令后,会自动在该条指令与下条指令之间插入一条int 1h指令并执行它。</p>
+<p>硬件支持单步中断的发生，因此调试器可以调试代码 用户代码与调试器代码轮流获得控制权</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript">; TF=<span class="hljs-number">1</span><br>mov ah, <span class="hljs-number">1</span><br>;插入<span class="hljs-built_in">int</span> <span class="hljs-number">1</span>h 调试器获得控制权<br>mov bh, <span class="hljs-number">2</span><br>;插入<span class="hljs-built_in">int</span> <span class="hljs-number">1</span>h<br>cmp bh, <span class="hljs-number">3</span><br>;插入<span class="hljs-built_in">int</span> <span class="hljs-number">1</span>h<br>je equal<br>;插入<span class="hljs-built_in">int</span> <span class="hljs-number">1</span>h<br></code></pre></td></tr></table></figure>
+
+<p>可以实现反调试，int 1h后等待用户键盘输入进行下一步操作</p>
+<p>要修改TF=1必须用pushf和popf指令（TF太冷门，没有专门设计）</p>
+<p>clt stt指令是不存在的</p>
+<h1 id="内存访问方式"><a href="#内存访问方式" class="headerlink" title="内存访问方式"></a>内存访问方式</h1><h2 id="直接寻址"><a href="#直接寻址" class="headerlink" title="直接寻址"></a>直接寻址</h2><p>设某个8位变量的地址为1000h:2000h，现要取出它的值到AL中:</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">1000h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-built_in">ds</span>:[<span class="hljs-number">2000h</span>]<span class="hljs-comment">; 这个就是直接寻址</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="间接寻址"><a href="#间接寻址" class="headerlink" title="间接寻址"></a>间接寻址</h2><ul>
+<li><p>[bx] [bp] [si] [di]就成了最简单的间接寻址方式</p>
+<ul>
+<li>[ax] [cx] [dx] [sp]语法错误</li>
+</ul>
+</li>
+<li><p>[bx+si] [bx+di] [bp+si] [bp+di]</p>
+<ul>
+<li>注意[bx+bp]以及[si+di]是错误的。</li>
+</ul>
+</li>
+<li><p>[bx+2] [bp-2] [si+1] [di-1]</p>
+</li>
+<li><p>[bx+si+2] [bx+di-2] [bp+si+1] [bp+di-1]</p>
+</li>
+</ul>
+<p>两个寄存器相加的间接寻址方式中, bx或bp通常用来表示数组的首地址, 而si或di则用来表示下标。</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm">data <span class="hljs-meta">segment</span><br>abc <span class="hljs-built_in">db</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span><br>xyz <span class="hljs-built_in">db</span> <span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span><br>data ends<br>code <span class="hljs-meta">segment</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code, <span class="hljs-built_in">ds</span>:data<br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">si</span>, <span class="hljs-number">0</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">4</span><br><span class="hljs-symbol">next:</span><br>   <span class="hljs-keyword">add</span> abc[<span class="hljs-built_in">si</span>], <span class="hljs-number">1</span><span class="hljs-comment">; 编译后变成add byte ptr [si+0],1（1是常数需要确定长度）</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">si</span>, <span class="hljs-number">1</span><span class="hljs-comment">; 这里的si就是下标</span><br>   <span class="hljs-keyword">sub</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">1</span><br>   <span class="hljs-keyword">jnz</span> next<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, offset xyz<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">si</span>, <span class="hljs-number">0</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">4</span><br><span class="hljs-symbol">again:</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">byte</span> <span class="hljs-built_in">ptr</span> [<span class="hljs-built_in">bx</span>+<span class="hljs-built_in">si</span>], <span class="hljs-number">1</span><span class="hljs-comment">; 这里bx是数组首地址,si是下标</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">si</span>, <span class="hljs-number">1</span><br>   <span class="hljs-keyword">sub</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">1</span><br>   <span class="hljs-keyword">jnz</span> again<br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>code ends<br>end main<br></code></pre></td></tr></table></figure>
+
+<p>两个寄存器相加再加一个常数的间接寻址通常用来访问结构数组中某个元素中的某个成员</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">student</span>  // 10字节/结构体</span><br><span class="hljs-class">&#123;</span><br>  <span class="hljs-keyword">char</span> name[<span class="hljs-number">8</span>];<br>  short <span class="hljs-keyword">int</span> score;<br>&#125;;<br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">student</span> <span class="hljs-title">a</span>[10];</span><br>ax = a[<span class="hljs-number">3</span>].score;<br></code></pre></td></tr></table></figure>
+
+<p>设bx=&amp;a[0], si=30, 想获得ax=a[3].score，可转化成以下汇编代码：</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bx</span>+<span class="hljs-built_in">si</span>+<span class="hljs-number">8</span>]<span class="hljs-comment">;  bx+si -&gt; a[3], bx+si+8 -&gt; a[3].score</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="端口-port"><a href="#端口-port" class="headerlink" title="端口 port"></a>端口 port</h1><p>一种硬件</p>
+<p>CPU &lt;–&gt; Port &lt;–&gt; I/O</p>
+<p>端口编号就是端口地址，[0000h, 0FFFFh] 65536个端口</p>
+<p>绝大部分是空闲的，60h端口与键盘相关，70h、71h与cmos相关</p>
+<p>对端口的操作使用指令in和out实现</p>
+<p>对端口操作使用指令in与out实现。in从端口中读取信号，out把信号发送给端口<br>in与out 最底层，不依赖于任何别人写的代码，没有任何调用<br>汇编语言实现同样的功能，代码有高级、低级之分，最低层次代码威力最大</p>
+<table>
+<thead>
+<tr>
+<th align="center">dos</th>
+<th align="center">高级</th>
+<th align="center">mov ah, 1 ; int 21h</th>
+<th align="center">功能弱，但编程简单</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">bios</td>
+<td align="center">中级</td>
+<td align="center">mov ah, 0 ; int 16h</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">in/out</td>
+<td align="center">低级</td>
+<td align="center">in al, 60h</td>
+<td align="center">功能强，但编程麻烦</td>
+</tr>
+</tbody></table>
+<h2 id="dos级别"><a href="#dos级别" class="headerlink" title="dos级别"></a>dos级别</h2><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">char</span> c;<br>c = getchar(); <span class="hljs-comment">// 不能读取F1-F12，也不能读PgUp、Home、Insert等</span><br><span class="hljs-comment">// 或scanf("%c", &amp;c);</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">1</span><br><span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><span class="hljs-comment">; al = 键的ascii码</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="bios级别"><a href="#bios级别" class="headerlink" title="bios级别"></a>bios级别</h2><p>TC里面有一个bios级别的读键函数：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">unsigned</span> short <span class="hljs-keyword">int</span> key; <span class="hljs-comment">// 信息量比dos用char大</span><br>key = bioskey(<span class="hljs-number">0</span>); <span class="hljs-comment">// 能读取F1~F12功能键，也能读取方向键、Home、End、PgUp、PgDn</span><br> 				  <span class="hljs-comment">// 但不能读取Ctrl, Alt, Shift, CapsLock这些键</span><br>				  <span class="hljs-comment">// 有参数了，用法比getchar()复杂</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">0</span><br><span class="hljs-keyword">int</span> <span class="hljs-number">16h</span><span class="hljs-comment">; ax = 键盘的编码</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="端口级别"><a href="#端口级别" class="headerlink" title="端口级别"></a>端口级别</h2><h3 id="端口例子"><a href="#端口例子" class="headerlink" title="端口例子"></a>端口例子</h3><figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript"><span class="hljs-keyword">in</span> al, <span class="hljs-number">60</span>h; 从端口<span class="hljs-number">60</span>h读取一个字节并存放到AL中<br>mov al, <span class="hljs-number">1</span><br><span class="hljs-keyword">out</span> <span class="hljs-number">70</span>h, al ;把<span class="hljs-number">1</span>发送给端口<span class="hljs-number">70</span>h<br></code></pre></td></tr></table></figure>
+
+<h4 id="读取cmos时钟"><a href="#读取cmos时钟" class="headerlink" title="读取cmos时钟"></a>读取cmos时钟</h4><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-comment">;70h及71h端口与cmos内部的时钟有关。</span><br><span class="hljs-comment">;其中cmos中的地址4、2、0中分别保存了当前的时、分、秒，并且格式均为BCD码。</span><br><br>data <span class="hljs-meta">segment</span><br>current_time <span class="hljs-built_in">db</span> <span class="hljs-string">"00:00:00"</span>, <span class="hljs-number">0Dh</span>, <span class="hljs-number">0Ah</span>, <span class="hljs-string">"$"</span><br>data ends<br>code <span class="hljs-meta">segment</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code, <span class="hljs-built_in">ds</span>:data<br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br>   <br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">4</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">70h</span>,<span class="hljs-built_in">al</span><span class="hljs-comment">; index hour</span><br>   <span class="hljs-comment">; 通知cmos，要访问它内部的4号内存单元，cmos会处于准备读写状态</span><br>   <span class="hljs-keyword">in</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">71h</span> <span class="hljs-comment">; AL=hour(e.g. 19h means 19 pm.) BCD码</span><br>   <span class="hljs-comment">; 从cmos的4号单元读1字节到al中</span><br>   <span class="hljs-keyword">call</span> convert<span class="hljs-comment">; AL='1', AH='9' 调用转换</span><br>   <span class="hljs-comment">;mov word ptr current_time[0],ax</span><br>   <span class="hljs-keyword">mov</span> current_time[<span class="hljs-number">0</span>], <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">mov</span> current_time[<span class="hljs-number">1</span>], <span class="hljs-number">ah</span><br>   <br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">2</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">70h</span>,<span class="hljs-built_in">al</span><span class="hljs-comment">; index minute</span><br>   <span class="hljs-keyword">in</span>  <span class="hljs-built_in">al</span>,<span class="hljs-number">71h</span><span class="hljs-comment">; AL=minute</span><br>   <span class="hljs-keyword">call</span> convert<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">word</span> <span class="hljs-built_in">ptr</span> current_time[<span class="hljs-number">3</span>],<span class="hljs-built_in">ax</span><span class="hljs-comment">;</span><br>   <span class="hljs-comment">;mov current_time[3], al</span><br>   <span class="hljs-comment">;mov current_time[4], ah</span><br>   <br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">0</span>  <span class="hljs-comment">; index second</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">70h</span>,<span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">in</span>  <span class="hljs-built_in">al</span>,<span class="hljs-number">71h</span><span class="hljs-comment">; AL=second</span><br>   <span class="hljs-keyword">call</span> convert<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">word</span> <span class="hljs-built_in">ptr</span> current_time[<span class="hljs-number">6</span>],<span class="hljs-built_in">ax</span><br>   <br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">9</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, offset current_time<br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br><span class="hljs-comment">;---------Convert----------------</span><br><span class="hljs-comment">;Input:AL=hour or minute or second</span><br><span class="hljs-comment">;      format:e.g. hour   15h means 3 pm.</span><br><span class="hljs-comment">;                  second 56h means 56s</span><br><span class="hljs-comment">;Output: (e.g. AL=56h)</span><br><span class="hljs-comment">;     AL='5'</span><br><span class="hljs-comment">;     AH='6'</span><br><span class="hljs-symbol">convert:</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">cx</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>,<span class="hljs-built_in">al</span> <span class="hljs-comment">; e.g. assume AL=56h</span><br>    <span class="hljs-keyword">and</span> <span class="hljs-number">ah</span>,<span class="hljs-number">0Fh</span><span class="hljs-comment">; AH=06h</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cl</span>,<span class="hljs-number">4</span><br>    <span class="hljs-keyword">shr</span> <span class="hljs-built_in">al</span>,<span class="hljs-built_in">cl</span> <span class="hljs-comment">; AL=05h</span><br>    <span class="hljs-comment">; shr:shift rightÓÒÒÆ</span><br>    <span class="hljs-keyword">add</span> <span class="hljs-number">ah</span>, <span class="hljs-string">'0'</span><span class="hljs-comment">; AH='6'</span><br>    <span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">'0'</span><span class="hljs-comment">; AL='5'</span><br>    <span class="hljs-keyword">pop</span>  <span class="hljs-built_in">cx</span><br>    <span class="hljs-keyword">ret</span><br><span class="hljs-comment">;---------End of Convert---------</span><br>code ends<br>end main<br></code></pre></td></tr></table></figure>
+
+<h4 id="显示键盘敲键"><a href="#显示键盘敲键" class="headerlink" title="显示键盘敲键"></a>显示键盘敲键</h4><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// TC 读取键</span><br>key=inport(<span class="hljs-number">0x60</span>)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><code class="hljs mipsasm">in al, <span class="hljs-number">60</span>h<span class="hljs-comment">; CPU和键盘的通讯，能读到ctrl,alt,CapsLock, shift</span><br><span class="hljs-comment">; 之前需要很多准备工作</span><br></code></pre></td></tr></table></figure>
+
+<p>准备工作：</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-comment">;---------------------------------------</span><br><span class="hljs-comment">;PrtSc/SysRq: E0 2A E0 37 E0 B7 E0 AA  ;</span><br><span class="hljs-comment">;Pause/Break: E1 1D 45 E1 9D C5        ;</span><br><span class="hljs-comment">;---------------------------------------</span><br>data <span class="hljs-meta">segment</span><br>old_9h <span class="hljs-built_in">dw</span> <span class="hljs-number">0</span>, <span class="hljs-number">0</span><br>stop   <span class="hljs-built_in">db</span> <span class="hljs-number">0</span><br>key    <span class="hljs-built_in">db</span> <span class="hljs-number">0</span><span class="hljs-comment">; key=31h</span><br>phead  <span class="hljs-built_in">dw</span> <span class="hljs-number">0</span><br>key_extend  <span class="hljs-built_in">db</span> <span class="hljs-string">'KeyExtend='</span>, <span class="hljs-number">0</span><br>key_up      <span class="hljs-built_in">db</span> <span class="hljs-string">'KeyUp='</span>, <span class="hljs-number">0</span><br>key_down    <span class="hljs-built_in">db</span> <span class="hljs-string">'KeyDown='</span>, <span class="hljs-number">0</span><br>key_code    <span class="hljs-built_in">db</span> <span class="hljs-string">'00h '</span>, <span class="hljs-number">0</span><br>hex_tbl     <span class="hljs-built_in">db</span> <span class="hljs-string">'0123456789ABCDEF'</span><br>cr          <span class="hljs-built_in">db</span>  <span class="hljs-number">0Dh</span>, <span class="hljs-number">0Ah</span>, <span class="hljs-number">0</span><br>data ends<br><br>code <span class="hljs-meta">segment</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code, <span class="hljs-built_in">ds</span>:data<br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">xor</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>, <span class="hljs-built_in">ax</span><br>   <br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">9</span>*<span class="hljs-number">4</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>]<br>   <span class="hljs-keyword">pop</span> old_9h[<span class="hljs-number">0</span>]<br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>]<br>   <span class="hljs-keyword">pop</span> old_9h[<span class="hljs-number">2</span>]   <span class="hljs-comment">; 保存原int 9h的中断向量</span><br>   <span class="hljs-keyword">cli</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">word</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>], offset int_9h<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>], <span class="hljs-built_in">cs</span><span class="hljs-comment">; 修改int 9h的中断向量(函数体指针，即首地址)，指向自己写的函数体int_9h</span><br>   <span class="hljs-keyword">sti</span><br><span class="hljs-symbol">again:</span><br>   <span class="hljs-keyword">cmp</span> [stop], <span class="hljs-number">1</span><br>   <span class="hljs-keyword">jne</span> again        <span class="hljs-comment">; 主程序在此循环等待</span><br>   <span class="hljs-keyword">push</span> old_9h[<span class="hljs-number">0</span>]<br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>]<br>   <span class="hljs-keyword">push</span> old_9h[<span class="hljs-number">2</span>]<br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>]    <span class="hljs-comment">; 恢复int 9h的中断向量</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br><br><span class="hljs-symbol">int_9h:</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">bx</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ds</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span>       <span class="hljs-comment">; 这里设置DS是因为被中断的不一定是我们自己的程序</span><br>   <span class="hljs-keyword">in</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">60h</span>       <span class="hljs-comment">; AL=key code</span><br>   <span class="hljs-comment">; 输出</span><br>   <span class="hljs-keyword">mov</span> [key], <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">cmp</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0E0h</span><br>   <span class="hljs-keyword">je</span>  extend<br>   <span class="hljs-keyword">cmp</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0E1h</span><br>   <span class="hljs-keyword">jne</span> up_or_down<br><span class="hljs-symbol">extend:</span><br>   <span class="hljs-keyword">mov</span> [phead], offset key_extend<br>   <span class="hljs-keyword">call</span> output<br>   <span class="hljs-keyword">jmp</span> check_esc<br><span class="hljs-symbol">up_or_down:</span><br>   <span class="hljs-keyword">test</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">80h</span>     <span class="hljs-comment">; 最高位==1时表示key up</span><br>   <span class="hljs-keyword">jz</span> <span class="hljs-meta">down</span><br><span class="hljs-symbol">up:</span><br>   <span class="hljs-keyword">mov</span> [phead], offset key_up<br>   <span class="hljs-keyword">call</span> output<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, offset cr<br>   <span class="hljs-keyword">call</span> display     <span class="hljs-comment">; 输出回车换行</span><br>   <span class="hljs-keyword">jmp</span> check_esc<br><span class="hljs-symbol">down:</span><br>   <span class="hljs-keyword">mov</span> [phead], offset key_down<br>   <span class="hljs-keyword">call</span> output<br><span class="hljs-symbol">check_esc:</span>   <br>   <span class="hljs-keyword">cmp</span> [key], <span class="hljs-number">81h</span>   <span class="hljs-comment">; Esc键的key up码</span><br>   <span class="hljs-keyword">jne</span> int_9h_iret<br>   <span class="hljs-keyword">mov</span> [stop], <span class="hljs-number">1</span><br><span class="hljs-symbol">int_9h_iret:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">20h</span>      <span class="hljs-comment">; 发EOI(End Of Interrupt)信号给中断控制器，</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">20h</span>, <span class="hljs-built_in">al</span>      <span class="hljs-comment">; 表示我们已处理当前的硬件中断(硬件中断处理最后都要这2条指令)。</span><br>                    <span class="hljs-comment">; 因为我们没有跳转到的old_9h，所以必须自己发EOI信号。</span><br>                    <span class="hljs-comment">; 如果跳到old_9h的话，则old_9h里面有这2条指令，这里就不要写。</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ds</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">bx</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">iret</span>             <span class="hljs-comment">; 中断返回指令。从堆栈中逐个弹出IP、CS、FL。</span><br><br><span class="hljs-symbol">output:</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">bx</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, offset hex_tbl<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cl</span>, <span class="hljs-number">4</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span>   			<span class="hljs-comment">; 设AL=31h=0011 0001</span><br>   <span class="hljs-keyword">shr</span> <span class="hljs-built_in">al</span>, <span class="hljs-built_in">cl</span>			<span class="hljs-comment">; AL=03h</span><br>   <span class="hljs-keyword">xlat</span>      			<span class="hljs-comment">; AL = DS:[BX+AL] = '3'</span><br>   <span class="hljs-keyword">mov</span> key_code[<span class="hljs-number">0</span>], <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">and</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0Fh</span>			<span class="hljs-comment">; AL=01h</span><br>   <span class="hljs-keyword">xlat</span>       			<span class="hljs-comment">; AL='1'</span><br>   <span class="hljs-keyword">mov</span> key_code[<span class="hljs-number">1</span>], <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, [phead]<br>   <span class="hljs-keyword">call</span> display     <span class="hljs-comment">; 输出提示信息</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, offset key_code<br>   <span class="hljs-keyword">call</span> display     <span class="hljs-comment">; 输出键码</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">bx</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">ret</span><br>   <br><span class="hljs-symbol">display:</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">bx</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">si</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">si</span>, <span class="hljs-built_in">bx</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">0007h</span>    <span class="hljs-comment">; BL = color</span><br>   <span class="hljs-keyword">cld</span><br><span class="hljs-symbol">display_next:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">0Eh</span>      <span class="hljs-comment">; AH=0Eh, BIOS int 10h的子功能，具体请查中断大全</span><br>   <span class="hljs-keyword">lodsb</span><br>   <span class="hljs-keyword">or</span> <span class="hljs-built_in">al</span>, <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">jz</span> display_done<br>   <span class="hljs-keyword">int</span> <span class="hljs-number">10h</span>          <span class="hljs-comment">; 每次输出一个字符</span><br>   <span class="hljs-keyword">jmp</span> display_next<br><span class="hljs-symbol">display_done:</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">si</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">bx</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">ret</span><br>code ends<br>end main<br></code></pre></td></tr></table></figure>
+
+<p>输出效果：</p>
+<p>按某个键会打印KeyUp、KeyDown，输出值不同，二者相差80h</p>
+<p>通过对最高位置0或1来表达键盘按下去或者释放，二者低七位值相同<br>因为键盘按下与释放调用两个中断程序，硬件支持按下与释放两个中断<br>键盘打字程序借此可以做出键盘按下与释放的动画效果<br>按下空格 KeyDown = 39h KeyUp = B9h<br>左边的control键 KeyDown = 1Dh KeyUp = 9Dh<br>右边的control键 KeyExtend = E0h KeyDown = 1Dh KeyExtend = E0h KeyUp = 9Dh</p>
+<p>C语言版本</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;dos.h&gt;</span></span><br><span class="hljs-keyword">int</span> <span class="hljs-built_in">stop</span>=<span class="hljs-number">0</span>;<br><span class="hljs-function"><span class="hljs-keyword">void</span> interrupt <span class="hljs-title">int_9h</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">interrupt</span> <span class="hljs-params">(*old_9h)</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;<br>    old_9h = getvect(<span class="hljs-number">9</span>);<br>    setvect(<span class="hljs-number">9</span>, int_9h); <span class="hljs-comment">/* save interrupt vector of 9 */</span><br>    <span class="hljs-keyword">while</span>(!<span class="hljs-built_in">stop</span>);<br>    setvect(<span class="hljs-number">9</span>, old_9h); <span class="hljs-comment">/* recover interrupt vector of 9 */</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">output</span><span class="hljs-params">(<span class="hljs-keyword">char</span> s[])</span></span><br><span class="hljs-function"></span>&#123;<br>   <span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;<br>   <span class="hljs-keyword">union</span> REGS r;<br>   <span class="hljs-keyword">while</span>(s[i]!=<span class="hljs-number">0</span>)<br>   &#123;<br>      r.h.ah=<span class="hljs-number">0x0E</span>;<br>      r.h.al=s[i];<br>      r.x.bx=<span class="hljs-number">0x0007</span>;<br>      int86(<span class="hljs-number">0x10</span>, &amp;r, &amp;r);<br>      i++;<br>   &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> interrupt <span class="hljs-title">int_9h</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> key;<br>    <span class="hljs-keyword">char</span> buf[<span class="hljs-number">100</span>];<br>    key = inportb(<span class="hljs-number">0x60</span>);  <span class="hljs-comment">/* read key code */</span><br>    <span class="hljs-keyword">if</span>( key == <span class="hljs-number">0xE0</span> || key == <span class="hljs-number">0xE1</span>)<br>    &#123;<br>       <span class="hljs-built_in">sprintf</span>(buf, <span class="hljs-string">"KeyExtend=%02X "</span>, key);<br>       output(buf);<br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( (key &amp; <span class="hljs-number">0x80</span>) == <span class="hljs-number">0x80</span> )<br>    &#123;<br>       <span class="hljs-built_in">sprintf</span>(buf, <span class="hljs-string">"KeyUp=%02X\r\n"</span>, key);<br>       output(buf);<br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>       <span class="hljs-built_in">sprintf</span>(buf, <span class="hljs-string">"KeyDown=%02X "</span>, key);<br>       output(buf);<br>    &#125;<br>    <span class="hljs-keyword">if</span>(key==<span class="hljs-number">0x81</span>) <span class="hljs-comment">/* Esc key is pressed and released */</span><br>       <span class="hljs-built_in">stop</span> = <span class="hljs-number">1</span>;  <span class="hljs-comment">/* Set the signal flag */</span><br>    outportb(<span class="hljs-number">0x61</span>, inportb(<span class="hljs-number">0x61</span>) | <span class="hljs-number">0x80</span>);<br>    outportb(<span class="hljs-number">0x61</span>, inportb(<span class="hljs-number">0x61</span>) &amp; <span class="hljs-number">0x7F</span>); <span class="hljs-comment">/* respond to keyboard */</span><br>    outportb(<span class="hljs-number">0x20</span>, <span class="hljs-number">0x20</span>); <span class="hljs-comment">/* End Of Interrupt */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="读取磁盘扇区内容"><a href="#读取磁盘扇区内容" class="headerlink" title="读取磁盘扇区内容"></a>读取磁盘扇区内容</h4><p>让硬盘的磁头移动到”0道/0头/1扇区”(第1个扇区)</p>
+<h5 id="bios"><a href="#bios" class="headerlink" title="bios"></a>bios</h5><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">2</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dl</span>, <span class="hljs-number">80h</span><span class="hljs-comment">; 1号磁盘（物理，不是分区） 81h是2号</span><br><span class="hljs-keyword">mov</span> <span class="hljs-number">dh</span>, <span class="hljs-number">0</span><span class="hljs-comment">; 0头</span><br><span class="hljs-keyword">mov</span> <span class="hljs-number">ch</span>, <span class="hljs-number">0</span><span class="hljs-comment">; 0道</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">cl</span>, <span class="hljs-number">1</span><span class="hljs-comment">; 1扇区</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">seg</span> buf<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>, <span class="hljs-built_in">ax</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, offset buf<br><span class="hljs-keyword">int</span> <span class="hljs-number">13h</span><span class="hljs-comment">; 读取1个扇区共200h字节道es:bx指向的内存</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h5><p>过于复杂的out/in指令（在bios中被封装在int内）</p>
+<h4 id="喇叭音乐"><a href="#喇叭音乐" class="headerlink" title="喇叭音乐"></a>喇叭音乐</h4><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm">NOTE_1  =  <span class="hljs-number">440</span> <span class="hljs-comment">; 音调频率</span><br>NOTE_2  =  <span class="hljs-number">495</span><br>NOTE_3  =  <span class="hljs-number">550</span><br>NOTE_4  =  <span class="hljs-number">587</span><br>NOTE_5  =  <span class="hljs-number">660</span><br>NOTE_6  =  <span class="hljs-number">733</span><br>NOTE_7  =  <span class="hljs-number">825</span><br><br>ONE_BEEP  =  <span class="hljs-number">600</span> <span class="hljs-comment">; 一拍延时600ms</span><br>HALF_BEEP =  <span class="hljs-number">300</span> <span class="hljs-comment">; 半拍延时300ms</span><br><br>data <span class="hljs-meta">segment</span><br>ticks <span class="hljs-built_in">dw</span> <span class="hljs-number">0</span><br>music <span class="hljs-built_in">dw</span>  NOTE_5, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_3, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_5, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1*<span class="hljs-number">2</span>, ONE_BEEP*<span class="hljs-number">2</span><br><span class="hljs-built_in">dw</span>  NOTE_6, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1*<span class="hljs-number">2</span>, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_5, ONE_BEEP*<span class="hljs-number">2</span><br><span class="hljs-built_in">dw</span>  NOTE_5, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_2, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_3, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_2, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_2, ONE_BEEP*<span class="hljs-number">4</span><br><span class="hljs-built_in">dw</span>  NOTE_5, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_3, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_5, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1*<span class="hljs-number">2</span>, HALF_BEEP*<span class="hljs-number">3</span><br><span class="hljs-built_in">dw</span>  NOTE_7, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_6, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1*<span class="hljs-number">2</span>, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_5, ONE_BEEP*<span class="hljs-number">2</span><br><span class="hljs-built_in">dw</span>  NOTE_5, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_2, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_3, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_4, HALF_BEEP*<span class="hljs-number">3</span><br><span class="hljs-built_in">dw</span>  NOTE_7/<span class="hljs-number">2</span>, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1, ONE_BEEP*<span class="hljs-number">4</span><br><span class="hljs-built_in">dw</span>  NOTE_6, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1*<span class="hljs-number">2</span>, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1*<span class="hljs-number">2</span>, ONE_BEEP*<span class="hljs-number">2</span><br><span class="hljs-built_in">dw</span>  NOTE_7, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_6, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_7, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1*<span class="hljs-number">2</span>, ONE_BEEP*<span class="hljs-number">2</span><br><span class="hljs-built_in">dw</span>  NOTE_6, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_7, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1*<span class="hljs-number">2</span>, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_6, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_6, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_5, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_3, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_2, ONE_BEEP*<span class="hljs-number">4</span><br><span class="hljs-built_in">dw</span>  NOTE_5, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_3, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_5, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1*<span class="hljs-number">2</span>, HALF_BEEP*<span class="hljs-number">3</span><br><span class="hljs-built_in">dw</span>  NOTE_7, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_6, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1*<span class="hljs-number">2</span>, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_5, ONE_BEEP*<span class="hljs-number">2</span><br><span class="hljs-built_in">dw</span>  NOTE_5, ONE_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_2, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_3, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_4, HALF_BEEP*<span class="hljs-number">3</span><br><span class="hljs-built_in">dw</span>  NOTE_7/<span class="hljs-number">2</span>, HALF_BEEP<br><span class="hljs-built_in">dw</span>  NOTE_1, ONE_BEEP*<span class="hljs-number">3</span><br><span class="hljs-built_in">dw</span>  <span class="hljs-number">0</span>, <span class="hljs-number">0</span><br>data ends<br><br>code <span class="hljs-meta">segment</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code, <span class="hljs-built_in">ds</span>:data, <span class="hljs-built_in">ss</span>:stk<br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">xor</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">8</span>*<span class="hljs-number">4</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>]<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>]   <span class="hljs-comment">; 取int 8h的中断向量</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cs</span>:old_int8h[<span class="hljs-number">0</span>], <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cs</span>:old_int8h[<span class="hljs-number">2</span>], <span class="hljs-built_in">dx</span><span class="hljs-comment">; 保存int 8h的中断向量</span><br>   <span class="hljs-keyword">cli</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">word</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>], offset int_8h<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>], <span class="hljs-built_in">cs</span>   <span class="hljs-comment">; 修改int 8h的中断向量</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">36h</span>			<span class="hljs-comment">; 发频率前的准备工作</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">43h</span>, <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, <span class="hljs-number">0012h</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">34DCh</span>       <span class="hljs-comment">; DX:AX=1193180</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">1000</span><br>   <span class="hljs-keyword">div</span> <span class="hljs-built_in">cx</span>              <span class="hljs-comment">; AX=1193180/1000</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">40h</span>, <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">ah</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">40h</span>, <span class="hljs-built_in">al</span>         <span class="hljs-comment">; 设置时钟振荡频率为1000次/秒</span><br>   <span class="hljs-keyword">sti</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">si</span>, offset music<br>   <span class="hljs-keyword">cld</span><br><span class="hljs-symbol">again:</span><br>   <span class="hljs-keyword">lodsw</span> <span class="hljs-comment">; 获取频率，发送</span><br>   <span class="hljs-keyword">test</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">jz</span> done<br>   <span class="hljs-keyword">call</span> frequency<br>   <span class="hljs-keyword">lodsw</span><br>   <span class="hljs-keyword">call</span> delay<br>   <span class="hljs-keyword">jmp</span> again<br><span class="hljs-symbol">done:</span><br>   <span class="hljs-keyword">cli</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">cs</span>:old_int8h[<span class="hljs-number">0</span>]<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">cs</span>:old_int8h[<span class="hljs-number">2</span>]<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>], <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>], <span class="hljs-built_in">dx</span>   <span class="hljs-comment">; 恢复int 8h的中断向量</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">36h</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">43h</span>, <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">40h</span>, <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">40h</span>, <span class="hljs-built_in">al</span>         <span class="hljs-comment">; 恢复时钟振荡频率为1193180/65536=18.2次/秒</span><br>   <span class="hljs-keyword">sti</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br><br><span class="hljs-symbol">frequency:</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">dx</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-built_in">ax</span>   <span class="hljs-comment">; CX=frequency</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, <span class="hljs-number">0012h</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">34DCh</span><span class="hljs-comment">; DX:AX=1193180</span><br>   <span class="hljs-keyword">div</span> <span class="hljs-built_in">cx</span>       <span class="hljs-comment">; AX=1193180/frequency</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">dx</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">cli</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0B6h</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">43h</span>, <span class="hljs-built_in">al</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">42h</span>, <span class="hljs-built_in">al</span> <span class="hljs-comment">; n的低8位</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">ah</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">42h</span>, <span class="hljs-built_in">al</span> <span class="hljs-comment">; n的高8位 </span><br>               <span class="hljs-comment">; 每隔n个tick产生一次振荡</span><br>               <span class="hljs-comment">; 振荡频率=1193180/n (次/秒)</span><br>   <span class="hljs-keyword">sti</span><br>   <span class="hljs-keyword">ret</span><br><br><span class="hljs-symbol">delay:</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">cli</span><br>   <span class="hljs-keyword">in</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">61h</span><br>   <span class="hljs-keyword">or</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">3</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">61h</span>, <span class="hljs-built_in">al</span><span class="hljs-comment">; 开喇叭</span><br>   <span class="hljs-keyword">sti</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> [ticks], <span class="hljs-built_in">ax</span><br><span class="hljs-symbol">wait_this_delay:</span><br>   <span class="hljs-keyword">cmp</span> [ticks], <span class="hljs-number">0</span><br>   <span class="hljs-keyword">jne</span> wait_this_delay<br>   <span class="hljs-keyword">cli</span><br>   <span class="hljs-keyword">in</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">61h</span><br>   <span class="hljs-keyword">and</span> <span class="hljs-built_in">al</span>, <span class="hljs-keyword">not</span> <span class="hljs-number">3</span><br>   <span class="hljs-keyword">out</span> <span class="hljs-number">61h</span>, <span class="hljs-built_in">al</span><span class="hljs-comment">; 关喇叭</span><br>   <span class="hljs-keyword">sti</span><br>   <span class="hljs-keyword">ret</span><br><br><span class="hljs-symbol">int_8h:</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ds</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">cmp</span> [ticks], <span class="hljs-number">0</span><br>   <span class="hljs-keyword">je</span> skip<br>   <span class="hljs-keyword">dec</span> [ticks]<br><span class="hljs-symbol">skip:</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ds</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">jmp</span> <span class="hljs-built_in">dword</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">cs</span>:[old_int8h]<br>old_int8h <span class="hljs-built_in">dw</span> <span class="hljs-number">0</span>, <span class="hljs-number">0</span><br>code ends<br><br>stk <span class="hljs-meta">segment</span> stack<br><span class="hljs-built_in">dw</span> <span class="hljs-number">100h</span> dup(<span class="hljs-number">0</span>)<br>stk ends<br>end main<br></code></pre></td></tr></table></figure>
+
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T12:10:28.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/ASM/">ASM</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

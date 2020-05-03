@@ -124,7 +124,146 @@
     </header>
     <div>
       
-        
+        <h1 id="Insights"><a href="#Insights" class="headerlink" title="Insights"></a>Insights</h1><h2 id="左右逆和伪逆"><a href="#左右逆和伪逆" class="headerlink" title="左右逆和伪逆"></a>左右逆和伪逆</h2><p>对于m*n，秩为r的矩阵：零空间的存在会使对应的逆矩阵不存在</p>
+<h3 id="两侧逆"><a href="#两侧逆" class="headerlink" title="两侧逆"></a>两侧逆</h3><p>$AA^{-1}=I=A^{-1}A$，此时r=m=n，称满秩，零空间和左零空间都是零向量</p>
+<h3 id="左逆"><a href="#左逆" class="headerlink" title="左逆"></a>左逆</h3><p>满足列满秩，r=n&lt;m，列向量线性无关，零空间只有零向量，左零空间有其他向量</p>
+<p>$Ax=b$存在0或1个解，有解时只可能有一个（即特解），因为其他解（通解）都可以通过加上零空间的向量来得到，而此时零空间是零向量，特解就是全部解（如果有特解的话）</p>
+<p>$A^TA$的秩=n，因为$A^TAx=0$与$Ax=0$同解。而它又是n*n对称矩阵，所以是可逆的</p>
+<p>A的<strong>左逆</strong>定义为$A_{left}^{-1}=(A^TA)^{-1}A^T$</p>
+<p>因为$[(A^TA)^{-1}A^T]A=(A^TA)^{-1}(A^TA)=I$</p>
+<p>不管A为什么形式，能找到一个矩阵使其变成单位矩阵</p>
+<p>将左逆写在右边：$A(A^TA)^{-1}A^T=P$，即A的列空间上的投影矩阵</p>
+<h3 id="右逆"><a href="#右逆" class="headerlink" title="右逆"></a>右逆</h3><p>满足行满秩，r=m&lt;n，行向量线性无关，零空间有其他向量，左零空间($A^T$的零空间)只有零向量</p>
+<p>$Ax=b$存在无数解，有n-m个自由变量</p>
+<p>$AA^T$的秩=m，而它又是m*m对称矩阵，所以是可逆的</p>
+<p>A的<strong>右逆</strong>定义为$A_{right}^{-1}=A^T(AA^T)^{-1}$</p>
+<p>将右逆写在左边：$A^T(AA^T)^{-1}A=P$，即A的行空间上的投影矩阵</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找右逆</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">A = np.mat(<span class="string">'1 0 1; 0 1 0'</span>)</span><br><span class="line">print(np.linalg.pinv(A))</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="伪逆"><a href="#伪逆" class="headerlink" title="伪逆"></a>伪逆</h3><p>当一个矩阵r&lt;n 并且 r&lt;m的时候，矩阵就只有伪逆了</p>
+<p>逆矩阵可看作矩阵的逆操作，向量x在A的作用下变成了了Ax，Ax通过$A^{-1}$又得到x。方阵是否可逆与是否存在零空间有关，可逆矩阵的零空间和左零空间都只有零向量。</p>
+<p>假设A存在零空间，对于零空间的非零向量：</p>
+<p>$Ax=0$，此时A的各列线性组合是0，不可逆</p>
+<ul>
+<li>列满秩矩阵的零空间只有零向量，有左逆矩阵</li>
+<li>行满秩矩阵的左零空间只有零向量，有右逆矩阵</li>
+<li>不满秩的矩阵A（r &lt; n, r &lt; m）来说，两个零空间都存在，此时它无法得到左逆或右逆。</li>
+</ul>
+<p>不满秩的矩阵A，行空间与列空间维数相等，行空间的任意向量x，与A相乘，得到恰好是列空间中的所有向量，<strong>行空间向量x与列空间向量Ax的关系是一 一对应的</strong>。</p>
+<blockquote>
+<p>证明：如果两个行向量x与y不同，那么Ax和Ay必然不同，证明：假设Ax=Ay, A(x-y)=0, 那么x-y属于零空间，而行向量x和y属于行空间，x-y也属于行空间，这与结论矛盾，则x=y。</p>
+</blockquote>
+<p>如果要从列空间Ax得到行空间的向量x，那么$x=A^+(Ax)$，$A^+$就是伪逆，伪逆把左零空间变为0，即如果$A^+$乘以左零空间的向量，结果为0。</p>
+<p>假设没有零空间的干扰，即假设零空间只有零向量，存在逆，那么行空间的向量x得到列空间的向量Ax，反过来，通过A的逆就能从列空间得到行空间， $A^{-1}(Ax)=x$，这时$A^{+}$变回了$A^{-1}$</p>
+<p>伪逆常用于最小二乘法线性回归时时实验存在大量重复结果的情况</p>
+<h4 id="找伪逆"><a href="#找伪逆" class="headerlink" title="找伪逆"></a>找伪逆</h4><p>SVD，$A=UΣV^T$，对角阵$Σ=diag(σ_1,σ_2,\cdots,σ_r,0,0,\cdots,0)$，秩为r，那么$\Sigma$的伪逆是多少？</p>
+<p>如果对角线上没有0元素，那么$Σ$是可逆的，$ΣΣ^{-1}=I$，$Σ^{-1}$中对角线元素为1/σ1,1/σ2,…,1/σn</p>
+<p>现在对角线上有0元素，$\Sigma ^{+}=diag(1/σ_1,1/σ_2,\cdots,1/σ_r,0,\cdots,0)$</p>
+<p>$Σ(m×n)$和$Σ^+(n×m)$都是秩为r的矩阵，伪逆是最接近逆的矩阵，对角阵$ΣΣ^+(m×m)$，对角线上方有r个1，下边为0。这是到列空间的投影矩阵。</p>
+<p>$Σ^+Σ$将得到n×n的对角矩阵，秩仍然是r</p>
+<p>$\Sigma Σ^+$将得到m×m的对角矩阵，秩仍然是r</p>
+<p>那么A的伪逆是多少？由U和$V^T$都是正交矩阵，可得这时的伪逆$A^+=VΣ^+U^T$。</p>
+<p>可以用SVD的正交性来检验答案：</p>
+<p>$Av_j=\sigma _ju_j\quad for \quad j&lt;=r $</p>
+<p>$Av_j=0\quad for \quad j&gt;r$</p>
+<p>这就是最小二乘不适用的情况，当统计学家遇到非满秩的时候，SVD的奇妙之处就在于将所有问题都归到对角矩阵上。</p>
+<p>$A^+A=U\Sigma Σ^+U^T$</p>
+<p>$AA^+$得到的并不是像$∑∑^+$这样对角线上只有1和0的矩阵，而是A的行空间的投影矩阵。</p>
+<p>以上就是伪逆所做的事，乘在左边或右边得不到单位矩阵，得到的是投影矩阵。（乘在右边得到列空间的投影矩阵，乘在左边得到行空间的投影矩阵）</p>
+<h3 id="伪逆的性质"><a href="#伪逆的性质" class="headerlink" title="伪逆的性质"></a>伪逆的性质</h3><p>$AA^+A=A$</p>
+<p>$A^+AA^+=A^+$</p>
+<p>$AA^+=(AA^+)^T$</p>
+<p>$A^+A=(A^+A)^T$</p>
+<h1 id="期末总复习"><a href="#期末总复习" class="headerlink" title="期末总复习"></a>期末总复习</h1><blockquote>
+<p>假设A是$m*n$ 矩阵 rank = r, $Ax=\left[  \begin{matrix} 1 \ 0 \ 0 \end{matrix} \right]$没有解， $Ax=\left[  \begin{matrix} 0 \ 1 \ 0 \end{matrix} \right]$有唯一解</p>
+<ol>
+<li><p>m,n,r 是怎样的关系</p>
+<p>$Ax$是一个三维向量，则m=3，有无解情况因此列空间不是$R^3$，另外列空间包含$\left[  \begin{matrix} 0 \ 1 \ 0 \end{matrix} \right]$，$1 \le r&lt;3$.由第二个向量有唯一解知零空间只有零向量，则n=r</p>
+</li>
+<li><p>写出一个A的例子</p>
+<p>$\left[  \begin{matrix} 0 \ 1 \ 0 \end{matrix} \right]$ $\left[  \begin{matrix} 0  &amp; 0\ 1 &amp; 0 \ 0 &amp; 1 \end{matrix} \right]$</p>
+</li>
+<li><p>判断：</p>
+<ol>
+<li>$det(A^TA)=det(AA^T)$</li>
+<li>$A^TA$可逆</li>
+<li>$AA^T$是正定矩阵</li>
+</ol>
+<p>r=n意味着A的列向量线性无关，$det(A^TA) \ne 0$。（$A^TA$是n*n矩阵）</p>
+<p>但r&lt;m，$AA^T$（3*3矩阵）的秩小于3，不可能正定，必有一个特征值为0</p>
+<p>回推可得1是错的（如果A是方阵那么A是对的</p>
+</li>
+<li><p>证明$A^Ty=c$对于任何c有至少一个解</p>
+<p>$A^T$是一个n*3矩阵，行满秩，对于任意c，方程总有解</p>
+</li>
+</ol>
+</blockquote>
+<ul>
+<li>行满秩，方程总有解；列满秩，零空间只有零向量，方程不可能有无数解</li>
+</ul>
+<blockquote>
+<p>假设A的列为$v_1, v_2, v_3$</p>
+<ol>
+<li><p>若$Ax=v_1-v_2+v_3$，求x</p>
+<p>$x = \left[  \begin{matrix} 1 \ -1 \ 1 \end{matrix} \right]$</p>
+</li>
+<li><p>如果$v_1-v_2+v_3=0$那么上问的解不唯一</p>
+<p>正确，这说明x在零空间内，其任意倍都可以是解</p>
+</li>
+<li><p>假设$v_1,v_2,v_3$是正交的，那么$v_1、v_2$怎样的组合可以使这个点最接近$v_3$?</p>
+<p>想象三维空间内有三个向量正交，显然只有两个向量上的坐标都为0，$0v_1+0v_2=0$最接近第三个向量（可以用x,y,z轴单位向量类比）</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>马尔可夫矩阵$A=\left[  \begin{matrix} .2 &amp; .4 &amp; .3 \ .4 &amp; .2 &amp; .3 \ .4 &amp; .4 &amp; .4 \end{matrix} \right]$</p>
+<ol>
+<li><p>A的特征值</p>
+<p>发现<code>列1+列3=2*列2</code>，线性相关有一个特征值必为0，因为是Markov还有一个1的特征值，由迹求出第三个特征值是-0.2</p>
+</li>
+<li><p>对马尔可夫过程$u_k=A^ku(0)$，如果$u(0)=\left[  \begin{matrix} 0 \ 10 \ 0 \end{matrix} \right]$，那么$u_k$的稳态是多少？</p>
+<p>Markov过程的通解：$u_k=c_1\lambda_1x_1+c_2\lambda_2x_2+c_3\lambda_3x_3$，代入特征值，当$k \rightarrow \infin$时，只有$c_2x_2$留下来，求一下对应的特征向量为$\left[  \begin{matrix} 3 \ 3 \ 4 \end{matrix} \right]$，$c_2$可以通过初值求出，因为Markov矩阵每一列的总和(10)不变，$c_2=1$</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>寻找2*2矩阵满足</p>
+<ol>
+<li><p>投影到线$a=\left[  \begin{matrix} 4 \ -3 \end{matrix} \right]$的投影矩阵</p>
+<p>代入投影矩阵公式$P=\frac{aa^T}{a^Ta}$</p>
+</li>
+<li><p>有特征值$\lambda_1=0,\lambda_2=3$，特征值$x_1=\left[  \begin{matrix} 1 \ 2 \end{matrix} \right]，x_2=\left[  \begin{matrix} 2 \ 1 \end{matrix} \right]$</p>
+<p>已知对角化的结果求原矩阵，代入公式</p>
+<p>$A=S\Lambda S^{-1}$,$S=\left[  \begin{matrix} 1 &amp; 2 \ 2&amp;1 \end{matrix} \right],\Lambda=diag(0,3),A=\left[  \begin{matrix} 4 &amp; -2 \ 2 &amp; -1 \end{matrix} \right]$</p>
+</li>
+<li><p>是实矩阵，不能被分解成$B^TB$，其中B是任意矩阵</p>
+<p>$B^TB$必是对称矩阵，找一个不对称的矩阵A即满足 $\left[  \begin{matrix} 0&amp;0 \ 1 &amp; 0 \end{matrix} \right]$</p>
+</li>
+<li><p>不是对称矩阵但有正交的特征向量</p>
+<p>之前有归纳过，反对称矩阵、正交矩阵都符合以上条件$\left[  \begin{matrix} 0 &amp; 1 \ -1 &amp; 0 \end{matrix} \right]$$\left[  \begin{matrix} cos\theta &amp; -sin\theta \ sin\theta &amp; cos\theta \end{matrix} \right]$</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>以下最小二乘问题</p>
+<p>$\left[  \begin{matrix} 1 &amp; 0\ 1 &amp; 1\1 &amp; 2 \end{matrix} \right]\left[  \begin{matrix} c \ d \end{matrix} \right]=b=\left[  \begin{matrix} 3 \ 4 \ 1 \end{matrix} \right]$，可得解$\left[  \begin{matrix} \widehat{c} \ \widehat{d} \end{matrix} \right]=\left[  \begin{matrix} 11/3 \ -1 \end{matrix} \right]$</p>
+<ol>
+<li><p>将$b=\left[  \begin{matrix} 3 \ 4 \ 1 \end{matrix} \right]$投影到以上的A的列空间的投影P为？</p>
+<p>所求的就是投影结果$\left[  \begin{matrix} 1 &amp; 0\ 1 &amp; 1\1 &amp; 2 \end{matrix} \right]\left[  \begin{matrix} \widehat{c} \ \widehat{d} \end{matrix} \right]=\left[  \begin{matrix} 11/3 \8/3 \ 5/3 \end{matrix} \right]$</p>
+</li>
+<li><p>画出图形</p>
+<img src="https://pic4.zhimg.com/80/v2-2159493ed1289edbec018efe734f622b_720w.jpg" alt="img" style="zoom:50%;" />
+
+<p>这里注意把第二列作为x，形式为$\widehat{c}+\widehat{d}t$</p>
+</li>
+<li><p>寻找另一个$b\ne0 \in R^3$，使得最小二乘解为$\left[  \begin{matrix} \widehat{c} \ \widehat{d} \end{matrix} \right]=\left[  \begin{matrix} 0 \ 0 \end{matrix} \right]$</p>
+<p>最小二乘实际是找到合适的一组系数，使得b在A的列空间的投影p最大，如果系数已经是[0, 0]了，只需要一个正交于列空间的线，找一个垂直的b向量，如$\left[  \begin{matrix} 1 \ -2 \ 1 \end{matrix} \right]$</p>
+</li>
+</ol>
+</blockquote>
+
       
     </div>
 </article>
@@ -170,7 +309,166 @@
     </header>
     <div>
       
-        
+        <h1 id="Insights"><a href="#Insights" class="headerlink" title="Insights"></a>Insights</h1><h3 id="正定矩阵"><a href="#正定矩阵" class="headerlink" title="正定矩阵"></a>正定矩阵</h3><ul>
+<li>如果有一个正定矩阵A，那么A的逆一定也是正定的。因为A的逆的特征值都是原来的倒数，符号相同</li>
+</ul>
+<h3 id="相似矩阵与特征值"><a href="#相似矩阵与特征值" class="headerlink" title="相似矩阵与特征值"></a>相似矩阵与特征值</h3><ul>
+<li>相似矩阵拥有相同的特征值，但是特征向量一般不相等，如果特征向量也相等那就是同一个矩阵了</li>
+<li>如果两个矩阵拥有n个相同的特征值，那么他们必然相似于某个对角矩阵。</li>
+<li>矩阵拥有相同特征值时不一定能对角化，只能相似于自己</li>
+</ul>
+<p>在所有相似矩阵中抓出一个最典型，看起来最像相似矩阵但无法对角化的矩阵，称为若尔当标准型。将是否能对角化综合起来，提出若尔当块Jordan</p>
+<ul>
+<li>每个诺尔当块都要满足两个性质：主对角线元素完全相同（特征值完全相同），主对角线上方的次对角线元素全为1（如果有次对角线的话）</li>
+<li>如果一类矩阵可以化为相同的标准诺尔当型$J$（相同尺寸、相同数量），则这些矩阵全部是相似矩阵，都可以用$P^{-1}JP$来表示</li>
+<li>如果A有n个线性无关的特征向量。则A可以对角化，他的Jordan form 就是eigenvalue所组成的对角阵$J=\Lambda$</li>
+<li>如果A有相同的eigenvalue. 以及一些”丢失”的eigvector.那么它的Jordan form 应该是n-d个1在对角阵之上。</li>
+</ul>
+<h3 id="奇异值分解"><a href="#奇异值分解" class="headerlink" title="奇异值分解"></a>奇异值分解</h3><p>将一个比较复杂的矩阵用更小更简单的几个子矩阵相乘来表示，这些小矩阵描述的都是矩阵的重要的特性，对可逆非可逆、方阵非方阵都适用。</p>
+<p>正定矩阵的奇异值分解为$A=Q\Lambda Q^T$，用一个正交矩阵$Q$就可以使正定矩阵$A$进行奇异值分解，因此特征值分解是SVD的一种特殊形式。对于可对角化的矩阵来说，$A=S\Lambda S^{-1}$，但$S$不是正交矩阵。</p>
+<p>可以把矩阵$A$看作一种线性变换操作，将其行空间中的每一个向量$v$，变换为列空间的向量$u$，即$u=Av$。类似地，我们也可以在行空间中找到一组正交基，通过矩阵$A$线性变换成列空间中的另一组正交基。</p>
+<p>用到格拉姆-施密特正交化将一组基正交化，但某一组正交基经过线性变换后的向量未必正交，因此要找的正交基非常特殊，满足$AV=U$。进一步，在$V$中寻找标准正交向量使$U$中的向量标准化，从而使$U$和$V$标准正交：$AV=UΣ$，$Σ=diag(σ_i)$</p>
+<p>在矩阵的四个子空间中选出合适的基，$v_1$到$v_r$是行空间的标准正交基，用零空间的标准正交基$v_{r+1}$到$v_n$补充完整，$u_1$到$u_r$是列空间的标准正交基，用左零空间的标准正交基$u_{r+1}$到$u_m$补充完整。$A$乘以每一个$v$对应一个$u$的方向，$Av_i=σ_iu_i$，$σ$称为奇异值，可将矩阵对角化$A=UΣV^{-1}=UΣV^T$。</p>
+<p>求$U$、$V$的方法：$A^TA$、$AA^T$是特征值相同、特征向量不同的相似矩阵，将上式代入可以消去$U$、$V$其一，求出另一矩阵。</p>
+<ul>
+<li>$A^TA=VΣ^TU^TUΣV^T=VΣ^2V^T$，$A^TA$是一个正定矩阵，它的特征向量标准正交组成$Q$（$V$），特征值是$σ^2$组成$Λ$。注意$σ$是$Av=σu$的伸缩因子，$σ^2$是$A^TA$的特征值。$σ$取$σ^2$的正平方根。</li>
+<li>$AA^T=UΣV^TVΣ^TU^T=UΣ^2U^T$，$AA^T$是一个正定矩阵，它的特征向量标准正交组成$Q$（$U$），特征值是$σ^2$组成$Λ$。注意$σ$是$Av=σu$的伸缩因子，$σ2$是$AA^T$的特征值。</li>
+<li>步骤：求上述两矩阵的特征值和特征向量、标准化、写出$UΣV^T=A$</li>
+<li>要注意$V$与$U$的方向的方向是一致的，可能出现向量反向的问题，此时可以用过将$V$代入$AV=UΣ$来求出一致的$U$</li>
+<li>非满秩的$AA^T、A^TA$，还需要取零空间和左零空间内与行空间、列空间相垂直的向量补足</li>
+<li>长方矩阵可通过同样的过程进行奇异值分解</li>
+</ul>
+<p>快速傅里叶变换FFT没懂P的作用</p>
+<h3 id="线性变换与矩阵"><a href="#线性变换与矩阵" class="headerlink" title="线性变换与矩阵"></a>线性变换与矩阵</h3><p>每个线性变换都对应于一个矩阵。矩阵变换的背后正是线性变换的概念。</p>
+<p>一般的线性变换都满足加法不变性、数乘不变性关系</p>
+<p>线性变换$T:R^3 \rightarrow R^2$，将一个三维向量（三维空间上的）映射成一个二维向量（二维空间上的）</p>
+<p>这个线性变换对整个输入空间会产生什么影响？可以把输入空间用其一组基$v_1,v_2,\cdots,v_n$来表示，相应的输出空间也用其基$w_1,w_2,\cdots,w_m$表示</p>
+<p>对于坐标的理解：向量由空间上的基线性表示，每个基的系数就是其在这个方向上的坐标值</p>
+<p>研究线性变换对基向量的影响$T(v_1)=a_{11}w_1+a_{21}w_2+\cdots+a_{m1}w_m$$T(v_2)=a_{12}w_1+a_{22}w_2+\cdots+a_{m2}w_m$，将输入空间基用输出空间基的线性组合来表示，同时可以看出T应该是m*n维的，把n*1维向量变成了m*1维</p>
+<p>矩阵逆、矩阵乘法，都可以解释成相应的线性变换操作</p>
+<p>e.g. 求导、投影都是线性运算</p>
+<h3 id="图像压缩"><a href="#图像压缩" class="headerlink" title="图像压缩"></a>图像压缩</h3><p>性质好的基能很快得到系数向量：计算快、压缩率良好</p>
+<p>行/列向量标准正交——矩阵的逆等于其转置</p>
+<p>在信号图像应用中，很多情况下用小波基或者傅里叶基，但最好的基是特征向量基，因为此时转换矩阵M是特征值矩阵，不过找特征向量基代价较大。</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><ul>
+<li>矩阵可对角化的本质是有足够的特征向量可以线性无关</li>
+<li>微分方程$\frac{du}{dt}=Au$，矩阵指数$e^{At}$</li>
+<li>投影矩阵的特征值为0和1</li>
+<li>对称矩阵，总有实特征值，并且有”足够”的特征向量。特征向量组成的矩阵Q是正交矩阵，有$A=Q\Lambda Q^T$</li>
+<li>正交矩阵的特征值得绝对值等于1，正交矩阵的作用就像旋转，不会改变向量的长度</li>
+<li>相似矩阵 $B=M^{-1}AM$，A和B总有相同的特征值。他们就是在不同的基下作用一样的矩阵。他们特征值相同，但特征向量一般不同。</li>
+<li>当矩阵满足：$AA^T=A^TA$ 时，A的特征向量正交。对称阵、反对称阵、正交矩阵是满足此条件的三类矩阵；</li>
+<li>SVD：任意矩阵 $A=UΣV^T=(orthog)(diag)(orthog)$，V是$A^TA$的特征向量矩阵，U是$AA^T$的特征向量矩阵。当A是对称矩阵时，U=V。具体做奇异值分解时<ol>
+<li>奇异值σ是对角矩阵Σ对角线上的元素，它的值等于$A^TA$的特征值的正平方根</li>
+<li>但值得注意的一点是：在求$AA^T$的特征向量的时候，<strong>方向</strong>要由$Av_i=σ_iu_i$来确定。</li>
+</ol>
+</li>
+</ul>
+<p>e.g.</p>
+<blockquote>
+<p>$\frac{du}{dt}=Au=\left[  \begin{matrix} 0 &amp; -1 &amp; 0 \ 1 &amp; 0 &amp; -1 \ 0 &amp; 1 &amp; 0 \end{matrix} \right] $</p>
+<p>该方程的通解形式是$u(t)=c_1e^{\lambda_1t}x_1+c_2e^{\lambda_2t}x_2+c_3e^{\lambda_3t}x_3$</p>
+<ol>
+<li><p>求A的特征值</p>
+<p>第1、3行线性相关，A必有一个特征值为0；A是反对称矩阵，因此所有特征值都在虚轴，易求。</p>
+</li>
+<li><p>解的周期？</p>
+<p>e的虚数次方周期性的特征是：$e^{\sqrt{2}iT}=e^0$，即可求出T</p>
+</li>
+<li><p>验证A的特征向量是正交的。</p>
+<p>易证，因为对称矩阵、反对称矩阵、正交矩阵的特征向量总是正交的</p>
+</li>
+<li><p>解如何表示成$u(t)=e^{At}u(0)$？</p>
+<p>当$A=S\Lambda S^{-1}$时，$e^{At}=Se^{\Lambda t}S^{-1}$，$e^{\Lambda t}=diag(e^{\lambda_i t})$，实质上是求A的特征值和特征向量</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>$\lambda_1=0,\lambda_2=c,\lambda_3=2$</p>
+<p>$x_1=[1 \quad 1 \quad 1]x_2=[1 \quad -1 \quad 0]x_3=[1 \quad 1 \quad -2]$</p>
+<ol>
+<li><p>c取何值矩阵可以对角化</p>
+<p>可以对角化意味着有3个线性无关的特征向量，题中3个向量不仅独立，还是正交的。所以：无论c取何值，都可以对角化。</p>
+</li>
+<li><p>c取何值矩阵是对称的</p>
+<p>如果c是实数那么A是对称矩阵</p>
+</li>
+<li><p>c取何值矩阵是正定、半正定的</p>
+<p>特征值里已经有0了，所以没法正定了，当c&gt;=0时候，半正定</p>
+</li>
+<li><p>这个矩阵是Markov 矩阵么</p>
+<p>Markov矩阵有一个特征值为1，其余特征值&lt;1，所以不可能</p>
+</li>
+<li><p>$P=\frac{1}{2}A$是否是投影矩阵</p>
+<p>投影矩阵的特征值全为实数，并且为0和1，要求c为0或2</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>SVD分解：若一个矩阵SVD分解的$\sum=\left[  \begin{matrix} 3 &amp;  0 \ 0 &amp; 2 \end{matrix} \right]$，U和V都有两列</p>
+<ol>
+<li><p>A的性质如何</p>
+<p>$U,V,\sum$都是可逆的，所以A也可逆</p>
+</li>
+<li><p>如果$\sum=\left[  \begin{matrix} 3 &amp;  0 \ 0 &amp; -5 \end{matrix} \right]$</p>
+<p>不可能，$\sum$里的奇异值不能是负数</p>
+</li>
+<li><p>如果$\sum=\left[  \begin{matrix} 3 &amp;  0 \ 0 &amp; 0 \end{matrix} \right]$，奇异，秩为1</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>已知A对称且正交</p>
+<ol>
+<li><p>A的特征值是？</p>
+<p>1或-1。因为对称阵的特征值是实数，正交矩阵相乘不会改变向量的长度，其特征值绝对值是1。</p>
+</li>
+<li><p>A是否正定？</p>
+<p>不一定，可能是-1，如$\left[  \begin{matrix} 1 &amp;  0 \ 0 &amp; -1 \end{matrix} \right]$</p>
+</li>
+<li><p>A没有重复的特征值？</p>
+<p>错，A是3*3以上就一定有重复特征值（只能是1，-1）</p>
+</li>
+<li><p>A可以对角化？</p>
+<p>对，所有对称和正交矩阵都可以对角化，其交集也可以</p>
+</li>
+<li><p>A可逆？</p>
+<p>对，正交矩阵都可逆</p>
+</li>
+<li><p>证明$P=(A+I)/2$是投影矩阵</p>
+<p>验证$P^2=P$，其中用到$A^2=A^TA=I$另外，A的特征值为0和1，运算一下发现P的特征值也是1和0，符合投影矩阵要求</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="从18-06能学到哪些学科的知识基础"><a href="#从18-06能学到哪些学科的知识基础" class="headerlink" title="从18.06能学到哪些学科的知识基础"></a>从18.06能学到哪些学科的知识基础</h3><ul>
+<li>信号与系统<ul>
+<li>微分方程求解系统</li>
+<li>傅里叶级数、傅里叶变换、FFT</li>
+</ul>
+</li>
+<li>离散数学、数据结构<ul>
+<li>图论、网络结构、六度空间</li>
+</ul>
+</li>
+<li>随机过程<ul>
+<li>马尔科夫矩阵</li>
+</ul>
+</li>
+<li>电磁场与电磁波<ul>
+<li>描述介质种类时的Hermite矩阵 $A^H=A$ 转置+共轭</li>
+</ul>
+</li>
+<li>复变函数<ul>
+<li>傅里叶矩阵</li>
+</ul>
+</li>
+<li>计算机视觉<ul>
+<li>图像压缩</li>
+<li>傅里叶基（FFT）、小波基（快速小波变换）</li>
+</ul>
+</li>
+</ul>
+
       
     </div>
 </article>

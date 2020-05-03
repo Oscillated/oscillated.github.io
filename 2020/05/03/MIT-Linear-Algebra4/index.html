@@ -85,7 +85,146 @@
     </header>
 
     <section>
-      
+      <h1 id="Insights"><a href="#Insights" class="headerlink" title="Insights"></a>Insights</h1><h2 id="左右逆和伪逆"><a href="#左右逆和伪逆" class="headerlink" title="左右逆和伪逆"></a>左右逆和伪逆</h2><p>对于m*n，秩为r的矩阵：零空间的存在会使对应的逆矩阵不存在</p>
+<h3 id="两侧逆"><a href="#两侧逆" class="headerlink" title="两侧逆"></a>两侧逆</h3><p>$AA^{-1}=I=A^{-1}A$，此时r=m=n，称满秩，零空间和左零空间都是零向量</p>
+<h3 id="左逆"><a href="#左逆" class="headerlink" title="左逆"></a>左逆</h3><p>满足列满秩，r=n&lt;m，列向量线性无关，零空间只有零向量，左零空间有其他向量</p>
+<p>$Ax=b$存在0或1个解，有解时只可能有一个（即特解），因为其他解（通解）都可以通过加上零空间的向量来得到，而此时零空间是零向量，特解就是全部解（如果有特解的话）</p>
+<p>$A^TA$的秩=n，因为$A^TAx=0$与$Ax=0$同解。而它又是n*n对称矩阵，所以是可逆的</p>
+<p>A的<strong>左逆</strong>定义为$A_{left}^{-1}=(A^TA)^{-1}A^T$</p>
+<p>因为$[(A^TA)^{-1}A^T]A=(A^TA)^{-1}(A^TA)=I$</p>
+<p>不管A为什么形式，能找到一个矩阵使其变成单位矩阵</p>
+<p>将左逆写在右边：$A(A^TA)^{-1}A^T=P$，即A的列空间上的投影矩阵</p>
+<h3 id="右逆"><a href="#右逆" class="headerlink" title="右逆"></a>右逆</h3><p>满足行满秩，r=m&lt;n，行向量线性无关，零空间有其他向量，左零空间($A^T$的零空间)只有零向量</p>
+<p>$Ax=b$存在无数解，有n-m个自由变量</p>
+<p>$AA^T$的秩=m，而它又是m*m对称矩阵，所以是可逆的</p>
+<p>A的<strong>右逆</strong>定义为$A_{right}^{-1}=A^T(AA^T)^{-1}$</p>
+<p>将右逆写在左边：$A^T(AA^T)^{-1}A=P$，即A的行空间上的投影矩阵</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找右逆</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">A = np.mat(<span class="string">'1 0 1; 0 1 0'</span>)</span><br><span class="line">print(np.linalg.pinv(A))</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="伪逆"><a href="#伪逆" class="headerlink" title="伪逆"></a>伪逆</h3><p>当一个矩阵r&lt;n 并且 r&lt;m的时候，矩阵就只有伪逆了</p>
+<p>逆矩阵可看作矩阵的逆操作，向量x在A的作用下变成了了Ax，Ax通过$A^{-1}$又得到x。方阵是否可逆与是否存在零空间有关，可逆矩阵的零空间和左零空间都只有零向量。</p>
+<p>假设A存在零空间，对于零空间的非零向量：</p>
+<p>$Ax=0$，此时A的各列线性组合是0，不可逆</p>
+<ul>
+<li>列满秩矩阵的零空间只有零向量，有左逆矩阵</li>
+<li>行满秩矩阵的左零空间只有零向量，有右逆矩阵</li>
+<li>不满秩的矩阵A（r &lt; n, r &lt; m）来说，两个零空间都存在，此时它无法得到左逆或右逆。</li>
+</ul>
+<p>不满秩的矩阵A，行空间与列空间维数相等，行空间的任意向量x，与A相乘，得到恰好是列空间中的所有向量，<strong>行空间向量x与列空间向量Ax的关系是一 一对应的</strong>。</p>
+<blockquote>
+<p>证明：如果两个行向量x与y不同，那么Ax和Ay必然不同，证明：假设Ax=Ay, A(x-y)=0, 那么x-y属于零空间，而行向量x和y属于行空间，x-y也属于行空间，这与结论矛盾，则x=y。</p>
+</blockquote>
+<p>如果要从列空间Ax得到行空间的向量x，那么$x=A^+(Ax)$，$A^+$就是伪逆，伪逆把左零空间变为0，即如果$A^+$乘以左零空间的向量，结果为0。</p>
+<p>假设没有零空间的干扰，即假设零空间只有零向量，存在逆，那么行空间的向量x得到列空间的向量Ax，反过来，通过A的逆就能从列空间得到行空间， $A^{-1}(Ax)=x$，这时$A^{+}$变回了$A^{-1}$</p>
+<p>伪逆常用于最小二乘法线性回归时时实验存在大量重复结果的情况</p>
+<h4 id="找伪逆"><a href="#找伪逆" class="headerlink" title="找伪逆"></a>找伪逆</h4><p>SVD，$A=UΣV^T$，对角阵$Σ=diag(σ_1,σ_2,\cdots,σ_r,0,0,\cdots,0)$，秩为r，那么$\Sigma$的伪逆是多少？</p>
+<p>如果对角线上没有0元素，那么$Σ$是可逆的，$ΣΣ^{-1}=I$，$Σ^{-1}$中对角线元素为1/σ1,1/σ2,…,1/σn</p>
+<p>现在对角线上有0元素，$\Sigma ^{+}=diag(1/σ_1,1/σ_2,\cdots,1/σ_r,0,\cdots,0)$</p>
+<p>$Σ(m×n)$和$Σ^+(n×m)$都是秩为r的矩阵，伪逆是最接近逆的矩阵，对角阵$ΣΣ^+(m×m)$，对角线上方有r个1，下边为0。这是到列空间的投影矩阵。</p>
+<p>$Σ^+Σ$将得到n×n的对角矩阵，秩仍然是r</p>
+<p>$\Sigma Σ^+$将得到m×m的对角矩阵，秩仍然是r</p>
+<p>那么A的伪逆是多少？由U和$V^T$都是正交矩阵，可得这时的伪逆$A^+=VΣ^+U^T$。</p>
+<p>可以用SVD的正交性来检验答案：</p>
+<p>$Av_j=\sigma _ju_j\quad for \quad j&lt;=r $</p>
+<p>$Av_j=0\quad for \quad j&gt;r$</p>
+<p>这就是最小二乘不适用的情况，当统计学家遇到非满秩的时候，SVD的奇妙之处就在于将所有问题都归到对角矩阵上。</p>
+<p>$A^+A=U\Sigma Σ^+U^T$</p>
+<p>$AA^+$得到的并不是像$∑∑^+$这样对角线上只有1和0的矩阵，而是A的行空间的投影矩阵。</p>
+<p>以上就是伪逆所做的事，乘在左边或右边得不到单位矩阵，得到的是投影矩阵。（乘在右边得到列空间的投影矩阵，乘在左边得到行空间的投影矩阵）</p>
+<h3 id="伪逆的性质"><a href="#伪逆的性质" class="headerlink" title="伪逆的性质"></a>伪逆的性质</h3><p>$AA^+A=A$</p>
+<p>$A^+AA^+=A^+$</p>
+<p>$AA^+=(AA^+)^T$</p>
+<p>$A^+A=(A^+A)^T$</p>
+<h1 id="期末总复习"><a href="#期末总复习" class="headerlink" title="期末总复习"></a>期末总复习</h1><blockquote>
+<p>假设A是$m*n$ 矩阵 rank = r, $Ax=\left[  \begin{matrix} 1 \ 0 \ 0 \end{matrix} \right]$没有解， $Ax=\left[  \begin{matrix} 0 \ 1 \ 0 \end{matrix} \right]$有唯一解</p>
+<ol>
+<li><p>m,n,r 是怎样的关系</p>
+<p>$Ax$是一个三维向量，则m=3，有无解情况因此列空间不是$R^3$，另外列空间包含$\left[  \begin{matrix} 0 \ 1 \ 0 \end{matrix} \right]$，$1 \le r&lt;3$.由第二个向量有唯一解知零空间只有零向量，则n=r</p>
+</li>
+<li><p>写出一个A的例子</p>
+<p>$\left[  \begin{matrix} 0 \ 1 \ 0 \end{matrix} \right]$ $\left[  \begin{matrix} 0  &amp; 0\ 1 &amp; 0 \ 0 &amp; 1 \end{matrix} \right]$</p>
+</li>
+<li><p>判断：</p>
+<ol>
+<li>$det(A^TA)=det(AA^T)$</li>
+<li>$A^TA$可逆</li>
+<li>$AA^T$是正定矩阵</li>
+</ol>
+<p>r=n意味着A的列向量线性无关，$det(A^TA) \ne 0$。（$A^TA$是n*n矩阵）</p>
+<p>但r&lt;m，$AA^T$（3*3矩阵）的秩小于3，不可能正定，必有一个特征值为0</p>
+<p>回推可得1是错的（如果A是方阵那么A是对的</p>
+</li>
+<li><p>证明$A^Ty=c$对于任何c有至少一个解</p>
+<p>$A^T$是一个n*3矩阵，行满秩，对于任意c，方程总有解</p>
+</li>
+</ol>
+</blockquote>
+<ul>
+<li>行满秩，方程总有解；列满秩，零空间只有零向量，方程不可能有无数解</li>
+</ul>
+<blockquote>
+<p>假设A的列为$v_1, v_2, v_3$</p>
+<ol>
+<li><p>若$Ax=v_1-v_2+v_3$，求x</p>
+<p>$x = \left[  \begin{matrix} 1 \ -1 \ 1 \end{matrix} \right]$</p>
+</li>
+<li><p>如果$v_1-v_2+v_3=0$那么上问的解不唯一</p>
+<p>正确，这说明x在零空间内，其任意倍都可以是解</p>
+</li>
+<li><p>假设$v_1,v_2,v_3$是正交的，那么$v_1、v_2$怎样的组合可以使这个点最接近$v_3$?</p>
+<p>想象三维空间内有三个向量正交，显然只有两个向量上的坐标都为0，$0v_1+0v_2=0$最接近第三个向量（可以用x,y,z轴单位向量类比）</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>马尔可夫矩阵$A=\left[  \begin{matrix} .2 &amp; .4 &amp; .3 \ .4 &amp; .2 &amp; .3 \ .4 &amp; .4 &amp; .4 \end{matrix} \right]$</p>
+<ol>
+<li><p>A的特征值</p>
+<p>发现<code>列1+列3=2*列2</code>，线性相关有一个特征值必为0，因为是Markov还有一个1的特征值，由迹求出第三个特征值是-0.2</p>
+</li>
+<li><p>对马尔可夫过程$u_k=A^ku(0)$，如果$u(0)=\left[  \begin{matrix} 0 \ 10 \ 0 \end{matrix} \right]$，那么$u_k$的稳态是多少？</p>
+<p>Markov过程的通解：$u_k=c_1\lambda_1x_1+c_2\lambda_2x_2+c_3\lambda_3x_3$，代入特征值，当$k \rightarrow \infin$时，只有$c_2x_2$留下来，求一下对应的特征向量为$\left[  \begin{matrix} 3 \ 3 \ 4 \end{matrix} \right]$，$c_2$可以通过初值求出，因为Markov矩阵每一列的总和(10)不变，$c_2=1$</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>寻找2*2矩阵满足</p>
+<ol>
+<li><p>投影到线$a=\left[  \begin{matrix} 4 \ -3 \end{matrix} \right]$的投影矩阵</p>
+<p>代入投影矩阵公式$P=\frac{aa^T}{a^Ta}$</p>
+</li>
+<li><p>有特征值$\lambda_1=0,\lambda_2=3$，特征值$x_1=\left[  \begin{matrix} 1 \ 2 \end{matrix} \right]，x_2=\left[  \begin{matrix} 2 \ 1 \end{matrix} \right]$</p>
+<p>已知对角化的结果求原矩阵，代入公式</p>
+<p>$A=S\Lambda S^{-1}$,$S=\left[  \begin{matrix} 1 &amp; 2 \ 2&amp;1 \end{matrix} \right],\Lambda=diag(0,3),A=\left[  \begin{matrix} 4 &amp; -2 \ 2 &amp; -1 \end{matrix} \right]$</p>
+</li>
+<li><p>是实矩阵，不能被分解成$B^TB$，其中B是任意矩阵</p>
+<p>$B^TB$必是对称矩阵，找一个不对称的矩阵A即满足 $\left[  \begin{matrix} 0&amp;0 \ 1 &amp; 0 \end{matrix} \right]$</p>
+</li>
+<li><p>不是对称矩阵但有正交的特征向量</p>
+<p>之前有归纳过，反对称矩阵、正交矩阵都符合以上条件$\left[  \begin{matrix} 0 &amp; 1 \ -1 &amp; 0 \end{matrix} \right]$$\left[  \begin{matrix} cos\theta &amp; -sin\theta \ sin\theta &amp; cos\theta \end{matrix} \right]$</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>以下最小二乘问题</p>
+<p>$\left[  \begin{matrix} 1 &amp; 0\ 1 &amp; 1\1 &amp; 2 \end{matrix} \right]\left[  \begin{matrix} c \ d \end{matrix} \right]=b=\left[  \begin{matrix} 3 \ 4 \ 1 \end{matrix} \right]$，可得解$\left[  \begin{matrix} \widehat{c} \ \widehat{d} \end{matrix} \right]=\left[  \begin{matrix} 11/3 \ -1 \end{matrix} \right]$</p>
+<ol>
+<li><p>将$b=\left[  \begin{matrix} 3 \ 4 \ 1 \end{matrix} \right]$投影到以上的A的列空间的投影P为？</p>
+<p>所求的就是投影结果$\left[  \begin{matrix} 1 &amp; 0\ 1 &amp; 1\1 &amp; 2 \end{matrix} \right]\left[  \begin{matrix} \widehat{c} \ \widehat{d} \end{matrix} \right]=\left[  \begin{matrix} 11/3 \8/3 \ 5/3 \end{matrix} \right]$</p>
+</li>
+<li><p>画出图形</p>
+<img src="https://pic4.zhimg.com/80/v2-2159493ed1289edbec018efe734f622b_720w.jpg" alt="img" style="zoom:50%;" />
+
+<p>这里注意把第二列作为x，形式为$\widehat{c}+\widehat{d}t$</p>
+</li>
+<li><p>寻找另一个$b\ne0 \in R^3$，使得最小二乘解为$\left[  \begin{matrix} \widehat{c} \ \widehat{d} \end{matrix} \right]=\left[  \begin{matrix} 0 \ 0 \end{matrix} \right]$</p>
+<p>最小二乘实际是找到合适的一组系数，使得b在A的列空间的投影p最大，如果系数已经是[0, 0]了，只需要一个正交于列空间的线，找一个垂直的b向量，如$\left[  \begin{matrix} 1 \ -2 \ 1 \end{matrix} \right]$</p>
+</li>
+</ol>
+</blockquote>
+
 
       
 

@@ -85,7 +85,188 @@
     </header>
 
     <section>
-      
+      <p>windows dos linux 下的汇编语言</p>
+<ul>
+<li>指令相同</li>
+<li>输入/输出时调用操作系统内置的函数不同</li>
+</ul>
+<h2 id="屏幕输出字符”-”汇编语言代码分析"><a href="#屏幕输出字符”-”汇编语言代码分析" class="headerlink" title="屏幕输出字符”$”汇编语言代码分析"></a>屏幕输出字符”$”汇编语言代码分析</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">data segment</span><br><span class="line">a db &quot;ABC&quot;</span><br><span class="line">s db &quot;Hello$world!&quot;, 0Dh, 0Ah, 0yebus</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">assume cs:code, ds:data</span><br><span class="line">main:</span><br><span class="line">   mov ax, data</span><br><span class="line">   mov ds, ax</span><br><span class="line">   mov bx, 0</span><br><span class="line">next:</span><br><span class="line">   mov dl, s[bx]; 经过编译后变成mov dl, ds:[3+bx]</span><br><span class="line">   cmp dl, 0</span><br><span class="line">   je exit</span><br><span class="line">   mov ah, 2</span><br><span class="line">   int 21h</span><br><span class="line">   add bx, 1</span><br><span class="line">   jmp next</span><br><span class="line">exit:</span><br><span class="line">   mov ah, 4Ch</span><br><span class="line">   int 21h</span><br><span class="line">code ends</span><br><span class="line"></span><br><span class="line">end main</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>首先将ds值赋为data段地址，因为只要程序中引用了data段内的变量，则必须在程序一开始就把ds赋值为data地址未对ds进行赋值，ds内的值一定不等于data，不等于数据的段地址<ul>
+<li>move ax, data</li>
+<li>move ds, ax</li>
+<li>保证ds = data</li>
+<li>可用seg s替换data，更符合数据“所在的段”的理解</li>
+<li>可以用es（附加段寄存器）代替ds（数据段寄存器），使用ds时ds:可以被隐藏，但是被替代后必须显式存在</li>
+</ul>
+</li>
+<li>(ds:)s[bx]<ul>
+<li>ds - 段地址</li>
+<li>s - 数组首地址/数组名<ul>
+<li>C中其实也可实现数组名放在[]内的写法: 0[a+i] = *(0+a+i)</li>
+</ul>
+</li>
+<li>bx - offset address</li>
+<li>编译后会将数组名s转换成该数组的偏移地址</li>
+<li>s[bx] -&gt; 3[bx] -&gt; [bx+3]<ul>
+<li>依次是操作码opcode 目标操作数object operand 源操作数source operand</li>
+</ul>
+</li>
+<li>编译后：mov dl, [bx+3]</li>
+<li>操作数是指令的参数</li>
+<li>汇编中出现一对方括号可认为里面是变量</li>
+<li>C写法<ul>
+<li>p = ds:(bx+3)</li>
+<li>dl = *p</li>
+</ul>
+</li>
+<li>查看ds:0是先前的字符串ABC</li>
+</ul>
+</li>
+<li>调用int21h的9号功能输出字符串时，字符串中间出现$号，之后内容就会截断（也不输出$）</li>
+<li><ul>
+<li>要想输出$，使用int21h的2号功能</li>
+<li>通过循环调用</li>
+<li>每调用一次输出一个字符，将字符串理解成字符</li>
+<li>使用的寄存器是dl,ah</li>
+<li>s[bx]写法类似C的数组下标元素使用，但括号内必须是一个寄存器名字，不能是变量名</li>
+<li>使用bx前需要初始化 mov bx, 0</li>
+</ul>
+</li>
+<li>退出函数<ul>
+<li>mov ah, 4Ch</li>
+<li>(mov al, 0)</li>
+<li>int 21h</li>
+<li>相当于exit(al)</li>
+<li>括号行可省略，因为操作系统会将随机al值丢弃</li>
+</ul>
+</li>
+<li>如何知道数组s的偏移地址offset（s离开该段段首的偏移距离）<ul>
+<li>即s之前字符串的长度和</li>
+</ul>
+</li>
+<li>assume的理解<ul>
+<li>只是假设，并不会对后面的寄存器赋值，需要手工赋值。</li>
+<li>编译器也不会校验es是否真的等于data。</li>
+<li>assume es:data<ul>
+<li>告诉编译器凡是引用到data段内的变量时，该变量的段地址一律用es:表示</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="几种变量定义"><a href="#几种变量定义" class="headerlink" title="几种变量定义"></a>几种变量定义</h2><h3 id="db"><a href="#db" class="headerlink" title="db"></a>db</h3><p>8bytes  define byte = char </p>
+<h3 id="dw"><a href="#dw" class="headerlink" title="dw"></a>dw</h3><p>16bytes define word = short int 字</p>
+<h3 id="dd"><a href="#dd" class="headerlink" title="dd"></a>dd</h3><p>32bytes define double word = long int</p>
+<p>还能用于定义32位小数(float)</p>
+<p>pi dd 3.14</p>
+<hr>
+<h3 id="C语言中"><a href="#C语言中" class="headerlink" title="C语言中"></a>C语言中</h3><p>char == signed char [-128, 127]</p>
+<p>unsigned char [0, 255]</p>
+<h3 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h3><p>定义时不区分有无符号，使用时用指令来区分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a db 0FFh</span><br><span class="line">b db 0FFh</span><br><span class="line"></span><br><span class="line">mov al, a </span><br><span class="line">mul b ; -1*-1</span><br><span class="line"></span><br><span class="line">mov al, a </span><br><span class="line">imul b ; 255*255</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="dq"><a href="#dq" class="headerlink" title="dq"></a>dq</h3><p>quadruple word 64位整数或double类型小数</p>
+<h3 id="dt"><a href="#dt" class="headerlink" title="dt"></a>dt</h3><p>10字节/80位 小数 long double  (printf(“%Lf”, z);)</p>
+<h2 id="小端规则、大端规则"><a href="#小端规则、大端规则" class="headerlink" title="小端规则、大端规则"></a>小端规则、大端规则</h2><p>宽度超过8位就会被切</p>
+<p>Little-Endian 先存放低8位 后存放高8位</p>
+<p>小端适用于Intel的CPU型号 大端少见</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a dd 12345678h</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>address</th>
+<th>value(small)</th>
+<th>value(big)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1000</td>
+<td>0x78</td>
+<td>0x12</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>0x56</td>
+<td>0x34</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>0x34</td>
+<td>0x56</td>
+</tr>
+<tr>
+<td>1003</td>
+<td>0x12</td>
+<td>0x78</td>
+</tr>
+</tbody></table>
+<h3 id="C的指针与小端规则"><a href="#C的指针与小端规则" class="headerlink" title="C的指针与小端规则"></a>C的指针与小端规则</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> short <span class="keyword">int</span> a = <span class="number">0x1234</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *p;</span><br><span class="line">    p = (<span class="keyword">unsigned</span> <span class="keyword">char</span> *)&amp;a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%X %X"</span>, p[<span class="number">0</span>], p[<span class="number">1</span>]); <span class="comment">// *p *(p+1)</span></span><br><span class="line">    <span class="comment">// 小端将输出34 12</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>设&amp;a = 1000，于是p = 1000。p是char类型指针，只能指向1000所在的0x34。&amp;a是short int*类型，值为1000，但指向的是1001 0x12和1000 0x34</p>
+<p>设置成小端规则是为了处理数据截断时与实际情况的一致</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> <span class="keyword">int</span> a = <span class="number">0x12345678</span>;</span><br><span class="line"><span class="keyword">char</span> b;</span><br><span class="line">b = a; <span class="comment">// b = 0x78</span></span><br><span class="line">b = *((<span class="keyword">char</span>*)&amp;a); <span class="comment">// 小端下</span></span><br><span class="line">b = *((<span class="keyword">char</span> *)&amp;a+<span class="number">3</span>); <span class="comment">// 大端下</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="8位-16位-32位整数的取值范围"><a href="#8位-16位-32位整数的取值范围" class="headerlink" title="8位 16位 32位整数的取值范围"></a>8位 16位 32位整数的取值范围</h2><p>补码中表示N位最大值，最高位为0，后面为连续N-1个1；最小值，最高位1，后面为连续N-1个0。</p>
+<h3 id="8-unsigned"><a href="#8-unsigned" class="headerlink" title="8 unsigned"></a>8 unsigned</h3><p>[00h, 0FFh] [0, 255]</p>
+<h3 id="16-unsigned"><a href="#16-unsigned" class="headerlink" title="16 unsigned"></a>16 unsigned</h3><p>[0000h, 0FFFFh] [0, 65535]</p>
+<h3 id="32-unsigned"><a href="#32-unsigned" class="headerlink" title="32 unsigned"></a>32 unsigned</h3><p>[0, 2^32-1]</p>
+<h3 id="8-signed"><a href="#8-signed" class="headerlink" title="8 signed"></a>8 signed</h3><p>[80h, 7Fh] [-128, 127]</p>
+<h3 id="16-signed"><a href="#16-signed" class="headerlink" title="16 signed"></a>16 signed</h3><p>[8000h, 7FFFh] [-32768, 32767]</p>
+<h3 id="32-signed"><a href="#32-signed" class="headerlink" title="32 signed"></a>32 signed</h3><p>[-2147483648, 2147483647]</p>
+<h2 id="零扩充和符号扩充"><a href="#零扩充和符号扩充" class="headerlink" title="零扩充和符号扩充"></a>零扩充和符号扩充</h2><p>只要被扩充的数为unsigned（无符号非负），目标数不管有无unsigned都用零扩充。</p>
+<p>被扩充的数为有符号数就要用符号扩充。</p>
+<h3 id="符号扩充"><a href="#符号扩充" class="headerlink" title="符号扩充"></a>符号扩充</h3><p>char -&gt; short int</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> a = <span class="number">-1</span>; <span class="comment">// 1111 1111b</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>负数左端补1，保持负数值不变</li>
+<li>正数左端补0</li>
+<li>判断原数为正数还是负数，只要看原数二进制最高位为0还是1，因为无论正整数还是负整数，一定以补码形式存在。</li>
+</ul>
+<h3 id="零扩充"><a href="#零扩充" class="headerlink" title="零扩充"></a>零扩充</h3><p>unsigned char -&gt; short int</p>
+<ul>
+<li>任何时候都在左端补0</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> a = <span class="number">0x80</span>; <span class="comment">// 1000 0000</span></span><br><span class="line">b = a;<span class="comment">// 0000 0000 1000 0000</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="汇编语言中寄存器名字的含义"><a href="#汇编语言中寄存器名字的含义" class="headerlink" title="汇编语言中寄存器名字的含义"></a>汇编语言中寄存器名字的含义</h2><h3 id="4个16位段寄存器"><a href="#4个16位段寄存器" class="headerlink" title="4个16位段寄存器"></a>4个16位段寄存器</h3><p>给出相应逻辑段的首地址，称段基址。段基址与偏移地址组合形成20位物理地址，偏移地址可以存放在寄存器中，也可以存放在存储器中。</p>
+<p>cs和ss是专用的，无需做任何赋值，操作系统自动为cs和ds赋值。</p>
+<p>ds和es需要手工赋值。</p>
+<h4 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h4><p>代码段寄存器，代码段段地址</p>
+<h4 id="DS"><a href="#DS" class="headerlink" title="DS"></a>DS</h4><p>数据段寄存器</p>
+<h4 id="SS"><a href="#SS" class="headerlink" title="SS"></a>SS</h4><p>堆栈段寄存器，等于堆栈段址</p>
+<h4 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h4><p>附加段寄存器，对数据段的补充</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">操作系统赋值，把.exe载入内存。首先，操作系统要在内存中寻找一块空的区域，把exe</span><br><span class="line">的内容读出来，复制到内存中。操作系统在内存空闲块的查找中是无法预料哪一块空还是不空，每一次程序运行的时候，程序载入地址极有可能发生变化。本次可能从1000:0载入，data地址为1000。而下一次很可能从2000:0载入，data地址为2000。每一次运行时，data的值都会变。因此在编译的时候data的值是不确定的。</span><br></pre></td></tr></table></figure>
+
+<h3 id="AX"><a href="#AX" class="headerlink" title="AX"></a>AX</h3><p>累加器，一些指令约定以AX AL AH为源或目的，输入输出指令必须通过AX/AL实现。</p>
+<p>传递参数/返回值，固定存储某些值</p>
+<h3 id="BX"><a href="#BX" class="headerlink" title="BX"></a>BX</h3><p>基址寄存器，可用作间接寻址的地址寄存器和基地址寄存器，BH,BL可用作8位通用数据寄存器。</p>
+<p>寻址</p>
+<h3 id="CX"><a href="#CX" class="headerlink" title="CX"></a>CX</h3><p>计数寄存器，在循环和串操作中充当计数器，指令执行后CX自动修改。</p>
+<p>控制循环次数</p>
+<h3 id="DX"><a href="#DX" class="headerlink" title="DX"></a>DX</h3><p>数据寄存器，用作通用寄存器，在I/O指令中可用作端口地址寄存器，惩处指令中用作辅助累加器。</p>
+<p>传递参数，固定存储某些值</p>
+<h3 id="BP"><a href="#BP" class="headerlink" title="BP"></a>BP</h3><p>base pointer register，基址指针寄存器</p>
+<h3 id="SP"><a href="#SP" class="headerlink" title="SP"></a>SP</h3><p>stack pointer register，堆栈指针寄存器</p>
+<h3 id="SI"><a href="#SI" class="headerlink" title="SI"></a>SI</h3><p>source index register，源变址寄存器</p>
+<p>寻址</p>
+<h3 id="DI"><a href="#DI" class="headerlink" title="DI"></a>DI</h3><p>destination index register，目的变址寄存器</p>
+<p>寻址</p>
+<h3 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h3><p>指令指针寄存器</p>
+<h2 id="零碎"><a href="#零碎" class="headerlink" title="零碎"></a>零碎</h2><ul>
+<li>汇编中字符串末尾默认无\0</li>
+<li>在code segment中也可以定义变量，可以定义同时进行引用</li>
+<li>;加单行注释 comment #(comment后加一个不再出现的特殊记号)</li>
+<li>如何根据二进制补码推算为负多少？补码取反+1</li>
+</ul>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><ul>
+<li>汇编学习的一个特点是debug调试工具比C更强大，有助于理解寄存器的操作细节</li>
+</ul>
+
 
       
 
@@ -98,6 +279,15 @@
               2020-05-03
             </time>
           </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/ASM/">ASM</a> }
+  </li>
+
+
+            </div>
           
       </section>
     

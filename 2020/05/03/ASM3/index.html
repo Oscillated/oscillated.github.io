@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ASM3 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>ASM3</h1>
+    </header>
+
+    <section>
+      <h2 id="IEEE754标准单精度小数表示"><a href="#IEEE754标准单精度小数表示" class="headerlink" title="IEEE754标准单精度小数表示"></a>IEEE754标准单精度小数表示</h2><table>
+<thead>
+<tr>
+<th align="center">42</th>
+<th align="center">FE</th>
+<th align="center">C0</th>
+<th align="center">00</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">01000010</td>
+<td align="center">11111110</td>
+<td align="center">11000000</td>
+<td align="center">00000000</td>
+</tr>
+<tr>
+<td align="center">0    1000010</td>
+<td align="center">1   1111110</td>
+<td align="center">11000000</td>
+<td align="center">00000000</td>
+</tr>
+</tbody></table>
+<p>上为大端表示</p>
+<table>
+<thead>
+<tr>
+<th align="center">符号位1位</th>
+<th align="center">偏置指数8位（无符号）</th>
+<th align="center">尾数23位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">100000101(133)</td>
+<td align="center">…</td>
+</tr>
+<tr>
+<td align="center">正</td>
+<td align="center">-127为指数调整方法，133-127=6为实际的指数</td>
+<td align="center">…</td>
+</tr>
+</tbody></table>
+<p>以二进制表示 </p>
+<blockquote>
+<p><strong>1.</strong>1111110  11000000  00000000</p>
+</blockquote>
+<p>实际指数为6，小数点向右移6位：</p>
+<blockquote>
+<p>1111111<strong>.</strong>0 11000000 00000000</p>
+</blockquote>
+<p>转成十进制：</p>
+<blockquote>
+<p>127.375</p>
+</blockquote>
+<p>C语言查看该数内存存储情况：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> f=<span class="number">127.375</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *p;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    p = (<span class="keyword">unsigned</span> <span class="keyword">char</span> *)&amp;f;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">4</span>; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%02X"</span>,  p[i]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 输出 00C0FE42</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// p[3] |= 0x82; // 若将最高位与1000 0000 做或运算 能改变f的符号</span></span><br><span class="line">    <span class="comment">// printf("\n f=%f \n", f);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> 反向输出的原因：PC以小端格式储存，因此输出结果为小端表示。内存中无论是整数还是小数，用多个字节表示时，一定是小端保存法。小数在内存中也以小段方式保存，与整数相同。</p>
+</blockquote>
+<h2 id="算术运算"><a href="#算术运算" class="headerlink" title="算术运算"></a>算术运算</h2><ul>
+<li><p>add 加</p>
+<blockquote>
+<p>add 寄存器, 寄存器 如 add ax, bx</p>
+<p>add 寄存器, 常数  如 add ax, 2</p>
+<p>add 寄存器,变量  如 add ax, ds:[1000h]</p>
+<p>add 变量, 寄存器 如 add ds:[1000h], ax</p>
+<p>add 变量, 常数  如 add word ptr ds:[1000h], 2</p>
+</blockquote>
+<ul>
+<li>小数加法fadd</li>
+<li><strong>不能add 变量, 变量</strong>，因为硬件cpu不支持同时操作两个内存变量。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">;汇编实现 y &#x3D; y+x</span><br><span class="line">mov ax, x   </span><br><span class="line">add y, ax    </span><br><span class="line">;或</span><br><span class="line">mov ax, y</span><br><span class="line">add ax, x</span><br><span class="line">mov y, ax</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><p>汇编中常数没有宽度 1可以为8位、16位、32位</p>
+</li>
+<li><p>确定运算时变量的宽度，引入ptr。</p>
+<ul>
+<li><p>word ptr ds:[1000h] 表示 ds:1000h所指向的对象是一个word类型的变量，相当于*(short int *)(ds:1000h) 两个字节</p>
+</li>
+<li><p>byte ptr 相当于char* 一个字节</p>
+</li>
+<li><p>dword ptr 相当于long int* 四个字节</p>
+</li>
+<li><pre><code>;错误语法
+add ax, bh
+mov bh, ax
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 加法必须保证两数等宽（上述第五例），ptr指示不同，最终加法结果也会不同，因为取的加数范围不同会使进位截断位置变化。</span><br><span class="line"></span><br><span class="line">- sub 减</span><br><span class="line"></span><br><span class="line">  - **sub和mov的语法与add相同**</span><br><span class="line"></span><br><span class="line">- mul 乘</span><br><span class="line"></span><br><span class="line">- div 除</span><br><span class="line"></span><br><span class="line">## 逻辑运算</span><br><span class="line"></span><br><span class="line">|  &amp;   |  \|  |  ^   |  ~   |  &lt;&lt;  |  &gt;&gt;  | _rotl() 循环左移 | _rotr() 循环右移 |</span><br><span class="line">| :--: | :--: | :--: | :--: | :--: | :--: | :--------------: | :--------------: |</span><br><span class="line">| and  |  or  | xor  | not  | shl  | shr  |       rol        |       ror        |</span><br><span class="line"></span><br><span class="line">&gt; mov ah, 9Dh ; AH&#x3D;1001 1101</span><br><span class="line">&gt;</span><br><span class="line">&gt; rol ah, 1  ; AH&#x3D;0011 1011</span><br><span class="line"></span><br><span class="line">### 位运算的作用</span><br><span class="line"></span><br><span class="line">- 与运算使某些位为0</span><br><span class="line">- 或运算使某些位为1</span><br><span class="line">- 异或运算使数反转</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;c</span><br><span class="line">unsigned long rol(unsigned long x, int n)&#x2F;&#x2F; 写成unsigned long是为了防止在右移的时候出现问题</span><br><span class="line">&#123;</span><br><span class="line">	return x &lt;&lt; n | x &gt;&gt; (sizeof(x)*8-n);</span><br><span class="line">	&#x2F;&#x2F; return _lrotl(x,n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h3 id="16位整数转换成16进制表示"><a href="#16位整数转换成16进制表示" class="headerlink" title="16位整数转换成16进制表示"></a>16位整数转换成16进制表示</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">data segment</span><br><span class="line">abc dw 32767</span><br><span class="line">s db 4 dup(0),0Dh,0Ah,&#39;$&#39;</span><br><span class="line">;4 dup(0)相当于0,0,0,0</span><br><span class="line">;s[0]&#x3D;&#39;7&#39;; s[1]&#x3D;&#39;F&#39;; s[2]&#x3D;&#39;F&#39;; s[3]&#x3D;&#39;F&#39;</span><br><span class="line">data ends</span><br><span class="line">code segment</span><br><span class="line">assume cs:code, ds:data</span><br><span class="line">main:</span><br><span class="line">   mov ax, data</span><br><span class="line">   mov ds, ax</span><br><span class="line">   mov ax, abc</span><br><span class="line">   mov cx, 4</span><br><span class="line">   mov di, 0; 目标数组的下标,可以引用s[di]</span><br><span class="line">again:</span><br><span class="line">   push cx</span><br><span class="line">   mov cl, 4 ; 设ax的原值&#x3D;7A9Dh</span><br><span class="line">   rol ax, cl; ax&#x3D;A9D7, 9D7A, D7A9, 7A9D</span><br><span class="line">   push ax ;压栈，因为之后与操作会改变al值</span><br><span class="line">   and ax, 0000000000001111B; 000Fh</span><br><span class="line">   cmp ax, 10</span><br><span class="line">   jb is_digit</span><br><span class="line">is_alpha:</span><br><span class="line">   sub al, 10   ; 判断是小于等于9还是大于10</span><br><span class="line">   add al, &#39;A&#39; ;al &#x3D; al-10+&#39;A&#39; 类似C的加法操作</span><br><span class="line">   jmp finish_4bits</span><br><span class="line">is_digit:</span><br><span class="line">   add al, &#39;0&#39; ;al &#x3D; al+&#39;0&#39;</span><br><span class="line">finish_4bits:</span><br><span class="line">   mov s[di], al</span><br><span class="line">   pop ax</span><br><span class="line">   pop cx</span><br><span class="line">   add di, 1 &#x2F;&#x2F; 指向下一个字节</span><br><span class="line">   sub cx, 1 &#x2F;&#x2F; 进入finish就已经做了一次转换</span><br><span class="line">   jnz again &#x2F;&#x2F; 判断cx当前情况，非零则跳回去继续转换</span><br><span class="line">   mov ah, 9</span><br><span class="line">   mov dx, offset s</span><br><span class="line">   int 21h &#x2F;&#x2F; 字符输出</span><br><span class="line">   mov ah, 4Ch</span><br><span class="line">   int 21h &#x2F;&#x2F; 结束程序</span><br><span class="line">code ends</span><br><span class="line">end main</span><br></pre></td></tr></table></figure>
+
+<h3 id="32位整数转化成16进制输出"><a href="#32位整数转化成16进制输出" class="headerlink" title="32位整数转化成16进制输出"></a>32位整数转化成16进制输出</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">.386 ;必须是386以上的CPU</span><br><span class="line">data segment use16</span><br><span class="line">abc dd 2147483647</span><br><span class="line">s db 8 dup(0),0Dh,0Ah,&#39;$&#39;</span><br><span class="line">data ends</span><br><span class="line">code segment use16</span><br><span class="line">assume cs:code, ds:data</span><br><span class="line">main:</span><br><span class="line">   mov ax, data</span><br><span class="line">   mov ds, ax</span><br><span class="line">   mov eax, abc ;eax高16位没有名字，低16位为原ax</span><br><span class="line">   mov cx, 8</span><br><span class="line">   mov di, 0; 目标数组的下标,可以引用s[di]</span><br><span class="line">again:</span><br><span class="line">   rol eax, 4; 386以上cpu中, 移位次数大于1时也可使用常数</span><br><span class="line">   push eax  ; 设eax&#x3D;12345678h，压栈，因为之后操作会改变al值</span><br><span class="line">   and eax, 0Fh; eax&#x3D;00000008h, al&#x3D;08h 0F:1111H</span><br><span class="line">   cmp al, 10 </span><br><span class="line">   jb is_digit</span><br><span class="line">is_alpha:</span><br><span class="line">   sub al, 10</span><br><span class="line">   add al, &#39;A&#39;</span><br><span class="line">   jmp finish_4bits</span><br><span class="line">is_digit:</span><br><span class="line">   add al, &#39;0&#39;</span><br><span class="line">finish_4bits:</span><br><span class="line">   mov s[di], al</span><br><span class="line">   pop eax</span><br><span class="line">   add di, 1</span><br><span class="line">   sub cx, 1</span><br><span class="line">   jnz again</span><br><span class="line">   mov ah, 9</span><br><span class="line">   mov dx, offset s</span><br><span class="line">   int 21h</span><br><span class="line">   mov ah, 4Ch</span><br><span class="line">   int 21h</span><br><span class="line">code ends</span><br><span class="line">end main</span><br></pre></td></tr></table></figure>
+
+<h4 id="转换过程"><a href="#转换过程" class="headerlink" title="转换过程"></a>转换过程</h4><table>
+<thead>
+<tr>
+<th align="center">0111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">7</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+</tr>
+</tbody></table>
+<p>循环左移4次</p>
+<table>
+<thead>
+<tr>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">1111</th>
+<th align="center">0111</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">F</td>
+<td align="center">7</td>
+</tr>
+</tbody></table>
+<p>再与1111做与运算 得到了高次位的0111</p>
+<p>获得次高位</p>
+<p>发现之前步骤做完后</p>
+<p>只要再循环左移4次 </p>
+<p>再与1111做与运算</p>
+<p>…</p>
+<h2 id="杂"><a href="#杂" class="headerlink" title="杂"></a>杂</h2><ul>
+<li>在16位系统下使用32位寄存器如eax<ul>
+<li>.386 置于代码首</li>
+<li>segment 后加上 use16（仍使用16位地址）</li>
+</ul>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T10:25:26.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/ASM/">ASM</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

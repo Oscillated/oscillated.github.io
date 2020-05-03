@@ -216,7 +216,87 @@
     </header>
     <div>
       
-        
+        <h1 id="Insights"><a href="#Insights" class="headerlink" title="Insights"></a>Insights</h1><h2 id="矩阵正交性"><a href="#矩阵正交性" class="headerlink" title="矩阵正交性"></a>矩阵正交性</h2><p>$Q^TQ=I$</p>
+<p>最小二乘法的意义</p>
+<p>Gram-Schmidt 正交化方法</p>
+<p>$a_2’ = a2 - \frac{a_1^Ta_2}{a_1^Ta_1}a_1$</p>
+<h2 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h2><p>高维下面积的推广</p>
+<p>求法、克莱姆、代数余子式</p>
+<h2 id="矩阵对角化"><a href="#矩阵对角化" class="headerlink" title="矩阵对角化"></a>矩阵对角化</h2><p>从$Ax=b$问题拓展到$Ax=\lambda x$.</p>
+<p>$Ax$看作矩阵$A$作用在向量$x$上的过程，强调矩阵是线性变换的思想</p>
+<p>所研究的特殊性质是在矩阵作用后仍与原向量在同一直线上的这样的非零向量和倍增值</p>
+<p>求特征值时式子$(A-\lambda I)x=0$对于非零向量$x$有$A-\lambda I$为奇异矩阵的推断，由此与先前引入的行列式概念衔接。有关行列式的理解，感觉勃勃的[这篇][<a href="https://zhuanlan.zhihu.com/p/19609459]说的挺好。" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/19609459]说的挺好。</a></p>
+<p>引入迹trace的概念，这里提到了一个之前没有讲过的关系</p>
+<p>能够对角化的矩阵，特征值之和等于迹，特征值之积等于行列式。</p>
+<p>对于三角矩阵以上的结论则更加简单，特征值就是主对角元素。</p>
+<p>矩阵的对角化要求矩阵有n个线性无关的特征向量，特征向量是由特征值代回$(A-\lambda I)x=0$求得的$x$，通过将特征向量横排成矩阵可以进行矩阵对角化$A=S\Lambda S^{-1}$，S为横排的特征向量而$\Lambda$是对角的特征值矩阵。</p>
+<p>通过矩阵对角化可以很快计算矩阵的方幂，这里课上讲的是计算斐波那契数列的问题，之前确实不知道这个离散系统的问题还能通过矩阵特征值的知识来求解。</p>
+<p>具体方法是通过数列递推公式$F(n)=F(n-1)+F(n-2)$构造差分方程。</p>
+<p>令$u_k=[F_{k+1}, F_{k}]^T$</p>
+<p>联立$F(k+2)=F(k+1)+F(k)$，$F(k+1)=F(k+1)$</p>
+<p>那么$u_{k+1}=Au_k$，$A=[{1,1},{1,0}]$，进而可以算其特征值和特征向量，解决计算第100项这样的问题。以上的方法还可以用于高阶微分方程的矩阵表示和求解</p>
+<p>吉老爷子，yyds。</p>
+<hr>
+<h2 id="4-6"><a href="#4-6" class="headerlink" title="4.6"></a>4.6</h2><h3 id="矩阵与微分方程"><a href="#矩阵与微分方程" class="headerlink" title="矩阵与微分方程"></a>矩阵与微分方程</h3><p>由一阶线性微分方程解的形式可以看出，各个指数函数（由矩阵特征值确定）是互不相干的，他们的起点状态由初值给出，之后<strong>各走各路</strong>。特征值为负，最终收敛；特征值为正，最终发散；特征值为复数，关注其实部，在收敛发散的区别下还有相位改变（震荡）。</p>
+<p>2*2矩阵，由类似韦达定理的推导，其trace&lt;0,det&gt;0，则系统稳定</p>
+<p>原微分方程右侧是两个相互耦合的未知函数，矩阵对角化、提取特征值的过程可以看成是解耦</p>
+<h3 id="矩阵与级数"><a href="#矩阵与级数" class="headerlink" title="矩阵与级数"></a>矩阵与级数</h3><p>几何级数和指数级数同样适用于矩阵</p>
+<p>$e^{At} = I+At+\frac{(At)^2}{2}+\frac{(At)^3}{6}+\cdots$ 总收敛</p>
+<p> $(I-At)^{-1} = I + At+(At)^2 + (At)^3 + \cdots$ (At)的特征值小于1</p>
+<p>解耦：$\frac{du}{dt}=Au, u=Sv \rightarrow \frac{dv}{dt} = S^{-1}ASv = \Lambda v$</p>
+<p>利用指数级数，</p>
+<p>$e^{At} = S S^{-1}+S\Lambda S^{-1}t+\frac{1}{2}{S\Lambda ^2 S^{-1}t^2}+\frac{1}{6}{S\Lambda ^3 S^{-1}t^3}+\cdots $</p>
+<p>$e^{At} = S(I+\Lambda t+(\Lambda t)^2+\cdots)S^{-1} = Se^{\Lambda t}S^{-1}$ 对可对角化的矩阵成立（n个线性无关特征向量）</p>
+<p>$e^{\Lambda t} = diag(e^{\lambda_1 t},e^{\lambda_2 t},\cdots)$</p>
+<p>$u(t)=e^{At}u(0) = [x_1,x_2,\cdots,x_n]diag(e^{\lambda_1 t},e^{\lambda_2 t},\cdots)[C_1,C_2,\cdots,C_n]^T $$= C_1x_1e^{\lambda_1 t}+C_2x_2e^{\lambda_2 t} + \cdots$</p>
+<p>$e^{At}$收敛 -&gt; 所有特征值的实部是负数 -&gt; $\Lambda$位于复平面左半平面 </p>
+<p>矩阵的幂收敛 -&gt; 位于复平面单位圆内</p>
+<h3 id="矩阵与随机过程"><a href="#矩阵与随机过程" class="headerlink" title="矩阵与随机过程"></a>矩阵与随机过程</h3><p>马尔可夫矩阵</p>
+<p>从列向量的角度看</p>
+<p>马尔科夫矩阵满足</p>
+<ul>
+<li>所有元素大于等于0</li>
+<li>所有矩阵列相加等于1 -&gt; 保证了其有一个特征值为1（因为$A-I$的列相加为0，说明行向量线性组合能得到0，因此一个行向量能被其他行向量表示，他们线性相关，说明$A-I$是奇异矩阵）</li>
+</ul>
+<blockquote>
+<p> 由于矩阵与其转置的特征值相等，第二个条件改为列相加等于1也是成立的</p>
+</blockquote>
+<p>马尔科夫矩阵典型例子：两州的人口迁移与最终稳定人口数</p>
+<p>已知一个特征值为1，对于二阶矩阵可以通过迹和行列式值迅速获得另一个特征值。</p>
+<h3 id="矩阵与傅里叶级数"><a href="#矩阵与傅里叶级数" class="headerlink" title="矩阵与傅里叶级数"></a>矩阵与傅里叶级数</h3><p>先前提到的标准正交基问题，基是两两正交的向量，定义正交为内积$q_1^{T}\bullet q_1$，可以把一个向量分解为各个基上的投影分量。</p>
+<p>求解某个基的分量，将其对应的基在等式两边做内积即可。此时对于$v=x_1q_1+x_2q_2+\cdots \rightarrow Qx=v$，有$x=Q^{-1}v=Q^Tv$ 来求各项分量。</p>
+<p>傅里叶级数是无穷维的，基变成了两两正交的函数，正交性对任意两个函数仍然成立</p>
+<p>$f(x) = a_0 + a_1cosx+b_1sinx+a_2cos2x+b_2sin2x+\cdots$，正交性定义为两个正交函数的积分，对于这里的三角函数，定义域为$[0,2\pi]$，同样可以将对应基对等式两边同时做内积来求出分量。</p>
+<h1 id="4-7"><a href="#4-7" class="headerlink" title="4.7"></a>4.7</h1><h2 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h2><blockquote>
+<p>研究$A$为向量时的投影矩阵$P=\frac{aa^T}{a^Ta} \quad a=[2,1,2]^T$</p>
+</blockquote>
+<ol>
+<li><p>3*3矩阵P的秩为1（先前知识）</p>
+</li>
+<li><p>有两个0特征值</p>
+</li>
+<li><p>另一个特征值为1</p>
+<ul>
+<li><p>由迹得出为1</p>
+</li>
+<li><p>由$Pa=a$的意义去理解，自己投影到自己上还是自己，这一式子符合特征值的定义，进而得到特征向量就是a自己。</p>
+</li>
+</ul>
+</li>
+<li><p>给一个向量序列$u_{k+1}=Pu_k \quad u_0=[9,9,0]^T$，求$u_k$。事实上，$u_k=u_1$，因为第一次计算相当于把$u_0$投影在$a$上而得到$u_1$，之后的向量不过是重复做投影到$a$上的操作。</p>
+<ul>
+<li>另外，如果P不是投影矩阵，把$u_0$分解成特征向量的形式来理解，$A^ku_0 = c_1\lambda_1^kx_1 + \cdots \quad$对投影矩阵，因为有两个0特征值，只剩下了特征值为1的项，多次投影是不变的</li>
+</ul>
+</li>
+</ol>
+<hr>
+<blockquote>
+<p>行列式部分所引出的三对角线矩阵的递推公式$D_n = D_{n-1} - D_{n-2}$用于求解差分方程</p>
+</blockquote>
+<p>$\left[  \begin{matrix} D_n \ D_{n-1} \end{matrix}  \right] = \left[  \begin{matrix} 1 &amp; -1 \ 1 &amp; 0 \end{matrix}  \right]\left[  \begin{matrix} D_{n-1} \ D_{n-2} \end{matrix}  \right] $</p>
+<p>求特征值特征向量，出现虚数$\frac{1\pm\sqrt{3}i}{2}$</p>
+<p>$A$的6次方两个特征值均为1，因为上面的复数特征值辐角为60°，$A^6=S\lambda^6S^{-1}=I$</p>
+
       
     </div>
 </article>

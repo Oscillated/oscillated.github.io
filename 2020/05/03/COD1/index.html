@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>COD1 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>COD1</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<p>ZJU Computer Organization &amp; Design By 刘鹏 1(lec01 lec02)</p>
+<a id="more"></a>
+
+<h1 id="Lec01-Introduction"><a href="#Lec01-Introduction" class="headerlink" title="Lec01:Introduction"></a>Lec01:Introduction</h1><h2 id="Major-Topics"><a href="#Major-Topics" class="headerlink" title="Major Topics"></a>Major Topics</h2><ul>
+<li>Hardware-software interface<ul>
+<li>Machine language and assembly language programming</li>
+</ul>
+</li>
+<li>Compiler optimizations and performance</li>
+<li>Processor design<ul>
+<li>Pipelined processor design</li>
+</ul>
+</li>
+<li>Memory hierarchy design<ul>
+<li>Caches</li>
+</ul>
+</li>
+<li>Virtual memory &amp; operating systems support</li>
+<li>Multiprocessors and Multithreading</li>
+</ul>
+<h2 id="Machine-Structures"><a href="#Machine-Structures" class="headerlink" title="Machine Structures"></a>Machine Structures</h2><ul>
+<li>Parallel Requests<ul>
+<li>Assigned to computer<br>e.g., Search “Cats”</li>
+</ul>
+</li>
+<li>Parallel Threads<ul>
+<li>Assigned to core<br>e.g., Lookup, Ads</li>
+</ul>
+</li>
+<li>Parallel Instructions<ul>
+<li>&gt;1 instruction @ one time<br>e.g., 5 pipelined instructions</li>
+</ul>
+</li>
+<li>Parallel Data<ul>
+<li>&gt;1 data item @ one time<br>e.g., Add of 4 pairs of words</li>
+</ul>
+</li>
+<li>Hardware descriptions<ul>
+<li>All gates working in parallel at same time</li>
+</ul>
+</li>
+</ul>
+<h2 id="Great-Ideas-in-Computer-Archtecture"><a href="#Great-Ideas-in-Computer-Archtecture" class="headerlink" title="Great Ideas in Computer Archtecture"></a>Great Ideas in Computer Archtecture</h2><ul>
+<li><p>Abstraction</p>
+<ul>
+<li>(Layers of Representation/Interpretation)</li>
+<li><img src="https://img.cfssr.xyz/imgs/2020/05/77d001e49a772f80.png" alt=""></li>
+</ul>
+</li>
+<li><p>Moore’s Law (Designing through trends)</p>
+</li>
+<li><p>Principle of Locality(Memory Hierarchy)</p>
+<ul>
+<li><img src="https://img.cfssr.xyz/imgs/2020/05/69cd994ab013663a.png" alt=""></li>
+</ul>
+</li>
+<li><p>Parallelism &amp; Amdahl’s law (which limits it)</p>
+</li>
+<li><p>Dependability via Redundancy</p>
+<ul>
+<li>Redundancy so that a failing piece doesn’t make the whole system fail</li>
+<li>Increasing transistor density reduces the cost of redundancy</li>
+<li>Applies to everything (datacenters, computers, disks, memory bits)</li>
+</ul>
+</li>
+</ul>
+<h1 id="Lect02-RISC-V-ASM-Arithmetic"><a href="#Lect02-RISC-V-ASM-Arithmetic" class="headerlink" title="Lect02:RISC-V ASM-Arithmetic"></a>Lect02:RISC-V ASM-Arithmetic</h1><h2 id="ISA"><a href="#ISA" class="headerlink" title="ISA"></a>ISA</h2><p>Data and instructions can both be represented as a number in assembly language level.</p>
+<p>The basic job of a CPU is to execute lots of instructions.<br>Different CPUs implement different sets of instructions. </p>
+<p>The set of instructions a particular CPU implements is an Instruction Set Architecture (ISA)</p>
+<p>e.g., ARM(cell phones), Intel x86(PC), PowerPC(some MACs), RISC-V</p>
+<p>Early trend was to add more and more instructions to new CPUs to do elaborate operations,but <strong>RISC reduced Instruction Set Computing</strong> to:</p>
+<ul>
+<li>Keep the instruction set small and simple, making it easier to build fast hardware.</li>
+<li>Let software do complicated operations by composing simpler ones.</li>
+</ul>
+<h2 id="RISC-V-Architecture"><a href="#RISC-V-Architecture" class="headerlink" title="RISC-V Architecture"></a>RISC-V Architecture</h2><ul>
+<li>An open-source, license-free ISA</li>
+<li>Appropriate for all levels of computing system, from microcontrollers to supercomputers</li>
+</ul>
+<p>compared to Intel x86, RISC-V :</p>
+<ul>
+<li>simple, elegant</li>
+<li>has exponential adoption rate</li>
+</ul>
+<h2 id="Assembly-Variables-Registers"><a href="#Assembly-Variables-Registers" class="headerlink" title="Assembly Variables: Registers"></a>Assembly Variables: Registers</h2><p>ASM don’t use variables to keep hardware simple, it’s operands are <strong>registers</strong>.</p>
+<p>operations can only be performed on limited, predetermined, special-located registers in the hardware</p>
+<p><img src="https://img.cfssr.xyz/imgs/2020/05/c5e3183c981f78a9.png" alt=""></p>
+<h3 id="Benefit"><a href="#Benefit" class="headerlink" title="Benefit"></a>Benefit</h3><ul>
+<li>super-fast: &lt; 0.25ns, faster than light</li>
+</ul>
+<h3 id="Drawback"><a href="#Drawback" class="headerlink" title="Drawback"></a>Drawback</h3><ul>
+<li>predetermined number, so RISC-V code must be very carefully put together to efficiently use registers</li>
+</ul>
+<p>RISC-V has 32 registers, where 32 is a fast and not too small number</p>
+<p>Groups of 32 bits called a <strong>word</strong> in RV32</p>
+<ul>
+<li>Registers are numbered from 0 to 31</li>
+<li>x0 is special, always holds value zero<ul>
+<li>only 31 registers able to hold variable values</li>
+</ul>
+</li>
+<li>Each register can be referred to by number or name<ul>
+<li>Will add names later</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>In HLL(C, Java, etc.), Each variable can ONLY represent a value of the type it was declared as.</p>
+<p>In ASM, the registers have no type, and <strong>Operation determines how register contents are treated</strong></p>
+<hr>
+<p>each line of assembly code contains at most 1 instruction</p>
+<p>Comments:</p>
+<ul>
+<li>Hash(#) for RISC-V comments</li>
+</ul>
+<h2 id="Addition-and-Subtraction"><a href="#Addition-and-Subtraction" class="headerlink" title="Addition and Subtraction"></a>Addition and Subtraction</h2><figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm"><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">1</span>, <span class="hljs-keyword">x</span><span class="hljs-number">2</span>, <span class="hljs-keyword">x</span><span class="hljs-number">3</span><br># <span class="hljs-keyword">x</span><span class="hljs-number">1</span> = <span class="hljs-keyword">x</span><span class="hljs-number">2</span> + <span class="hljs-keyword">x</span><span class="hljs-number">3</span><br><span class="hljs-keyword">sub</span> <span class="hljs-keyword">x</span><span class="hljs-number">1</span>, <span class="hljs-keyword">x</span><span class="hljs-number">2</span>, <span class="hljs-keyword">x</span><span class="hljs-number">3</span><br># <span class="hljs-keyword">x</span><span class="hljs-number">1</span> = <span class="hljs-keyword">x</span><span class="hljs-number">2</span> - <span class="hljs-keyword">x</span><span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
+
+<p>Syntax is rigid to keep hardware simple.</p>
+<hr>
+<p>How to break up C operations?</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">a = b + c + d - e;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm"><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">1</span>, <span class="hljs-keyword">x</span><span class="hljs-number">2</span> # a_temp = b + <span class="hljs-keyword">c</span><br><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">3</span> # a_temp = a_temp + d<br><span class="hljs-keyword">sub</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">4</span> # a = a_temp - e<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">f = (g + h) - (i + j);<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm"><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">5</span>, <span class="hljs-keyword">x</span><span class="hljs-number">20</span>, <span class="hljs-keyword">x</span><span class="hljs-number">21</span> # a_temp = g + h<br><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">6</span>, <span class="hljs-keyword">x</span><span class="hljs-number">22</span>, <span class="hljs-keyword">x</span><span class="hljs-number">23</span> # b_temp = i + j<br><span class="hljs-keyword">sub</span> <span class="hljs-keyword">x</span><span class="hljs-number">19</span>, <span class="hljs-keyword">x</span><span class="hljs-number">5</span>, <span class="hljs-keyword">x</span><span class="hljs-number">6</span> # f = (g + h)- (i + j)<br></code></pre></td></tr></table></figure>
+
+<h2 id="Immediate"><a href="#Immediate" class="headerlink" title="Immediate"></a>Immediate</h2><p>Immediate are <strong>numerical constants</strong>.</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">f = g + <span class="hljs-number">10</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm">addi <span class="hljs-keyword">x</span><span class="hljs-number">3</span>,<span class="hljs-keyword">x</span><span class="hljs-number">4</span>,<span class="hljs-number">10</span><br></code></pre></td></tr></table></figure>
+
+<p>There are no subtract immediate in RISC-V:</p>
+<ul>
+<li>Limit types of operations that can be done to absolute minimum</li>
+<li>if an operation can be decomposed into a simpler operation, don’t include it</li>
+</ul>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">addi </span>x1, -x2<br><span class="hljs-comment"># equals</span><br><span class="hljs-keyword">subi </span>x1, x2<br><span class="hljs-comment"># so subi doesn't exist</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">f = g - <span class="hljs-number">10</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm">addi <span class="hljs-keyword">x</span><span class="hljs-number">3</span>, <span class="hljs-keyword">x</span><span class="hljs-number">4</span>, <span class="hljs-number">-10</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="Register-Zero"><a href="#Register-Zero" class="headerlink" title="Register Zero"></a>Register Zero</h2><p>One particular immediate, the number zero (0), appears very often in code.</p>
+<p>So the register zero (x0) is <strong>‘hard-wired’ to value 0</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">f = g<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm"><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">3</span>, <span class="hljs-keyword">x</span><span class="hljs-number">4</span>, <span class="hljs-keyword">x</span><span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">add</span><span class="bash"> x0,x3,x4 <span class="hljs-comment"># won't do anything</span></span><br></code></pre></td></tr></table></figure>
+
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T15:22:55.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Computer-Organization-Design/">Computer Organization &amp; Design</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

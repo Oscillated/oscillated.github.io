@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>tags | Oscillate.</title>
+  <title>Model-Compression | Oscillate.</title>
   
   
   
@@ -81,80 +81,99 @@
             <div>
   <article class='ContentView'>
     <header class='PageTitle'>
-        <h1>tags</h1>
+        <h1>Model-Compression</h1>
     </header>
 
     <section>
-      
+      <p>社团讲座笔记，一位做模型压缩与加速的学长的分享。</p>
+<a id="more"></a>
 
-      
-        <ul class="Tags">
-          
-  <li class="tag-list">
-  { <a href="/tags/ASM/">ASM</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/Linear-Algebra/">Linear Algebra</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/Virtual-Machine/">Virtual Machine</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/VMWare/">VMWare</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/Markdown/">Markdown</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/Electronic-Competition/">Electronic Competition</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/Model-Compression/">Model Compression</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/Embedded-Deployment/">Embedded Deployment</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/Super-Resolution/">Super-Resolution</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/CNN/">CNN</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/GAN/">GAN</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/Sampling/">Sampling</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/Residual-Learning/">Residual-Learning</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/Quick-Start/">Quick Start</a> }
-  </li>
+<h2 id="云服务的局限"><a href="#云服务的局限" class="headerlink" title="云服务的局限"></a>云服务的局限</h2><ul>
+<li>高算力服务器成本高昂</li>
+<li>网络延迟高</li>
+<li>用户隐私存在威胁</li>
+</ul>
+<h2 id="嵌入式部署的优点"><a href="#嵌入式部署的优点" class="headerlink" title="嵌入式部署的优点"></a>嵌入式部署的优点</h2><ul>
+<li>独立性</li>
+<li>实时性，减少网络延迟</li>
+<li>安全性</li>
+</ul>
+<h2 id="嵌入式部署的难点"><a href="#嵌入式部署的难点" class="headerlink" title="嵌入式部署的难点"></a>嵌入式部署的难点</h2><ul>
+<li>悬殊的算力差异</li>
+<li>庞大的内存需求</li>
+<li>高能耗与散热问题</li>
+</ul>
+<h2 id="人工智能嵌入式应用"><a href="#人工智能嵌入式应用" class="headerlink" title="人工智能嵌入式应用"></a>人工智能嵌入式应用</h2><ul>
+<li>自动驾驶</li>
+<li>安防</li>
+<li>AI相机</li>
+<li>超分辨率 OPPO</li>
+<li>语音唤醒/命令词识别</li>
+</ul>
+<h1 id="深度学习基本概念"><a href="#深度学习基本概念" class="headerlink" title="深度学习基本概念"></a>深度学习基本概念</h1><ul>
+<li>CV 图像分类</li>
+<li>CV 目标检测</li>
+<li>CV 语义分割/实例分割</li>
+<li>全连接fully connection</li>
+</ul>
+<h2 id="卷积convolution"><a href="#卷积convolution" class="headerlink" title="卷积convolution"></a>卷积convolution</h2><ul>
+<li>生理心理学，层次性，局部性</li>
+<li>空域局部滤波-卷积核<ul>
+<li>反向传播</li>
+<li>随机初始化</li>
+<li>卷积层：对一张图片每继续做一次卷积生成一个卷积层</li>
+</ul>
+</li>
+</ul>
+<h1 id="模型压缩与图优化"><a href="#模型压缩与图优化" class="headerlink" title="模型压缩与图优化"></a>模型压缩与图优化</h1><ul>
+<li>参数剪枝加速<ul>
+<li>组级别较好</li>
+<li>滤波器级别</li>
+</ul>
+</li>
+<li>参数共享<ul>
+<li>浮点数下降为整型</li>
+</ul>
+</li>
+<li>轻量化网络</li>
+<li>知识蒸馏</li>
+<li>层融合</li>
+</ul>
+<h1 id="优化加速"><a href="#优化加速" class="headerlink" title="优化加速"></a>优化加速</h1><p>卷积计算策略</p>
+<h1 id="训练框架"><a href="#训练框架" class="headerlink" title="训练框架"></a>训练框架</h1><p>部署工具<br>NNAPI<br>RKNN<br>TensorRT<br>NCNN<br>Tengine<br>MNN<br>PaddlePaddle<br>TVM</p>
 
 
-        </ul>
       
 
     </section>
     
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T11:40:25.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Model-Compression/">Model Compression</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Embedded-Deployment/">Embedded Deployment</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
     
 </article>
 
+  
 </div>
 
             <footer>

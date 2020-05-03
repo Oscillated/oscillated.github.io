@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Quality-Enhancement | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Quality-Enhancement</h1>
+    </header>
+
+    <section>
+      <p>社团讲座笔记，介绍了神经网络应用在超分辨率领域的现状和基本概念、经典模型等，干货满满。</p>
+<a id="more"></a>
+
+<h1 id="视频三要素"><a href="#视频三要素" class="headerlink" title="视频三要素"></a>视频三要素</h1><ul>
+<li>分辨率<ul>
+<li>扫描传输方式<ul>
+<li>逐行扫描<ul>
+<li>720p</li>
+<li>1080p</li>
+<li>4k</li>
+<li>8k</li>
+</ul>
+</li>
+<li>隔行扫描</li>
+</ul>
+</li>
+<li>编码技术<ul>
+<li>MPEG</li>
+<li>MPEG4/H.264 VAC 蓝光</li>
+<li>超高清蓝光<ul>
+<li>H.265HEVC</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>可进行超分辨率</li>
+</ul>
+</li>
+<li>帧率<ul>
+<li>24fps</li>
+<li>60fps</li>
+<li>120fps</li>
+<li>插帧</li>
+</ul>
+</li>
+<li>码率<ul>
+<li>单位时间传输位数</li>
+<li>视频质量和信道带宽的折衷</li>
+<li>压缩和解码</li>
+<li>编解码、去压缩伪影</li>
+</ul>
+</li>
+</ul>
+<h1 id="图像采样传统方法"><a href="#图像采样传统方法" class="headerlink" title="图像采样传统方法"></a>图像采样传统方法</h1><ul>
+<li>nearest 尖锐、锯齿</li>
+<li>bilinear 模糊</li>
+<li>bicubic 双三次插值</li>
+</ul>
+<p><strong>cnn</strong>​</p>
+<h1 id="网络结构树状图"><a href="#网络结构树状图" class="headerlink" title="网络结构树状图"></a>网络结构树状图</h1><h2 id="评估指标和损失函数"><a href="#评估指标和损失函数" class="headerlink" title="评估指标和损失函数"></a>评估指标和损失函数</h2><ul>
+<li>其他：基于失真的/客观度量 I1I2 + SSIM loss</li>
+<li>GAN：基于感知/主管度量 I1I2 + preceptual loss</li>
+</ul>
+<h2 id="linear-networks"><a href="#linear-networks" class="headerlink" title="linear networks"></a>linear networks</h2><h3 id="上采样方式"><a href="#上采样方式" class="headerlink" title="上采样方式"></a>上采样方式</h3><ul>
+<li>pre<ul>
+<li>先放大后增强<ul>
+<li>SRCNN<ul>
+<li>MSE loss</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>bilinear/bicubic</li>
+</ul>
+</li>
+<li>post<ul>
+<li>先增强后放大<br>显然省运算存储量——相同网络结构运算存储量成平方关系<ul>
+<li>ESPCN<ul>
+<li>pixel shuffle</li>
+<li>l1 loss</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>deconv 棋盘格效应 整数倍</li>
+<li>nearest upsample</li>
+<li>pixel shuffle 整数倍</li>
+<li>meta upscale</li>
+</ul>
+</li>
+</ul>
+<h3 id="残差学习"><a href="#残差学习" class="headerlink" title="残差学习"></a>残差学习</h3><ul>
+<li><p>高频：像素值剧烈变化位置，色块边缘</p>
+</li>
+<li><p>低频：像素值变化平缓位置，色块内部</p>
+</li>
+<li><p>f(x) -&gt; y</p>
+<ul>
+<li>f(x) 包含高低频分量</li>
+</ul>
+</li>
+<li><p>如果用f(x)+x -&gt; y，即最终y = 输入x+卷积层处理的f(x)</p>
+<ul>
+<li>f(x) 主要为高频分量</li>
+<li>能加速、聚焦高频</li>
+</ul>
+</li>
+<li><p>VDSR</p>
+</li>
+</ul>
+<h2 id="densely-connected-networks"><a href="#densely-connected-networks" class="headerlink" title="densely connected networks"></a>densely connected networks</h2><ul>
+<li>结构模块化</li>
+<li>密集连接</li>
+<li>post-upsample</li>
+<li>残差加的不是输入x而是特征处理过的全局特征图：全局特征图上的残差学习</li>
+<li>特征过滤与融合：每一卷积层都有向最终concate层的输入</li>
+<li>resnet+densenet<ul>
+<li>缓解梯度消失（concate层能向每一卷积层反向传播）、加强特征复用</li>
+</ul>
+</li>
+<li>但是会增大运算存储开销</li>
+</ul>
+<h2 id="attention-based-networks"><a href="#attention-based-networks" class="headerlink" title="attention-based networks"></a>attention-based networks</h2><ul>
+<li>RCAN<ul>
+<li>local residual in residual<ul>
+<li>每一residual模块又是几个residual模块的残差学习结果</li>
+</ul>
+</li>
+<li>更好复用特征</li>
+<li>压缩 存储开销小<ul>
+<li>RIRB + SEnet</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="GAN-models"><a href="#GAN-models" class="headerlink" title="GAN models"></a>GAN models</h2><ul>
+<li>生成器生成图片与实际图片</li>
+<li>当判别器与生成器博弈平衡、生成图片被判定为真时，这张生成的图片已经达到学习要求，这样的机制构成了GAN</li>
+<li>训练时参数包括G+D 推断时仅G</li>
+<li>存在着隐式建模损失 神经网络工作</li>
+<li>用于SR：低清图片做输入 生成器为SR网络 高清图片作实际图片</li>
+<li>SRGAN<ul>
+<li>MSE</li>
+<li>VGG</li>
+<li>对抗损失</li>
+<li>视觉效果大幅提升</li>
+<li>但是GAN较难稳定训练</li>
+</ul>
+</li>
+</ul>
+<h2 id="评估指标"><a href="#评估指标" class="headerlink" title="评估指标"></a>评估指标</h2><h3 id="客观指标"><a href="#客观指标" class="headerlink" title="客观指标"></a>客观指标</h3><ul>
+<li>PSNR<ul>
+<li>峰值信噪比<ul>
+<li>40dB以上极好</li>
+<li>20dB以下不可接受</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>SSIM<ul>
+<li>结构相似性<ul>
+<li>亮度</li>
+<li>对比度</li>
+<li>结构</li>
+<li>0-1 差距越小SSIM越大</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>两张图才能算以上指标，属于full reference</li>
+</ul>
+<h3 id="主观指标"><a href="#主观指标" class="headerlink" title="主观指标"></a>主观指标</h3><p>主观质量与客观质量方向相反？<br>perception-distortion tradeoff 边界权衡问题</p>
+<ul>
+<li>PI perceptual index<ul>
+<li>Ma <ul>
+<li>以人眼主观评分为目标的双阶段回归模型</li>
+<li>越大越好</li>
+</ul>
+</li>
+<li>NIQE <ul>
+<li>自然图像质量评估偏差</li>
+<li>越小越好</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>LPIPS<ul>
+<li>人眼评估数据集</li>
+</ul>
+</li>
+<li>MOS<ul>
+<li>真人评估打分</li>
+</ul>
+</li>
+</ul>
+<h3 id="损失函数的优化"><a href="#损失函数的优化" class="headerlink" title="损失函数的优化"></a>损失函数的优化</h3><h4 id="VGG特征有效性"><a href="#VGG特征有效性" class="headerlink" title="VGG特征有效性"></a>VGG特征有效性</h4><p>一开始为什么使用VGG的特征进行模型评估？<br>VGG在特定任务上训练过，中间层有较好的特征提取能力，能很好控制过于平滑的效果（相比MSE），VGG能把边缘纹理等内容通过特征提取的方式在特征图中更着重体现。将两张图像在同一VGG的特征图作比较，就相当于在更高层语义上进行匹配。</p>
+<blockquote>
+<p>定义x,y是输入和目标，MSE处理就是算MSE[net(x),y]，VGG处理就是算MSE[VGG(net(x)),VGG(y)]。</p>
+</blockquote>
+<p>GAN过补全纹理，MSE造成过平滑<br>发现主观差异但评分相近<br>VGG浅层特征作为评估指标是否可靠？作为训练依据是否有效？</p>
+<p>究其原因，VGG是ImageNet预训练模型，用于图像分类，<strong>而分类模型与画质增强模型不适配</strong></p>
+<ul>
+<li>识别要求模型平移不变形，超分要求边缘纹理对齐pixel-to-pixel</li>
+<li>分类无视图像清晰程度，高清-退化的内容相同图像，优化目标相同</li>
+</ul>
+<p>需要调整VGG浅层特征（评估指标）</p>
+<h4 id="VGG层间差异性"><a href="#VGG层间差异性" class="headerlink" title="VGG层间差异性"></a>VGG层间差异性</h4><ul>
+<li>VGG不同层不具有结果一致性</li>
+<li>组合损失对高频恢复有效<ul>
+<li>MSE+VGG+GAN</li>
+</ul>
+</li>
+<li>VGG多尺度特征融合</li>
+<li>VGG(i,j) 指VGG第i个maxpool前的conv-relu层的第j个relu层</li>
+</ul>
+<h4 id="VGG统计分布"><a href="#VGG统计分布" class="headerlink" title="VGG统计分布"></a>VGG统计分布</h4><p>统计各层激活率、回传梯度强度</p>
+<p>失活率在越深层越强</p>
+<h1 id="轻量化模型"><a href="#轻量化模型" class="headerlink" title="轻量化模型"></a>轻量化模型</h1><h2 id="FSRCNN"><a href="#FSRCNN" class="headerlink" title="FSRCNN"></a>FSRCNN</h2><p>先压缩，重建时放大</p>
+<h2 id="CARN"><a href="#CARN" class="headerlink" title="CARN"></a>CARN</h2><p>分组卷积、同组参数训练残差</p>
+<h2 id="FALSR"><a href="#FALSR" class="headerlink" title="FALSR"></a>FALSR</h2><p>强化学习</p>
+<h1 id="实际讨论"><a href="#实际讨论" class="headerlink" title="实际讨论"></a>实际讨论</h1><h3 id="数据制作与筛选"><a href="#数据制作与筛选" class="headerlink" title="数据制作与筛选"></a>数据制作与筛选</h3><ul>
+<li>超分模型占显存大<ul>
+<li>输入尺寸控制在32<em>/32-64</em>/64</li>
+</ul>
+</li>
+<li>高清图像数据读取占I/O<ul>
+<li>裁剪原数据保存为小图</li>
+</ul>
+</li>
+<li>制作LR-HR pair进行下采样<ul>
+<li>matlab bicubic</li>
+<li>python opencv area</li>
+</ul>
+</li>
+<li>剔除背景/失焦/过曝等极端图像块，集中训练富信息区域、利用var</li>
+<li>数据增强<ul>
+<li>做8个方向（翻转+kx90°旋转）</li>
+<li>小角度旋转</li>
+<li>适度噪声<ul>
+<li>模糊/椒盐噪/高斯噪/压缩伪影</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h3><ul>
+<li>深层网络 良好的初始化 kaiming init(*0.5/0.75) 加速且稳定收敛</li>
+<li>残差/密集网络 residual 部分用scale稳定早期训练 y=x+0.2*f(x)</li>
+</ul>
+<h3 id="训练技巧"><a href="#训练技巧" class="headerlink" title="训练技巧"></a>训练技巧</h3><ul>
+<li>先将L1 L2训练至收敛 再加入VGG和GAN进行微调</li>
+<li>采用Adam 学习率不可过大 1e-4 2e-4</li>
+<li>后期收敛较慢 不必过早降学习率</li>
+<li>加入阶段性验证 e.g.set5/set14 loss不下降但psnr/ssim依然提升</li>
+</ul>
+<h1 id="研究展望"><a href="#研究展望" class="headerlink" title="研究展望"></a>研究展望</h1><ul>
+<li>尽量不研究除NAS以外的网络结构优化</li>
+<li>构建真实场景的LR数据 e.g.RAW数据集</li>
+<li>具有先验信息的超分 e.g.边缘先验/实例分割先验</li>
+<li>自监督/无监督的基于非成对数据超分，只提供真实场景的LR/HE分布，只能用GAN</li>
+<li>针对多场景/复杂退化 鲁棒的超分模型 电影广播不同场景？</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T11:40:38.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Super-Resolution/">Super-Resolution</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/CNN/">CNN</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/GAN/">GAN</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Sampling/">Sampling</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Residual-Learning/">Residual-Learning</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

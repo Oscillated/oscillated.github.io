@@ -86,6 +86,128 @@
     <header class="title">
       
         <h1>
+          <a href="/2020/05/03/Quality-Enhancement/">Quality-Enhancement</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-05-03T11:40:38.000Z" itemprop="datePublished">
+    2020-05-03
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/Super-Resolution/">Super-Resolution</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/CNN/">CNN</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/GAN/">GAN</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Sampling/">Sampling</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Residual-Learning/">Residual-Learning</a> }
+  </li>
+
+
+  </ul>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/Deep-Learning/">Deep Learning</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <p>社团讲座笔记，介绍了神经网络应用在超分辨率领域的现状和基本概念、经典模型等，干货满满。</p>
+        
+          <div class="more-link">
+            <a href="/2020/05/03/Quality-Enhancement/#more">Read More</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2020/05/03/Model-Compression/">Model-Compression</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-05-03T11:40:25.000Z" itemprop="datePublished">
+    2020-05-03
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/Model-Compression/">Model Compression</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Embedded-Deployment/">Embedded Deployment</a> }
+  </li>
+
+
+  </ul>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/Deep-Learning/">Deep Learning</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <p>社团讲座笔记，一位做模型压缩与加速的学长的分享。</p>
+        
+          <div class="more-link">
+            <a href="/2020/05/03/Model-Compression/#more">Read More</a>
+          </div>
+        
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2020/05/03/EC7/">EC7</a>
         </h1>
       
@@ -109,7 +231,7 @@
   <ul>
     
   <li class="meta-text">
-  { <a href="/categories/Electronic-Competition/">Electronic Competition</a> }
+  { <a href="/categories/Notes/">Notes</a> }
   </li>
 
 
@@ -120,118 +242,13 @@
     </header>
     <div>
       
-        <h1 id="德州仪器简介"><a href="#德州仪器简介" class="headerlink" title="德州仪器简介"></a>德州仪器简介</h1><h2 id="命名规律"><a href="#命名规律" class="headerlink" title="命名规律"></a>命名规律</h2><ul>
-<li><p>OPAxxx:运算放大器</p>
-<ul>
-<li>包括精密运放、高速运放</li>
-<li>通常只能10V以下供电</li>
-</ul>
-</li>
-<li><p>THSxxx:High-Speed Amplifiers</p>
-<ul>
-<li>与OPA差别：电压范围更宽，可至36V</li>
-</ul>
-</li>
-<li><p>TLV/TLC/TLExxx 运放</p>
-<ul>
-<li>TLV(2.7-16V, CMOS)</li>
-<li>TLC(5-16V, CMOS)</li>
-<li>TLE(宽电压)</li>
-<li>通用/高速比较器；ADC/DAC</li>
-</ul>
-</li>
-<li><p>BUFxxx 缓冲器</p>
-</li>
-<li><p>INAxxx 仪表放大器</p>
-<ul>
-<li>Instrumentation, Difference, and Current Sensing Amplifiers</li>
-</ul>
-</li>
-<li><p>增益可控放大器</p>
-<ul>
-<li>PGA 数字可编程</li>
-<li>VCA 压变电压</li>
-</ul>
-</li>
-<li><p>音频放大器 TPA TAS ABD类功放</p>
-</li>
-<li><p>特殊</p>
-<ul>
-<li>XTRxxx：4-20mA 发射器</li>
-<li>RCVxxx: 4-20mA 接收器</li>
-<li>LOGxxx：对数放大器</li>
-<li>IVCxxx：积分放大器</li>
-<li>DRVxxx：驱动放大器（PWM、线路驱动等）</li>
-</ul>
-</li>
-</ul>
-<h2 id="精密运放"><a href="#精密运放" class="headerlink" title="精密运放"></a>精密运放</h2><p>输入失调电压、输入偏置电流，都是越小越好</p>
-<p>工艺决定</p>
-<h3 id="轨到轨输入输出-Rail-Rail-Input-Output"><a href="#轨到轨输入输出-Rail-Rail-Input-Output" class="headerlink" title="轨到轨输入输出 Rail-Rail Input/Output"></a>轨到轨输入输出 Rail-Rail Input/Output</h3><p>输入电压范围能否到电源最大范围、输出电压范围能否到电源最大范围</p>
-<h3 id="自归零Auto-Zero、零温漂Zero-Drift"><a href="#自归零Auto-Zero、零温漂Zero-Drift" class="headerlink" title="自归零Auto Zero、零温漂Zero Drift"></a>自归零Auto Zero、零温漂Zero Drift</h3><p>归零失调电压，减少温度影响</p>
-<h3 id="零交越失真-Zero-Crossover"><a href="#零交越失真-Zero-Crossover" class="headerlink" title="零交越失真 Zero Crossover"></a>零交越失真 Zero Crossover</h3><p>高输入阻抗的同相输入跟随器缓冲大信号时，需要维持总谐波失真THD很低</p>
-<p>零交越失真的输入结构通过内置一个充电泵来提升输入级的偏置电压，消除了过渡区和带来的时域锯齿（带来频域的高次谐波）</p>
-<h3 id="确定放大器的步骤"><a href="#确定放大器的步骤" class="headerlink" title="确定放大器的步骤"></a>确定放大器的步骤</h3><ol>
-<li>供电电压，考虑是否有轨到轨特性</li>
-<li>直流特性：失调电压V_{OS}</li>
-<li>交流特性：GBW（小信号特性），最小增益带宽积要满足，留10-100倍的裕量；压摆率（大信号特性），注意是幅值不是峰峰值</li>
-</ol>
-<h3 id="从双电源供电到单电源供电"><a href="#从双电源供电到单电源供电" class="headerlink" title="从双电源供电到单电源供电"></a>从双电源供电到单电源供电</h3><p>•  运放的电源轨：V+和V-，当V-接地时，运放即为单电源供电。</p>
-<p>•  所有的运放都可以在单电源供电下工作，只要数据手册没有说不可以。</p>
-<p>•  现在，单电源供电的运放在手持设备、低电压设备和ADC驱动中非常常见。</p>
-<p>•  单电源运放的设计要点是：偏置电压的设定</p>
-<h3 id="运放负反馈电路"><a href="#运放负反馈电路" class="headerlink" title="运放负反馈电路"></a>运放负反馈电路</h3><p>F为反馈网络的增益，称为该网络的反馈系数，有时也记为$\beta$。1/F称为噪声增益（NG，Noise Gain）。</p>
-<p>反馈系数F=Vf/Vo=(I×RG)/[I×(RG+RF)]=RG/(RG+RF)</p>
-<p>噪声增益1/F=Vo/Vf=(RG+RF)/RG=1+RF/RG</p>
-<p><strong>正确的偏置电压方式：PPT4 slide48-56</strong></p>
-<h2 id="差动放大器和仪表放大器"><a href="#差动放大器和仪表放大器" class="headerlink" title="差动放大器和仪表放大器"></a>差动放大器和仪表放大器</h2><p>共模电压$V_{CM}$：运放$V__$和$V_+$包含的相同信号成分（取平均）</p>
-<p>差模电压$V_{DIFF}$：运放$V__$和$V_+$包含的不同信号成分（相减）</p>
-<h3 id="差动放大器"><a href="#差动放大器" class="headerlink" title="差动放大器"></a>差动放大器</h3><p>利用同相放大、反向放大、叠加定理，电阻网络匹配，将输入信号相减输出</p>
-<p>抑制共模信号，提取差模信号</p>
-<p>共模抑制比CMRR：差模增益/共模增益</p>
-<p>我们希望差动放大器只放大差模信号、将共模信号完全抑制</p>
-<p>CMRR越小，共模信号引起的输出失调就会越大</p>
-<p>CMRR的决定因素是外部电阻网络的匹配精度：影响电路的对称性</p>
-<p>优点：高共模抑制比，宽输入共模电压范围</p>
-<p>缺点：输入阻抗降低、低固定增益</p>
-<p>TI的硅片级电阻匹配：100dB</p>
-<h3 id="仪表放大器"><a href="#仪表放大器" class="headerlink" title="仪表放大器"></a>仪表放大器</h3><p>三运放结构的仪表放大器INA</p>
-<p>优点：极高的输入阻抗、高增益范围、高CMRR</p>
-<p>缺点：输入共模电压范围窄、相比差动放大器增加功耗尺寸和成本</p>
-<p>两运放结构的仪表放大器INA</p>
-<p>优点：相比三运放，成本尺寸功耗降低</p>
-<p>缺点：输入共模电压范围窄、随频率升高CMRR急剧降低，最小增益为2</p>
-<h3 id="电流检测放大器"><a href="#电流检测放大器" class="headerlink" title="电流检测放大器"></a>电流检测放大器</h3><p>低端电流检测：sensor between the supply and ground</p>
-<p>高端电流检测：sensor between the supply and load</p>
-<p>current shunt monitor 电流分流监视器（高端）</p>
-<h3 id="选型"><a href="#选型" class="headerlink" title="选型"></a>选型</h3><p>差动INA133, INA137(DIP)-双列直插，无DIP代表贴片</p>
-<p>仪表INA333, INA128(DIP)</p>
-<p>电流检测放大器INA271, INA282</p>
-<h2 id="高速运算放大器"><a href="#高速运算放大器" class="headerlink" title="高速运算放大器"></a>高速运算放大器</h2><p>重要指标</p>
-<h3 id="带宽"><a href="#带宽" class="headerlink" title="带宽"></a>带宽</h3><p>决定了放大小信号时，运放的速度</p>
-<p>3dB带宽</p>
-<p>全功率带宽——与压摆率密切相关</p>
-<p>单位增益带宽——通常是GBW</p>
-<h3 id="压摆率"><a href="#压摆率" class="headerlink" title="压摆率"></a>压摆率</h3><p>衡量大信号通路时，运放的输出能否及时响应快速变化输入信号</p>
-<p>计算全功率带宽：$B=\frac{S_R}{2<em>\pi</em>V_p}$</p>
-<p>建立时间：输出信号稳定到指定的误差范围内所需的时间</p>
-<h3 id="电压反馈运放-VFB"><a href="#电压反馈运放-VFB" class="headerlink" title="电压反馈运放 VFB"></a>电压反馈运放 VFB</h3><p>误差信号用电压模型，输入端均为高输入阻抗，反馈使用电压模型</p>
-<p>带宽与GBW参数相关</p>
-<p>高速摆率500V/us</p>
-<p>精密摆率30V/us</p>
-<p>TI高性能1800V/us，等等</p>
-<h3 id="电流反馈运放-CFB"><a href="#电流反馈运放-CFB" class="headerlink" title="电流反馈运放 CFB"></a>电流反馈运放 CFB</h3><p>误差信号用电流模型，正端高输入阻抗负端低输入阻抗，反馈使用电流模型</p>
-<p>带宽由反馈电阻决定，与GBW参数无关</p>
-<p>datasheet有最佳反馈电阻值$R_F$，其增加会减小带宽，降低会降低稳定性，更易自激</p>
-<p>在反馈通路上加电容，可以改变相位，但是自激高频分量更严重了，解决方法是增大反馈电阻$R_F$</p>
-<p>增益&lt;=3或频率&lt;=10MHz：用VFB</p>
-<p>增益&gt;=4或频率&gt;10MHz：用CFB或者去补偿VFB</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>精密放大器一定是电压反馈</p>
-<p>高速放大器可以是电压反馈或者电流反馈</p>
-<p>高速放大器大多是双极性输入</p>
-<h2 id="功率放大器"><a href="#功率放大器" class="headerlink" title="功率放大器"></a>功率放大器</h2><h2 id="增益可控放大器"><a href="#增益可控放大器" class="headerlink" title="增益可控放大器"></a>增益可控放大器</h2><p>注意影响是dB/V还是V/V</p>
-<h2 id="其他放大器"><a href="#其他放大器" class="headerlink" title="其他放大器"></a>其他放大器</h2><h2 id="TI输出驱动级"><a href="#TI输出驱动级" class="headerlink" title="TI输出驱动级"></a>TI输出驱动级</h2><p>直接并联两个运放的输入和输出会导致严重的问题，输出电压相互调整，可能丧失所有的电流驱动能力，解决方法：主输出和从输出</p>
-
+        <p>电赛培训7</p>
+<p>TI Opamp</p>
+        
+          <div class="more-link">
+            <a href="/2020/05/03/EC7/#more">Read More</a>
+          </div>
+        
       
     </div>
 </article>
@@ -266,7 +283,7 @@
   <ul>
     
   <li class="meta-text">
-  { <a href="/categories/Electronic-Competition/">Electronic Competition</a> }
+  { <a href="/categories/Notes/">Notes</a> }
   </li>
 
 
@@ -288,8 +305,11 @@
         });
     </script>
 <meta name="generator" content="Hexo 4.2.0"></head>
+电赛培训6
 
-<p>电赛培训6</p>
+
+
+<p>self-excitement</p>
         
           <div class="more-link">
             <a href="/2020/05/03/EC6/#more">Read More</a>
@@ -329,7 +349,7 @@
   <ul>
     
   <li class="meta-text">
-  { <a href="/categories/Electronic-Competition/">Electronic Competition</a> }
+  { <a href="/categories/Notes/">Notes</a> }
   </li>
 
 
@@ -351,8 +371,11 @@
         });
     </script>
 <meta name="generator" content="Hexo 4.2.0"></head>
+电赛培训5
 
-<p>电赛培训5</p>
+
+
+<p>Opamp</p>
         
           <div class="more-link">
             <a href="/2020/05/03/EC5/#more">Read More</a>
@@ -392,7 +415,7 @@
   <ul>
     
   <li class="meta-text">
-  { <a href="/categories/Electronic-Competition/">Electronic Competition</a> }
+  { <a href="/categories/Notes/">Notes</a> }
   </li>
 
 
@@ -414,8 +437,11 @@
         });
     </script>
 <meta name="generator" content="Hexo 4.2.0"></head>
+电赛培训4
 
-<p>电赛培训4</p>
+
+
+<p>tasks</p>
         
           <div class="more-link">
             <a href="/2020/05/03/EC4/#more">Read More</a>
@@ -455,7 +481,7 @@
   <ul>
     
   <li class="meta-text">
-  { <a href="/categories/Electronic-Competition/">Electronic Competition</a> }
+  { <a href="/categories/Notes/">Notes</a> }
   </li>
 
 
@@ -477,8 +503,11 @@
         });
     </script>
 <meta name="generator" content="Hexo 4.2.0"></head>
+电赛培训3
 
-<p>电赛培训3</p>
+
+
+<p>EDA, Opamp</p>
         
           <div class="more-link">
             <a href="/2020/05/03/EC3/#more">Read More</a>
@@ -518,7 +547,7 @@
   <ul>
     
   <li class="meta-text">
-  { <a href="/categories/Electronic-Competition/">Electronic Competition</a> }
+  { <a href="/categories/Notes/">Notes</a> }
   </li>
 
 
@@ -530,6 +559,7 @@
     <div>
       
         <p>电赛培训2</p>
+<p>tasks</p>
         
           <div class="more-link">
             <a href="/2020/05/03/EC2/#more">Read More</a>
@@ -558,7 +588,7 @@
   <ul>
     
   <li class="meta-text">
-  { <a href="/tags/s/">s</a> }
+  { <a href="/tags/Electronic-Competition/">Electronic Competition</a> }
   </li>
 
 
@@ -569,7 +599,7 @@
   <ul>
     
   <li class="meta-text">
-  { <a href="/categories/Electronic-Competition/">Electronic Competition</a> }
+  { <a href="/categories/Notes/">Notes</a> }
   </li>
 
 
@@ -581,6 +611,7 @@
     <div>
       
         <p>电赛培训1</p>
+<p>Introduction</p>
         
           <div class="more-link">
             <a href="/2020/05/03/EC1/#more">Read More</a>
@@ -635,124 +666,6 @@
         
           <div class="more-link">
             <a href="/2020/05/03/Markdown-Usage/#more">Read More</a>
-          </div>
-        
-      
-    </div>
-</article>
-
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2020/05/03/Ubuntu-Installation/">Ubuntu-Installation</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-05-03T11:24:37.000Z" itemprop="datePublished">
-    2020-05-03
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/Virtual-Machine/">Virtual Machine</a> }
-  </li>
-
-  <li class="meta-text">
-  { <a href="/tags/VMWare/">VMWare</a> }
-  </li>
-
-
-  </ul>
-  
-  
-  / 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/categories/Ubuntu/">Ubuntu</a> }
-  </li>
-
-
-  </ul>
-  
-</div>
-
-    </header>
-    <div>
-      
-        <p>上了小白的汇编以后win10装了VMware，以前知道能用来装一下虚拟机，之后linux也需要用到，这周课上完以后就试了一下，记录一下坑和经验。</p>
-        
-          <div class="more-link">
-            <a href="/2020/05/03/Ubuntu-Installation/#more">Read More</a>
-          </div>
-        
-      
-    </div>
-</article>
-
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2020/05/03/MIT-Linear-Algebra4/">MIT_Linear_Algebra4</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-05-03T10:26:32.000Z" itemprop="datePublished">
-    2020-05-03
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/Linear-Algebra/">Linear Algebra</a> }
-  </li>
-
-
-  </ul>
-  
-  
-  / 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/categories/Open-Courses/">Open Courses</a> }
-  </li>
-
-
-  </ul>
-  
-</div>
-
-    </header>
-    <div>
-      
-        <head>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-            inlineMath: [['$','$']]
-            }
-        });
-    </script>
-<meta name="generator" content="Hexo 4.2.0"></head>
-
-<p>MIT Linear Algebra 18.06 By Gilbert Strang 4</p>
-        
-          <div class="more-link">
-            <a href="/2020/05/03/MIT-Linear-Algebra4/#more">Read More</a>
           </div>
         
       

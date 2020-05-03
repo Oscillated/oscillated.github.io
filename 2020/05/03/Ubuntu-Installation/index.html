@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>tags | Oscillate.</title>
+  <title>Ubuntu-Installation | Oscillate.</title>
   
   
   
@@ -81,48 +81,60 @@
             <div>
   <article class='ContentView'>
     <header class='PageTitle'>
-        <h1>tags</h1>
+        <h1>Ubuntu-Installation</h1>
     </header>
 
     <section>
-      
+      <p>上了小白的汇编以后win10装了VMware，以前知道能用来装一下虚拟机，之后linux也需要用到，这周课上完以后就试了一下，记录一下坑和经验。</p>
+<a id="more"></a>
 
-      
-        <ul class="Tags">
-          
-  <li class="tag-list">
-  { <a href="/tags/optical/">optical</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/SRCNN/">SRCNN</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/ASM/">ASM</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/Linear-Algebra/">Linear Algebra</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/Virtual-Machine/">Virtual Machine</a> }
-  </li>
-
-  <li class="tag-list">
-  { <a href="/tags/VMWare/">VMWare</a> }
-  </li>
+<h3 id="选了Ubuntu"><a href="#选了Ubuntu" class="headerlink" title="选了Ubuntu"></a>选了Ubuntu</h3><p>选乌邦图主要是因为入门的话教程和资料会比较多，</p>
+<h3 id="安装iso"><a href="#安装iso" class="headerlink" title="安装iso"></a>安装iso</h3><p>装VMware就不说了，看了下小白提供的是永久有效的VMware 15.5 Pro，真香！</p>
+<p>看了一圈以后选了18.04.4 LTS的版本，一开始憨憨去挂梯子下官网的版本，后来发现降速很严重，突然想到了去看一下镜像，最后找了<a href="http://mirrors.zju.edu.cn/" target="_blank" rel="noopener">浙大镜像</a>的版本（惊了之前真不知道浙大也有开源镜像站），速度在1-2M/s左右。</p>
+<p>下载完之后主要参照的是<a href="https://blog.csdn.net/qq_39557270/article/details/102926282?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522158460704919726867843993%2522%252C%2522scm%2522%253A%252220140713.130056874..%2522%257D&request_id=158460704919726867843993&biz_id=0&utm_source=distribute.pc_search_result.none-task" target="_blank" rel="noopener">这篇博客</a>，虚拟磁盘空间我设了机械的128G。</p>
+<h3 id="安装VMware-Tools"><a href="#安装VMware-Tools" class="headerlink" title="安装VMware Tools"></a>安装VMware Tools</h3><p>装VMware Tools是为了实现客户机和主机的各种交互以及客户机的全屏等功能，还是很有必要的，安装也很简单，在VMware的虚拟机选项卡就能下载，之后会在虚拟机桌面生成一个压缩包，之后的操作见<a href="https://jingyan.baidu.com/article/cb5d6105d7e943005c2fe0ac.html" target="_blank" rel="noopener">这篇经验</a>，装的过程中也初步了解了一下linux的终端命令行风格。</p>
+<h3 id="初始优化和设置"><a href="#初始优化和设置" class="headerlink" title="初始优化和设置"></a>初始优化和设置</h3><p>简单列几条比较实用的优化策略。</p>
+<ul>
+<li>更换最优软件源</li>
+<li>装gnome的扩展</li>
+<li>选择舒服的主题和图标样式、壁纸等</li>
+<li>tweaks工具</li>
+<li>装常用软件，如编译器、输入法、文字编辑软件等</li>
+<li>终端推荐上oh-my-zsh，用过都说香。</li>
+</ul>
 
 
-        </ul>
       
 
     </section>
     
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T11:24:37.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Virtual-Machine/">Virtual Machine</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/VMWare/">VMWare</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
     
 </article>
 
+  
 </div>
 
             <footer>

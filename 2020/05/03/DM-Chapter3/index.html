@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>DM_Chapter3 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>DM_Chapter3</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>宋牟平《离散数学》第三章 函数</p>
+<a id="more"></a>
+
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="函数-1"><a href="#函数-1" class="headerlink" title="函数"></a>函数</h2><blockquote>
+<p>定义：设有集合A、B，$f$是一由A到B的关系，如果对于每个a$\in$A，存在唯一的b$\in$B使得a$f$b，则称关系$f$是由A到B的一个函数，记为$f$:A$\rightarrow$B。</p>
+</blockquote>
+<ul>
+<li><p>定义域$D_f$ = A，值域$R_f$ = B，B称为$f$的值域包</p>
+</li>
+<li><p>若a$f$b，则称b为a的像，表示为$f$(a)，称a为b的像源</p>
+</li>
+<li><p>函数是关系</p>
+</li>
+<li><p>允许在集合A中多个元素共有一个相同的函数值</p>
+</li>
+<li><p>允许集合B中有的元素在A中没有像源</p>
+<p><img src="https://img.cfssr.xyz/imgs/2020/05/de29d2ca24f0b658.png" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<p>定义：设有函数$f$:A$\rightarrow$B 和$g$:C$\rightarrow$D ，如果<br>A=C 和B=D ，并且对所有的a$\in$A （或a$\in$C) 都有<br>$f$(a) = $g$(a) ，则称函数$f$和$g$是相等的，记为$f$=$g$.</p>
+</blockquote>
+<blockquote>
+<p>定义3-3 设有函数$f$:A$\rightarrow$B 和$g$:S$\rightarrow$B，如果<br>S$\subseteq$A ，且对于所有的a$\in$S ，有$g$(a) = $f$(a) ，则称$g$<br>是$f$在S上的限制，并称$f$是$g$在A上的扩充．</p>
+</blockquote>
+<p><img src="https://img.cfssr.xyz/imgs/2020/05/e2d064c32f2b81bb.png" alt=""></p>
+<p>对一个笛卡尔积A$\times$B，用$B^A$表示可以用来定义A到B的函数的集合：</p>
+<blockquote>
+<p>$B^A = {f|f:A \rightarrow B}$</p>
+</blockquote>
+<p>设# A = m, # B = n，则# ($B^{A}$) = $n^m$ </p>
+<blockquote>
+<p>定义 设$f$是一个由A到B的函数，<br>(1) 若当$a_i $$\ne$$a_j$时，有$f(a_i)$$\ne$$f(a_j)$ （也就是当$f(a_i)$ $=$ $f(a_j)$ 时，有$a_i$ $=$ $a_j$）,则称$f$为由A到B的内射.<br>(2) 若$f(A) = B$ ，则称$f$为由A到B的满射．<br>(3) 若$f$既是内射又是满射，则称$f$为由A到B的双射．</p>
+</blockquote>
+<ul>
+<li>内射使A中元素与值域中元素一一对应</li>
+<li>满射使B中每一个元素都是A中至少一个元素的像</li>
+<li>双射使A与B元素一一对应</li>
+</ul>
+<p>#A $\le$ #B 才可能是内射</p>
+<p>#A $\ge$ #B 才可能是满射</p>
+<p>#A $=$ #B 才可能是双射</p>
+<ul>
+<li>集合A上的恒等关系$I_A$显然是一个由A到A的双射，称为恒等函数</li>
+</ul>
+<h2 id="函数的复合"><a href="#函数的复合" class="headerlink" title="函数的复合"></a>函数的复合</h2><blockquote>
+<p>定义 设有函数$f$:A $\rightarrow$ B,$g$:B $\rightarrow$ C ，则$f$ 和$g$ 的复合函数是一个由A 到C的函数，记为$g•f$（或简记成$gf$) ．对于任一$a \in A$ ，有$(g•f) (a) = g(f(a))$，即如果$b \in B$ 是 $a \in A$ 在$f$作用下的像，且$c \in C$ 是b 在$g$作用下的像，那么c 就是a 在$gf$作用下的像</p>
+</blockquote>
+<ul>
+<li>只要求$f$的值域$R_f \subseteq D_G$，就可定义复合函数$(g•f)$</li>
+<li>$g•f$有意义，$f•g$不一定有意义</li>
+<li>即使两者都有意义，也不一定相等</li>
+<li>函数复合是关系复合的一种特殊情形，关系复合中成立的性质，对于函数复合也是成立的</li>
+</ul>
+<blockquote>
+<p>定理 设有函数$f:A \rightarrow B$，$g:B \rightarrow C$ ，$h:C \rightarrow D$ ，则有$h(gf) = (hg)f$</p>
+</blockquote>
+<ul>
+<li>复合函数$f_{n}f_{n-1}…f_{1}$唯一地表示一个由$A_1$到$A_{n+1}$的函数，A、$f$分别都相等时，复合函数可表示为$f^n$</li>
+</ul>
+<blockquote>
+<p>定义 设$f$是一个由A到A的函数，且$f^2＝ f$ ，则称$f$是幂等函数．</p>
+</blockquote>
+<ul>
+<li>如果$f$是幂等的，则对于所有的正整数$n \ge 1$ ，都是$f^n＝ f$.</li>
+</ul>
+<blockquote>
+<p>定理3-2 设有函数$f:A \rightarrow B$ 和$g:B \rightarrow C$ ，那么：</p>
+<ul>
+<li>如果$f$和$g$ 都是内射，则$gf$也是内射；</li>
+<li>如果$f$和$g$都是满射，则$gf$也是满射；</li>
+<li>如果$f$和$g$都是双射，则$gf$也是双射．</li>
+<li>如果$gf$是内射，则$f$是内射；<ul>
+<li><img src="https://img.cfssr.xyz/imgs/2020/05/dba92a30fe0708ba.png" alt=""></li>
+</ul>
+</li>
+<li>如果$gf$是满射，则$g$是满射；<ul>
+<li><img src="https://img.cfssr.xyz/imgs/2020/05/53cad66c0e92200d.png" alt=""></li>
+</ul>
+</li>
+<li>如果$gf$是双射，则$f$是内射而$g$是满射．</li>
+</ul>
+</blockquote>
+<p><strong>注意复合函数的记法与实际操作顺序是相反的</strong></p>
+<h2 id="逆函数"><a href="#逆函数" class="headerlink" title="逆函数"></a>逆函数</h2><blockquote>
+<p>定义 设有函数$f:A\rightarrow B$ 是一个双射，定义函数$g:B\rightarrow A$ ，使得对于每一个<br>元素$b \in B$,$g(b)=a$，其中a 是使得$f(a) = b$的A 中的元素，则称$g$为$f$的逆函数，<br>记作$f^{-1}$．若函数$f$存在逆函数$f^{-1}$则称$f$是可逆的．</p>
+</blockquote>
+<ul>
+<li>仅当$f$是双射函数时，才定义$f$的逆函数$f^{-1}$，$f^{-1}$就是$f$的逆关系$\widetilde{f}$</li>
+</ul>
+<blockquote>
+<p>定理 设函数$f:A \rightarrow B$ 是双射，则逆函数$f^{-1}:B \rightarrow A$ 也是一个双射．</p>
+<p>定理 设函数$f:A \rightarrow B$ 是一个双射，则$(f^{-1})^{-1} =f$.</p>
+<p>定理 如果函数$f:A \rightarrow B$ 是可逆的，则有$f^{-1}f = I_A$, $ff^{-1}= I_B$</p>
+<p>定理 设有函数$f:A \rightarrow B$ 和$g:B\rightarrow A$ ，当且仅当$gf = I_A,fg =I_B$时，有$g = f^{-1}$.</p>
+<p>定理 设有函数$f:A \rightarrow B$ 和$g:B\rightarrow C$ ，且$f$和$g$都是可逆的，则$(gf)^{-1} = f^{-1} \bullet g^{-1}$</p>
+<ul>
+<li>复合函数的逆函数能够用相反次序的逆函数的复合来表示</li>
+</ul>
+</blockquote>
+<h3 id="左逆函数和右逆函数"><a href="#左逆函数和右逆函数" class="headerlink" title="左逆函数和右逆函数"></a>左逆函数和右逆函数</h3><blockquote>
+<p>定义 设有函数$f:A \rightarrow B$ 和$g:B\rightarrow A$，若$g\bullet f$ = IA ，则称$g$是$f$的左逆函数， $f$是$g$的右逆函数．<br>定理 设有函数$f:A \rightarrow B$ ，则</p>
+<ul>
+<li>当且仅当$f$是内射时，$f$有左逆函数；</li>
+<li>当且仅当$f$是满射时，$f$有右逆函数．</li>
+</ul>
+</blockquote>
+<h2 id="置换"><a href="#置换" class="headerlink" title="置换"></a>置换</h2><blockquote>
+<p>定义 设$A= {a_1,a_2，\cdots ， a_n }$是一个有限集合，从A到A的双射函数称为集合A上的置换，而整数n称为置换的阶</p>
+</blockquote>
+<p>n阶置换$P:A \rightarrow A$常表示成如下形式：</p>
+<p>$P = \left { \begin{matrix} a_1 &amp; a_2 &amp; … &amp; a_n \ P(a_1) &amp; P(a_2) &amp; … &amp; P(a_n) \end{matrix} \right}$</p>
+<ul>
+<li>集合A上不同的n阶置换的数目是$n!$个．</li>
+</ul>
+<p><img src="https://img.cfssr.xyz/imgs/2020/05/9c7ce336078243e4.png" alt=""></p>
+<h3 id="恒等置换"><a href="#恒等置换" class="headerlink" title="恒等置换"></a>恒等置换</h3><p>$I_A = {(a,a)|a \in A }$</p>
+<p>$P = \left { \begin{matrix} a_1 &amp; a_2 &amp; … &amp; a_n \ a_1 &amp; a_2 &amp; … &amp;a_n \end{matrix} \right}$</p>
+<p>n阶置换中的一个置换</p>
+<h3 id="逆置换"><a href="#逆置换" class="headerlink" title="逆置换"></a>逆置换</h3><p>双射函数可逆，$P:A \rightarrow A$ 都有逆函数$P^{-1}:A \rightarrow A$，$P^{-1}$称$P$的逆置换.</p>
+<p>$P = \left { \begin{matrix} a_1 &amp; a_2 &amp; … &amp; a_n \ P(a_1) &amp; P(a_2) &amp; … &amp; P(a_n) \end{matrix} \right}$</p>
+<p>$P^{-1} = \left { \begin{matrix} P(a_1) &amp; P(a_2) &amp; … &amp; P(a_n) \a_1 &amp; a_2 &amp; … &amp; a_n  \end{matrix} \right}$</p>
+<p><img src="https://img.cfssr.xyz/imgs/2020/05/b32433f82bae1882.png" alt=""></p>
+<ul>
+<li>置换在复合运算下是封闭的。<ul>
+<li>设$P_1:A \rightarrow A$ ,$P_2:A \rightarrow A$  是A 上任意的两个置换，则置换的复合$P_1 \bullet P_2:A \rightarrow A$<br>也必定是A 上的一个置换</li>
+</ul>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T12:13:51.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Discrete-Mathematics/">Discrete Mathematics</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

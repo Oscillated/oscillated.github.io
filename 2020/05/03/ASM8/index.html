@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ASM8 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>ASM8</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>白洪欢《汇编语言程序设计基础》笔记8</p>
+<a id="more"></a>
+
+<h1 id="如何定义和调用一个函数"><a href="#如何定义和调用一个函数" class="headerlink" title="如何定义和调用一个函数"></a>如何定义和调用一个函数</h1><h2 id="用标号来定义函数名称"><a href="#用标号来定义函数名称" class="headerlink" title="用标号来定义函数名称"></a>用标号来定义函数名称</h2><p>被调用了 <code>call f</code></p>
+<p>结尾通常有返回 <code>ret</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">f:	; f是函数名</span><br><span class="line">	inc ax</span><br><span class="line">	ret</span><br><span class="line">main:</span><br><span class="line">	mov ax, 3</span><br><span class="line">	call f;</span><br><span class="line">exit:</span><br><span class="line">	; 输出返回值4，仅限个位数（al等价ax）时</span><br><span class="line">	; mov ah, 2</span><br><span class="line">	; mov dl, al</span><br><span class="line">	; add dl, &#39;0&#39;</span><br><span class="line">	; int 21h</span><br><span class="line">	</span><br><span class="line">	mov ah, 4Ch</span><br><span class="line">    int 21h</span><br></pre></td></tr></table></figure>
+
+<h2 id="用proc定义"><a href="#用proc定义" class="headerlink" title="用proc定义"></a>用proc定义</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">f proc ; procedure过程，可以理解为函数function</span><br><span class="line">	inc ax</span><br><span class="line">	ret</span><br><span class="line">f endp; end of procedure</span><br><span class="line"></span><br><span class="line">main:</span><br><span class="line">	mov ax, 3</span><br><span class="line">	call f;</span><br><span class="line">exit:</span><br><span class="line">	mov ah, 4Ch</span><br><span class="line">    int 21h</span><br></pre></td></tr></table></figure>
+
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">;输入2个2位的16进制数,输出它们的和.</span><br><span class="line">;例如输入FF02,则输出0101。</span><br><span class="line">;调用两次分别输入FF、02，输出结果0101</span><br><span class="line"></span><br><span class="line">; A &#x3D;&#x3D;&gt; B &#x3D;&#x3D;&gt; C</span><br><span class="line">; A &lt;&#x3D;&#x3D; B &lt;&#x3D;&#x3D; ret</span><br><span class="line">.386</span><br><span class="line">code segment use16</span><br><span class="line">assume cs:code</span><br><span class="line">input: ;input作为函数使用，输入1位十六进制数</span><br><span class="line">   mov ah, 1</span><br><span class="line">   int 21h; AL&#x3D;getchar()</span><br><span class="line">   cmp al, &#39;A&#39;; &#39;A&#39;&#x3D;&#x3D;41h, &#39;9&#39;&#x3D;&#x3D;39h</span><br><span class="line">   jb is_digit</span><br><span class="line">is_alpha:</span><br><span class="line">   sub al, &#39;A&#39;</span><br><span class="line">   add al, 10</span><br><span class="line">   jmp input_done</span><br><span class="line">is_digit:</span><br><span class="line">   sub al, &#39;0&#39;; AL是函数的返回值</span><br><span class="line">input_done:</span><br><span class="line">   ret</span><br><span class="line"></span><br><span class="line">input_a_number: ;输入2位十六进制(00h-FFh)，调用2次input实现</span><br><span class="line">   ; 用到bl，因此要防止bx被毁坏（bx可能在main等函数中是有意义的）</span><br><span class="line">   ; 把用到的寄存器做保护，但显然不能对ax进行堆栈保护，因为要接收函数返回值</span><br><span class="line">   push bx</span><br><span class="line">   call input ; 输入&#39;F&#39;，会返回AL&#x3D;0Fh，十位转移到bl</span><br><span class="line">   mov bl, al</span><br><span class="line">   call input ; 输入&#39;F&#39;，会返回AL&#x3D;0Fh，获得个位</span><br><span class="line">   shl bl, 4 ;先把之前的十位左移，bl&#x3D;F0h</span><br><span class="line">   add al, bl; AL是函数的返回值，接受个位</span><br><span class="line">   pop bx</span><br><span class="line">   ret</span><br><span class="line"></span><br><span class="line">output_a_number:</span><br><span class="line">   ; 注意push pop寄存器的顺序对应，先进后出，后进先出</span><br><span class="line">   push cx</span><br><span class="line">   push dx</span><br><span class="line">   mov cx, 4</span><br><span class="line">;1011 0000 1111 0101 循环左移前</span><br><span class="line">;0000 1111 0101 1011 循环左移后</span><br><span class="line">convert_next_digit:</span><br><span class="line">   rol ax, 4</span><br><span class="line">   push ax</span><br><span class="line">   and ax, 0Fh; AX&#x3D;0000 0000 0000 1011</span><br><span class="line">   cmp al, 10</span><br><span class="line">   jb output_is_digit</span><br><span class="line">   sub al, 10</span><br><span class="line">   add al, &#39;A&#39;</span><br><span class="line">   jmp output_a_digit</span><br><span class="line">output_is_digit:</span><br><span class="line">   add al, &#39;0&#39;</span><br><span class="line">output_a_digit:</span><br><span class="line">   mov ah, 2</span><br><span class="line">   mov dl, al</span><br><span class="line">   int 21h; putchar(dl)</span><br><span class="line">   pop ax</span><br><span class="line">   sub cx, 1</span><br><span class="line">   jnz convert_next_digit</span><br><span class="line">   pop dx</span><br><span class="line">   pop cx</span><br><span class="line">   ret</span><br><span class="line"></span><br><span class="line">main:</span><br><span class="line">   call input_a_number; 输入&#39;FF&#39;，返回AL&#x3D;FFh</span><br><span class="line">   mov bh, 0</span><br><span class="line">   mov bl, al; BX&#x3D;00FF</span><br><span class="line">   call input_a_number; 输入&#39;02&#39;，返回AL&#x3D;02h</span><br><span class="line">   mov ah, 0 ; AX&#x3D;0002</span><br><span class="line">   add ax, bx; 计算两数之和</span><br><span class="line">   </span><br><span class="line">   ; 参数（和）已经放在AX中</span><br><span class="line">   call output_a_number; 以16进制格式输出AX的值</span><br><span class="line">   mov ah, 4Ch</span><br><span class="line">   int 21h   </span><br><span class="line">code ends</span><br><span class="line">end main</span><br></pre></td></tr></table></figure>
+
+<h1 id="32位的间接寻址方式"><a href="#32位的间接寻址方式" class="headerlink" title="32位的间接寻址方式"></a>32位的间接寻址方式</h1><p>32位比16位多了以下寻址方式:</p>
+<p>[寄存器+寄存器*n+常数]</p>
+<p>其中n=2、4、8。</p>
+<p>其中前后寄存器并不要求一定是16位下限定的4个，</p>
+<p>ebx, ebp, esi, edi, eax, ecx, edx, esp都可以，任意组合、可以相同</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov eax, [ebx+esi\*4] ;short int(2), long int(4),float(4), double(8)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">long a[4] &#x3D; &#123;1, 2, 3, 4&#125;, y;</span><br><span class="line">;想获得y &#x3D; a[2]:</span><br><span class="line">设ebx&#x3D;&amp;a[0], esi&#x3D;2是下标</span><br><span class="line">mov y, [ebx+esi*4] ;4&#x3D;sizeof(long int)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">static</span> short <span class="keyword">int</span> a[<span class="number">3</span>]=&#123;<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>&#125;;</span><br><span class="line">   <span class="keyword">int</span> i, sum=<span class="number">0</span>;</span><br><span class="line">   <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">3</span>; i++)</span><br><span class="line">      sum += a[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="段跨越"><a href="#段跨越" class="headerlink" title="段跨越"></a>段跨越</h1><p>segment overriding</p>
+<p>通过在操作数前添加一个段前缀(segment prefix)如CS:、DS:、ES:、SS:来强制改变操作数的段址，这就是段跨越。</p>
+<ul>
+<li><p>省略段地址的中括号寻址，一般是省略了段地址ds。</p>
+</li>
+<li><p>特殊：当[]中包含有寄存器bp时，该变量的段地址一定是ss。</p>
+<ul>
+<li>[bp], [bp+2], [bp+si+2], [bp+di-1]等价于ss:[bp], ss:[bp+2], ss:[bp+si+2], ss:[bp+di-1]</li>
+</ul>
+</li>
+</ul>
+<p>默认的段地址是可以改变的，mov ax, ds:[bp+2]，这条指令的源操作数段地址从默认的ss改成了ds。</p>
+<p>同理，mov ax, [bx+si+2]改成mov ax, cs:[bx+si+2]的话，默认段地址就从ds变成了cs。</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T12:10:31.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/ASM/">ASM</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

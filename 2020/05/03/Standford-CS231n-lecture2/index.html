@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Standford_CS231n_lecture2 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Standford_CS231n_lecture2</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<p>Standford cs231n:Convolutional Neural Networks for Visual Recognition By Fei-Fei Li, Justin Johnson, Serena Yeung  lecture2</p>
+<a id="more"></a>
+
+<h1 id="Linear-classification"><a href="#Linear-classification" class="headerlink" title="Linear classification"></a>Linear classification</h1><h2 id="kNN’s-disadvantages"><a href="#kNN’s-disadvantages" class="headerlink" title="kNN’s disadvantages"></a>kNN’s disadvantages</h2><ul>
+<li>Very Inefficient - The classifier must <em>remember</em> all of the training data (probably gigabytes in size)and store it for future comparisons with the test data.</li>
+<li>Classifying a test image is expensive since it requires a comparison to all training images</li>
+</ul>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>two major components:</p>
+<ul>
+<li>score function - maps the raw data to class scores</li>
+<li>loss function - quantifies the agreement between the predicted scores and the ground truth labels</li>
+</ul>
+<p>other work:</p>
+<ul>
+<li>minimizing the loss function by adjusting the parameters of the score function is actually an optimization problem.</li>
+</ul>
+<h2 id="Score-function"><a href="#Score-function" class="headerlink" title="Score function"></a>Score function</h2><p>a Parametric model : </p>
+<ol>
+<li>takes in training dataset of images $x_i \in R^D$, each has the corresponding label $y_i$. Here $i = 1,2,\cdots,N$(number of images)$ \quad y_i \in 1,2,\cdots,K$(categories) </li>
+<li>N - (number of images),K​ - (categories), D - (dimensions)</li>
+<li>score function $f:R^D \rightarrow R^K$.</li>
+</ol>
+<p>The simpliest score function $f(x_i,W,b)=Wx_i+b$</p>
+<ul>
+<li>suppose $x_i$ has been flattened out to become [D*1]<ul>
+<li>x - (32*32*3)*1</li>
+</ul>
+</li>
+<li>weights $W$ is of size [K*D]<ul>
+<li>W - 10*(32*32*3)</li>
+</ul>
+</li>
+<li>bias vector $b$ is of size [K*1]<ul>
+<li>b - 10*1</li>
+</ul>
+</li>
+</ul>
+<p>Remarks:</p>
+<ul>
+<li>First, note that the single matrix multiplication $Wx_i$ is effectively evaluating 10 separate classifiers in parallel (one for each class), where each classifier is a row of $W$.</li>
+<li>Notice also that we think of the input data $(x_i,y_i)$ as given and fixed, but we have control over the setting of the parameters $W,b$. We want the function to give out 10 scores with the interpretation which are larger for more possible category and smaller for less possible category. </li>
+<li>An advantage of this approach is that the training data is used to learn the parameters $W,b$, but once the learning is complete we can <strong>discard the entire training set</strong> <strong>and only keep the learned parameters</strong>. That is because a new test image can be simply forwarded through the function and classified based on the computed scores.</li>
+<li>Another advantage is that classifying the test image involves a single matrix multiplication and addition, which is significantly faster than comparing a test image to all training images</li>
+</ul>
+<blockquote>
+<p>Convolutional Neural Networks will map image pixels to scores exactly as shown above, but the mapping ( f ) will be more complex and will contain more parameters.</p>
+</blockquote>
+<h2 id="Interpreting-a-linear-classifier"><a href="#Interpreting-a-linear-classifier" class="headerlink" title="Interpreting a linear classifier"></a>Interpreting a linear classifier</h2><p>Depending on precisely what values that set for weights, the function has the capacity to <strong>like or dislike</strong></p>
+<ul>
+<li>For instance, imagine that the “ship” class might be more likely to have lots of blue on the sides of an image (which could likely correspond to water), and thus the “ship” classifier would then have a lot of positive weights across its blue channel weights, negative weights in the red/green channels</li>
+</ul>
+<h3 id="the-high-dimensional-interpretation"><a href="#the-high-dimensional-interpretation" class="headerlink" title="the high-dimensional interpretation"></a>the high-dimensional interpretation</h3><p>High-dimesional image vectors can be thought as a single point in hyperspace, then the entire dataset is a (labeled) set of points. Each score function is a linear function over this space.</p>
+<img src="https://cs231n.github.io/assets/pixelspace.jpeg" alt="img" style="zoom:50%;" />
+
+<p>The geometric interpretation of $W$ and $b$:</p>
+<ul>
+<li>a nudge in W - rotate in different directions. </li>
+<li>a nudge in b - pan up and down in the hyperspace</li>
+</ul>
+<h3 id="the-template-matching-interpretation"><a href="#the-template-matching-interpretation" class="headerlink" title="the template matching interpretation"></a>the template matching interpretation</h3><p>each row of $W$ corresponds to a template learned in training.</p>
+<p>The score of each class for an image is then obtained by comparing each template with the image using an inner product (or dot product) one by one to find the one that “fits” best.</p>
+<p>we can still think that we are doing Nearset Neighbor, but instead using a single image per class which might be a blurred and unrealistic one, because the linear classifier is only allowed to use one template per category. We use the (negative) inner product as the distance instead of the L1 or L2 distance.</p>
+<blockquote>
+<p>The restriction above will be gone in neural network models. A neural network will be able to develop intermediate neurons in its hidden layers that could detect specific car types (e.g. green car facing left, blue car facing front, etc.), and neurons on the next layer could combine these into a more accurate car score through a weighted sum of the individual car detectors.</p>
+</blockquote>
+<h3 id="Bias-trick"><a href="#Bias-trick" class="headerlink" title="Bias trick"></a>Bias trick</h3><p>we want to combine the two parameters $b,W$ into one.</p>
+<p>A commonly used trick is to introduce $b$ into a column of $W$ matrix and extend $x_i$ with one additional dimension that always holds the constant 1:</p>
+<p><img src="https://cs231n.github.io/assets/wb.jpeg" alt="img"></p>
+<h3 id="Image-data-preprocessing-Normalization"><a href="#Image-data-preprocessing-Normalization" class="headerlink" title="Image data preprocessing - Normalization"></a>Image data preprocessing - Normalization</h3><p>in the case of images, every pixel is thought of as a <strong>feature</strong>, and it is a very common practice to always perform normalization of your input features</p>
+<p>suppose the raw image ranges from [0, 255]</p>
+<ol>
+<li>subtract a mean image, and it ranges from [-127, 127]</li>
+<li>scale, it results [-1, 1]</li>
+</ol>
+<h2 id="Loss-Function"><a href="#Loss-Function" class="headerlink" title="Loss Function"></a>Loss Function</h2><p>How to correctly choose the parameter $W$ so that the score results are consistent with ground truth labels in the training data?</p>
+<p>measure our unhappiness with outcomes (i.e. badness of any particular $W$) with the <strong>loss function</strong></p>
+<p>the loss will be high if we’re doing a poor job of classifying the training data, and it will be low if we’re doing well.</p>
+<h2 id="Multi-class-SVM-loss"><a href="#Multi-class-SVM-loss" class="headerlink" title="Multi-class SVM loss"></a>Multi-class SVM loss</h2><p>the SVM “wants” the correct class for each image to a have a score higher than the incorrect classes by some fixed margin $\Delta$, which is a hyperparameter.</p>
+<p>denote $s_j$ as the score of the j-th class: $s_j=f(x_i,W)_j$</p>
+<p>$x_i$ is the image and $y_i$ is the correct class of it. </p>
+<p>$L_i=\sum_{j\ne y_i}{max(0, s_j-s_{y_i}+\Delta)}$</p>
+<p>If the score function is a linear function:</p>
+<p>$L_i=\sum_{j\ne y_i}{max(0, w_j^Tx_i-w_{y_i}^Tx_i+\Delta)}$</p>
+<p>The threshold at zero $max(0,-)$ function is often called the hinge loss.</p>
+<p>The squared hinge loss SVM (or L2-SVM): uses the form $max(0,−)^2$, which penalizes violated margins more strongly (quadratically instead of linearly)</p>
+<p>The unsquared version is more standard, but in some datasets the squared hinge loss can work better.</p>
+<h3 id="Regularization"><a href="#Regularization" class="headerlink" title="Regularization"></a>Regularization</h3><p>a bug: The nice set of parameters of $W$ is not necessarily unique</p>
+<p>if some parameters $W$ correctly classify all examples (so loss is zero for each example), then any multiple of these parameters $λW$ where $λ&gt;1$ will also give zero loss because this transformation uniformly stretches all score magnitudes and hence also their absolute differences</p>
+<p>In other words, we wish to encode some preference for a certain set of weights $W$ over others to remove this ambiguity. We can do so by extending the loss function with a <strong>regularization penalty</strong> $R(W)$. The most common regularization penalty is the <strong>L2</strong> norm that <strong>discourages large weights</strong> through an elementwise <strong>quadratic penalty</strong> over all parameters:</p>
+<p>$R(W)=∑<em>k∑_lW^2</em>{k,l}$</p>
+<p>the regularization function is only based on the weights instead of data.</p>
+<p>Including the <strong>regularization penalty</strong> completes the <strong>full Multiclass Support Vector Machine loss</strong>, which is made up of two components:</p>
+<ul>
+<li>data loss </li>
+<li>regularization loss</li>
+</ul>
+<p>$L=\frac{1}{N}\sum_i{L_i}+\lambda R(W)$</p>
+<p>or the full form:</p>
+<p>$L=\frac{1}{N}\sum_i{\sum_{j \ne y_i}[max(0, f(x_i;W)<em>j-f(x_i;W)</em>{y_i}+\Delta)]}+\lambda ∑<em>k∑_lW^2</em>{k,l}$ </p>
+<p>the hyperparameter  weight $λ$ is usually determined by cross-validation.</p>
+<h3 id="Choice-of-penalty"><a href="#Choice-of-penalty" class="headerlink" title="Choice of penalty"></a>Choice of penalty</h3><p>penalizing large weights tends to improve generalization, because it means that no input dimension can have a very large influence on the scores all by itself.</p>
+<p>Since the L2 penalty prefers smaller and more diffuse weight vectors, the final classifier is encouraged to take into account all input dimensions to small amounts rather than a few input dimensions and very strongly. As we will see later in the class, this effect can improve the generalization performance of the classifiers on test images and lead to less overfitting.</p>
+<blockquote>
+<p>简单的说，使用L2范数，则最大误差（异常点）的权重会更高，梯度下降法训练时更倾向于减少最大误差。然而实际情况是我们可能最小误差感兴趣，也就是是希望分类得分中，最大分数项远大于第二大分数项，而不关心最大分数和最小分数的差距，所以说L1范数更合适</p>
+</blockquote>
+<p>Biases do not have the same effect since, unlike the weights, they do not control the strength of influence of an input dimension. Therefore, it is common to only regularize the weights $W$ but not the biases $b$.</p>
+<p>Notice that due to the regularization penalty we can never achieve loss of exactly 0.0 on all examples, because this would only be possible in the pathological setting of $W=0$.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">L_i</span><span class="params">(x, y, W)</span>:</span></span><br><span class="line">  <span class="string">"""</span></span><br><span class="line"><span class="string">  unvectorized version. Compute the multiclass svm loss for a single example (x,y)</span></span><br><span class="line"><span class="string">  - x is a column vector representing an image (e.g. 3073 x 1 in CIFAR-10)</span></span><br><span class="line"><span class="string">    with an appended bias dimension in the 3073-rd position (i.e. bias trick)</span></span><br><span class="line"><span class="string">  - y is an integer giving index of correct class (e.g. between 0 and 9 in CIFAR-10)</span></span><br><span class="line"><span class="string">  - W is the weight matrix (e.g. 10 x 3073 in CIFAR-10)</span></span><br><span class="line"><span class="string">  """</span></span><br><span class="line">  delta = <span class="number">1.0</span> <span class="comment"># see notes about delta later in this section</span></span><br><span class="line">  scores = W.dot(x) <span class="comment"># scores becomes of size 10 x 1, the scores for each class</span></span><br><span class="line">  correct_class_score = scores[y]</span><br><span class="line">  D = W.shape[<span class="number">0</span>] <span class="comment"># number of classes, e.g. 10</span></span><br><span class="line">  loss_i = <span class="number">0.0</span></span><br><span class="line">  <span class="keyword">for</span> j <span class="keyword">in</span> range(D): <span class="comment"># iterate over all wrong classes</span></span><br><span class="line">    <span class="keyword">if</span> j == y:</span><br><span class="line">      <span class="comment"># skip for the true class to only loop over incorrect classes</span></span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">    <span class="comment"># accumulate loss for the i-th example</span></span><br><span class="line">    loss_i += max(<span class="number">0</span>, scores[j] - correct_class_score + delta)</span><br><span class="line">  <span class="keyword">return</span> loss_i</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">L_i_vectorized</span><span class="params">(x, y, W)</span>:</span></span><br><span class="line">  <span class="string">"""</span></span><br><span class="line"><span class="string">  A faster half-vectorized implementation. half-vectorized</span></span><br><span class="line"><span class="string">  refers to the fact that for a single example the implementation contains</span></span><br><span class="line"><span class="string">  no for loops, but there is still one loop over the examples (outside this function)</span></span><br><span class="line"><span class="string">  """</span></span><br><span class="line">  delta = <span class="number">1.0</span></span><br><span class="line">  scores = W.dot(x)</span><br><span class="line">  <span class="comment"># compute the margins for all classes in one vector operation</span></span><br><span class="line">  margins = np.maximum(<span class="number">0</span>, scores - scores[y] + delta)</span><br><span class="line">  <span class="comment"># on y-th position scores[y] - scores[y] canceled and gave delta. We want</span></span><br><span class="line">  <span class="comment"># to ignore the y-th position and only consider margin on max wrong class</span></span><br><span class="line">  margins[y] = <span class="number">0</span></span><br><span class="line">  loss_i = np.sum(margins)</span><br><span class="line">  <span class="keyword">return</span> loss_i</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">L</span><span class="params">(X, y, W)</span>:</span></span><br><span class="line">  <span class="string">"""</span></span><br><span class="line"><span class="string">  fully-vectorized implementation :</span></span><br><span class="line"><span class="string">  - X holds all the training examples as columns (e.g. 3073 x 50,000 in CIFAR-10)</span></span><br><span class="line"><span class="string">  - y is array of integers specifying correct class (e.g. 50,000-D array)</span></span><br><span class="line"><span class="string">  - W are weights (e.g. 10 x 3073)</span></span><br><span class="line"><span class="string">  """</span></span><br><span class="line">  <span class="comment"># evaluate loss over all examples in X without using any for loops</span></span><br><span class="line">  <span class="comment"># left as exercise to reader in the assignment</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Other-considerations"><a href="#Other-considerations" class="headerlink" title="Other considerations"></a>Other considerations</h3><h4 id="choice-of-Delta"><a href="#choice-of-Delta" class="headerlink" title="choice of $\Delta$"></a>choice of $\Delta$</h4><p>This hyperparameter can safely be set to $Δ=1.0$ in all cases</p>
+<p>$\Delta,\lambda$ both control the same tradeoff between the data loss and the regularization loss in the objective</p>
+<p>the magnitude of the weights $W$ has direct effect on the scores and hence also their differences</p>
+<p>As we shrink all values inside $W$, the exact value of the margin between the scores is in some sense meaningless because the weights can shrink or stretch the differences arbitrarily</p>
+<p>the only real tradeoff is how large we allow the weights to grow (through the regularization strength $λ$)</p>
+<h4 id="relations-to-Binary-SVM"><a href="#relations-to-Binary-SVM" class="headerlink" title="relations to Binary SVM"></a>relations to Binary SVM</h4><p>$L_i=C{max(0, 1-y_iw^Tx_i)+R(W)}$</p>
+<p>The binary SVM is a special case when there are only two classes</p>
+<p>$C ∝ \frac{1}{\lambda}$</p>
+<h4 id="optimization-in-primal"><a href="#optimization-in-primal" class="headerlink" title="optimization in primal"></a>optimization in primal</h4><p>kernels, duals, SMO algorithm is not compatible because many objectives in this class are technically not differentiable.</p>
+<p>In practice it’s common to use a subgradient</p>
+<h4 id="Other-multiclass-SVM-formulations"><a href="#Other-multiclass-SVM-formulations" class="headerlink" title="Other multiclass SVM formulations"></a>Other multiclass SVM formulations</h4><p>One-Vs-All SVM</p>
+<p>All-Vs-All SVM</p>
+<p>Structured SVM</p>
+<h2 id="Softmax-Classifier"><a href="#Softmax-Classifier" class="headerlink" title="Softmax Classifier"></a>Softmax Classifier</h2><p>the Softmax classifier is the generalization of binary Logistic Regression classifier to multiple classes.</p>
+<p>It gives a slightly more intuitive output (normalized class probabilities) and also has a probabilistic interpretation</p>
+<p>the function mapping  $f(x_i;W)=Wx_i$ stays unchanged, but we now interpret these scores as the unnormalized log probabilities for each class and replace the hinge loss with a <strong>cross-entropy loss</strong> that has the form:</p>
+<p>$L_i=−log(\frac{e^{f_{y_i}}} {∑_j e^{f_j}}) $</p>
+<p>or equivalently </p>
+<p>$L_i=−f_{y_i}+log∑_j e^{f_j}$</p>
+<p>the full loss for the dataset is the mean of $L_i$ over all training examples together with a regularization term $R(W)$. </p>
+<p>The softmax function:</p>
+<p>$f_j(z)=\frac{e^{z_j}}{∑_k e^{z_k}}$</p>
+<p>it takes a vector of arbitraty real-valued scores(z) and squashes it to a vector of values between zero and one that sum to one</p>
+<h3 id="Information-theory-view"><a href="#Information-theory-view" class="headerlink" title="Information theory view"></a>Information theory view</h3><p>The cross-entropy between a “true” distribution $p$ and an estimated distribution $q$ is defined as:</p>
+<p>$H(p,q)=−∑_xp(x)logq(x)$</p>
+<p>The Softmax classifier is hence minimizing the cross-entropy between the estimated class probabilities ( $q=e^{f_{y_i}}/∑_j e^{f_j}$ as seen above) and the “true” distribution, which in this interpretation is the distribution where all probability mass is on the correct class (i.e. $p=[0,…1,…,0]$ contains a single 1 at the $y_i$ -th position</p>
+<p>In other words, the cross-entropy objective wants the predicted distribution to have all of its mass on the correct answer.</p>
+<h3 id="Probabilistic-interpretation"><a href="#Probabilistic-interpretation" class="headerlink" title="Probabilistic interpretation"></a>Probabilistic interpretation</h3><p>$P(yi∣xi;W)=\frac{e^{f_{y_i}}}{∑_j e^{f_j}}$</p>
+<p>the (normalized) probability assigned to the correct label $y_i$ given the image $x_i$ and parameterized by W</p>
+<p>In the probabilistic interpretation, we are therefore minimizing the negative log likelihood of the correct class, which can be interpreted as performing <strong>Maximum Likelihood Estimation</strong> (MLE).</p>
+<p>we can now also interpret the regularization term $R(W)$ in the full loss function as coming from a Gaussian prior over the weight matrix $W$, where instead of MLE we are performing the <strong>Maximum a posteriori</strong> (MAP) estimation.</p>
+<h3 id="Tricks-in-Softmax-function"><a href="#Tricks-in-Softmax-function" class="headerlink" title="Tricks in Softmax function"></a>Tricks in Softmax function</h3><p>Notice that if we multiply the top and bottom of the fraction by a constant $C$ and push it into the sum, we get the following (mathematically equivalent) expression:</p>
+<p>$\frac{e^{f_{y_i}}} {∑<em>j e^{f_j}}=\frac{Ce^{f</em>{y_i}}} {C∑<em>j e^{f_j}}=\frac{e^{f</em>{y_i}+log C}} {∑_j e^{f_j+logC}}$</p>
+<p>we can use $C$ to improve the numerical stability of the computation</p>
+<p>set $logC=-max_j f_j$ </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">f = np.array([<span class="number">123</span>, <span class="number">456</span>, <span class="number">789</span>]) <span class="comment"># example with 3 classes and each having large scores</span></span><br><span class="line">p = np.exp(f) / np.sum(np.exp(f)) <span class="comment"># Bad: Numeric problem, potential blowup</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># instead: first shift the values of f so that the highest number is 0:</span></span><br><span class="line">f -= np.max(f) <span class="comment"># f becomes [-666, -333, 0]</span></span><br><span class="line">p = np.exp(f) / np.sum(np.exp(f)) <span class="comment"># safe to do, gives the correct answer</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="naming-conventions"><a href="#naming-conventions" class="headerlink" title="naming conventions"></a>naming conventions</h3><p>Talking about the “softmax loss” is meaningless, since softmax is just the squashing function and a relatively commonly used shorthand</p>
+<h2 id="SVM-vs-Softmax"><a href="#SVM-vs-Softmax" class="headerlink" title="SVM vs. Softmax"></a>SVM vs. Softmax</h2><p><img src="https://cs231n.github.io/assets/svmvssoftmax.png" alt="img"></p>
+<p>Softmax classifier provides “probabilities” for each class.</p>
+<p>In practice, SVM and Softmax are usually comparable.</p>
+<p>eg.[10, -2, 3] and the first class is correct</p>
+<p>the SVM is a more <strong>local</strong> objective, which could be thought of either as a bug or a feature, it does not care about the details of the individual scores</p>
+<p>eg.[10, -100, -100] or [10, 9, 9]</p>
+<p>a Softmax classifier, which would accumulate a much higher loss for the scores [10, 9, 9] than for [10, -100, -100].</p>
+<p>In other words, <strong>the Softmax classifier is never fully happy with the scores it produces</strong>: the correct class could always have a higher probability and the incorrect classes always a lower probability and the loss would always get better. However, <strong>the SVM is happy once the margins are satisfied</strong> and it does not micromanage the exact scores beyond this constraint. </p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><ul>
+<li>We defined a <strong>score function</strong> from image pixels to class scores (in this section, a linear function that depends on weights <strong>W</strong> and biases <strong>b</strong>).</li>
+<li>Unlike kNN classifier, the advantage of this <strong>parametric approach</strong> is that once we learn the parameters we can discard the training data. Additionally, the prediction for a new test image is fast since it requires a single matrix multiplication with <strong>W</strong>, not an exhaustive comparison to every single training example.</li>
+<li>We introduced the <strong>bias trick</strong>, which allows us to fold the bias vector into the weight matrix for convenience of only having to keep track of one parameter matrix.</li>
+<li>We defined a <strong>loss function</strong> (we introduced two commonly used losses for linear classifiers: the <strong>SVM</strong> and the <strong>Softmax</strong>) that measures how compatible a given set of parameters is with respect to the ground truth labels in the training dataset. We also saw that the loss function was defined in such way that making good predictions on the training data is equivalent to having a small loss.</li>
+</ul>
+<p>We now saw one way to take a dataset of images and map each one to class scores based on a set of parameters, and we saw two examples of loss functions that we can use to measure the quality of the predictions. But <strong>how do we efficiently determine the parameters that give the best (lowest) loss?</strong> This process is <strong>optimization</strong>, and it is the topic of the next section.</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T12:27:18.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/cs231n/">cs231n</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Linear-Classification/">Linear Classification</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Loss-function/">Loss function</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Regularization/">Regularization</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/SVM/">SVM</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Softmax-Classifier/">Softmax Classifier</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

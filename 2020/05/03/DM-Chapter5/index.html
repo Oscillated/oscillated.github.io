@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>DM_Chapter5 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>DM_Chapter5</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>宋牟平《离散数学》第五章 群</p>
+<a id="more"></a>
+
+<h1 id="群"><a href="#群" class="headerlink" title="群"></a>群</h1><p><strong><u>看课件后的几道题目</u></strong></p>
+<h2 id="半群和独异点"><a href="#半群和独异点" class="headerlink" title="半群和独异点"></a>半群和独异点</h2><blockquote>
+<p>定义 设$S$是一个非空集合，$<em>$是$S$上的一个二元运算，如果运算$</em>$是可结合的，则称代数系统$&lt;S; *&gt;$为半群．</p>
+</blockquote>
+<p>代数系统$&lt;N;<em>&gt;$和$&lt;N;+&gt;$都是半群．其中*和+分别表示通常的乘法和加法．<br>仍用*表示通常的乘法运算，则代数系统$&lt;[0,1];</em>&gt;$和$&lt;(0,1);<em>&gt;$也都是半群．<br>代数系统$&lt;I;+&gt;$和$&lt;R_+;</em>&gt;$是半群，但代数系统$&lt;I;-&gt;$和$&lt;R_+;&gt;/&gt;$不是半<br>群．其中$R_+$表示所有正实数的集合，$+、-、*、/$是通常的四则运算．</p>
+<p><strong>代数系统：封闭性</strong></p>
+<p><strong>半群：封闭性+结合性</strong></p>
+<p>一个半群对于它的运算$*$，可以有单位元，也可以没有单位元．</p>
+<blockquote>
+<p>定义 若半群$&lt;S;<em>&gt;$对运算$</em>$有单位元，则称该半群为独异点．</p>
+</blockquote>
+<p>已证明了，对于任意二元运算的单位元，如果存在，则唯一。因此独异点具有唯一的单位元．</p>
+<p><strong>独异点：封闭性+结合性+单位元</strong></p>
+<p>$&lt;Z;<em>&gt;$和$&lt;Z;+&gt;$都是独异点．其中$</em>$和$+$是通常的乘法和加法运算．其单位元分别是数1 和0</p>
+<p>代数系统$&lt;2^U;\cup&gt;$和$&lt;2^U;\cap&gt;$分别是以$\emptyset$和$U$为单位元的独异点．</p>
+<blockquote>
+<p>定义 如果独异点$&lt;S;<em>&gt;$中的运算$</em>$是可交换的，则称独异点$&lt;S;*&gt;$是可交换的独异点．</p>
+</blockquote>
+<p><strong>可交换的独异点：封闭性+结合性+单位元+交换性</strong></p>
+<p>在具有单位元$e$的独异点$&lt;S;*&gt;$中，元素$a$的幂归纳定义为$a^0 = e \quad a^{n+1} = a^n * a \quad (n = 0,1,2,\cdots )$<br>不难证明，对千任意非负整数$m$和$n$，有$a^m * a^n= a^{m+n},(a^m)^n = a^{mn}$</p>
+<blockquote>
+<p>定义 在独异点$&lt;S;<em>&gt;$中，如果存在一个元素$g \in S$使得每一个元素$a\in S$都能写成$g^i \quad (i \ge 0)$ 的形式，则称独异点$&lt;S;</em>&gt;$为循环独异点，元素$g$称为该循环独异点的生成元．</p>
+</blockquote>
+<blockquote>
+<p>定理 每一个循环独异点都是可交换的．</p>
+</blockquote>
+<p>$&lt;Z;*&gt;$是一循环独异点，1是其生成元．因0是单位元，故$0 = 1^0$ ．对于任意正整数n ，因$n=1+1+ \cdots + 1$ ，故$n=1^n$</p>
+<p>在独异点$&lt;S;<em>&gt;$中，元素的幂的表示方法与数的乘幂的表示方法虽然形式上相同，但$&lt;S;</em>&gt;$中元素之间的运算并非是数的乘法运算，它是独异点$&lt;S;<em>&gt;$上的二元运算$</em>$．在上例中是数的加法运算。</p>
+<blockquote>
+<p>定义 $&lt;S;<em>&gt;$是半群， $T \subseteq S$ 。 若 S 中任意元素均可由 T 中的元素经过运算表达出来，称 T 是$&lt;S;</em>&gt;$的生成子 。</p>
+</blockquote>
+<p>$&lt;N;<em>&gt;$是独异点，所有素数的集合 P 是$&lt;N;</em>&gt;$的生成子。</p>
+<blockquote>
+<p>定理 有限循环独异点 至少有一个除单位元$e$以外的幂等元</p>
+<p>定理 设$&lt;S;<em>&gt;$是一有限独异点，则对每一$a\in S$，存在一个整数$j \ge 1$，使得$a^j$是一幂等元，$&lt;S;</em>&gt;$不一定是循环独异点</p>
+</blockquote>
+<blockquote>
+<p>定义 设$&lt;S;<em>&gt;$是一个半群，如果$&lt;T;</em>&gt;$是$&lt;S;<em>&gt;$的子代数，则称$&lt;T;</em>&gt;$是$&lt;S;*&gt;$的子半群．</p>
+</blockquote>
+<blockquote>
+<p>定义 设$&lt;S;<em>&gt;$是一个独异点，$&lt;T;</em>&gt;$是$&lt;S;<em>&gt;$的子代数，且<strong>独异点的单位元$e \in T$</strong> ，则称$&lt;T;</em>&gt;$是$&lt;S;*&gt;$的子独异点．</p>
+</blockquote>
+<p>对半群$&lt;N;<em>&gt;$（其中$</em>$是通常的乘法），设$N_e = {2n \vert n\in N}$ ，由于$&lt;N_e;<em>&gt;$是$&lt;N;</em>&gt;$的子代数，因而是$&lt;N;*&gt;$的子半群．</p>
+<p>$&lt;R;<em>&gt;$是一独异点．数0是其单位元（其中+是通常的加法运算）。显然，$&lt;I;</em>&gt;$和$&lt;Z;<em>&gt;$都是$&lt;R;</em>&gt;$的子独异点．</p>
+<blockquote>
+<p>定理 设$&lt;S;<em>&gt;$是一个可交换的独异点，则S的所有幂等元的集合形成$&lt;S;</em>&gt;$的一个子独异点．</p>
+</blockquote>
+<p>代数系统的同态（包括单一同态、满同态）、同构和积代数的概念以及一些有关的结论，对于半群和独异点来说都是适用的。而且，由于半群和独异点都是十分简单的代数系统，因此把这些概念和结论应用千半群和独异点很容易，利用满同态的关系可以判定某些代数系统是半群或独异点。</p>
+<blockquote>
+<p>定理 设$h$是从代数系统$V_1=&lt;S_1;<em>&gt;$到$V_2 = &lt;S_2;\bullet&gt;$的满同态．其中运算$</em>$和$\bullet$都是二元运算，则</p>
+<ol>
+<li>若$V_1$是半群，则$V_2$也是半群</li>
+<li>若$V_1$是独异点，则$V_2$也是独异点．</li>
+</ol>
+</blockquote>
+<h2 id="群的定义"><a href="#群的定义" class="headerlink" title="群的定义"></a>群的定义</h2><blockquote>
+<p>定义 设$&lt;G;<em>&gt;$是一个代数系统，如果G上的二元运算$</em>$满足下列三个条件，则称$&lt;G;*&gt;$是一个群：</p>
+<ol>
+<li>对任意的$a,b,c \in G$，有$a<em>(b</em>c)=(a<em>b)</em>c$</li>
+<li>存在一元素$e \in G$，使得对所有$a\in G$，有$e<em>a=a</em>e=a$</li>
+<li>对每一个$a \in G$，存在一个元素$a^{-1}\in G$，使得$a^{-1}<em>a=a</em>a^{-1}=e$</li>
+</ol>
+</blockquote>
+<p><strong>群：封闭性、结合性、单位元、逆元</strong></p>
+<blockquote>
+<p>定义 如果群$&lt;G;<em>&gt;$的运算</em>是可交换的，称该群为交换群或阿贝尔群。</p>
+</blockquote>
+<p>二元代数$&lt;Z;+&gt;$是一个群．这里运算$+$是通常的加法，其单位元是0 ，每一个整数i的逆元是-i，同时也是阿贝尔群</p>
+<p>二元代数$&lt;Q-{0};\bullet&gt;$.其中$\bullet$是通常的乘法，是一个阿贝尔群．其单位元是1 ，每一个有理数q 的逆元是$\frac{1}{q}$</p>
+<p>独异点$&lt;N;+&gt;$和$&lt;Z;\bullet&gt;$都不是群．因为在$&lt;N;+&gt;$中每一个正整数都没有逆元．在$&lt;Z;\bullet&gt;$中除$\pm$1以外，每一元素都没有逆元．</p>
+<blockquote>
+<p>对称群、置换群：任一元素个数为n的集合A上所有($n!$)n次置换的集合，对于置换的复合运算总是构成一个群，这种群称为n次对称群，n次对称群的任何子群称为(n次)置换群。</p>
+</blockquote>
+<p>由于每一有限群与一个置换群同构，因此抽象群的研究可以转化为置换群的研究。</p>
+<blockquote>
+<p>在群$&lt;G;*&gt;$中，如果存在一个元素$g \in G$，使得每一元素$a \in G$都能写成$g^i(i\in Z)$的形式，则称该群是循环群，g成为该循环群的生成元，并说群由g生成</p>
+</blockquote>
+<p>每一循环群必是阿贝尔群</p>
+<blockquote>
+<p>定义 设$&lt;G;<em>&gt;$是一个群，如果G是有限集，称$&lt;G;</em>&gt;$是有限群，G的元素个数称为的阶$&lt;G;<em>&gt;$；若G是无限集，称$&lt;G;</em>&gt;$是无限群</p>
+</blockquote>
+<blockquote>
+<p>定义 对于$&lt;G;*&gt;$的元素a，若存在一正整数r，使得$a^{r}=e$，则称元素a具有有限周期；使$a^r=e$成立的最小正整数称为a的周期，如果对于任何正整数r总有$a^r \ne e$，则称a的周期为无限</p>
+</blockquote>
+<p>单位元的周期是1</p>
+<blockquote>
+<p>定理 设$&lt;G;*&gt;$是一由元素g生成的循环群</p>
+<ol>
+<li>若g的周期为n，则$&lt;G;*&gt;$是一个n阶的有限循环群</li>
+<li>若g的周期为无限，则$&lt;G;*&gt;$是一个无限阶的循环群</li>
+</ol>
+</blockquote>
+<p>因为群中每一个元素都是可逆的，所以在阶大于1的群中没有零元。</p>
+<p>除了单位元以外，群没有任何幂等元</p>
+<h2 id="群的基本性质"><a href="#群的基本性质" class="headerlink" title="群的基本性质"></a>群的基本性质</h2><blockquote>
+<p>定理 （可解性）如果$&lt;G;*&gt;$是一个群，则对于任意的$a,b\in G$，有</p>
+<ol>
+<li>存在唯一的元素$x\in G$，使得$a*x=b$</li>
+<li>存在唯一的元素$y\in G$，使得$y*a=b$</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>定理 （消去律）如果$&lt;G;*&gt;$是一个群，则对于任意的$a,b,c\in G$，有</p>
+<ol>
+<li>若$a<em>b=a</em>c$，则有$b=c$</li>
+<li>若$b<em>a=c</em>a$，则有$b=c$</li>
+</ol>
+</blockquote>
+<p>运算表中，任意给出的行和任意给出的列内，G的每一元素都必然出现一次且只能出现一次/G的元素的一个排列或置换</p>
+<blockquote>
+<p>定理 如果$&lt;G;<em>&gt;$是一个群，则对于任意的$a,b\in G$，有$(a</em>b)^{-1}=b^{-1}*a^{-1}$</p>
+<p>可推广：$(a_1<em>a_2</em>\cdots<em>a_n)^{-1}=a_n^{-1}</em>\cdots<em>a_2^{-1}</em>a_1^{-1}$</p>
+<p>群是阿贝尔群时：$(a_1<em>a_2</em>\cdots<em>a_n)^{-1}=a_1^{-1}</em>a_2^{-1}<em>\cdots</em>a_n^{-1}$</p>
+</blockquote>
+<blockquote>
+<p>定理 $&lt;G;*&gt;$的元素具有有限周期r，则当且仅当k是r的倍数时，$a^k=e$</p>
+</blockquote>
+<blockquote>
+<p>群中任一元素与它的逆元具有相同的周期</p>
+</blockquote>
+<blockquote>
+<p>在有限群$&lt;G;*&gt;$中，每个元素有一有限周期，而且每个元素的周期不超过$#G$</p>
+</blockquote>
+<h2 id="子群及其陪集"><a href="#子群及其陪集" class="headerlink" title="子群及其陪集"></a>子群及其陪集</h2><blockquote>
+<p>定义 设$&lt;G;<em>&gt;$是一个群，$&lt;H;</em>&gt;$是$&lt;G;*&gt;$的子代数，如果</p>
+<ol>
+<li>单位元$e \in H$</li>
+<li>对于任意的$a \in H$，有$a^{-1} \in H$</li>
+</ol>
+<p>则称$&lt;H;<em>&gt;$是$&lt;G;</em>&gt;$的子群，如果H是G的真子集，则称子群$&lt;H;<em>&gt;$是$&lt;G;</em>&gt;$的真子群</p>
+</blockquote>
+<p><strong>子群：封闭性、结合性、单位元$e_H=e_G$、逆元、$H \subseteq G$ ；</strong></p>
+<p><strong>实际只需保留四条：封闭性、单位元$e \subseteq H$、逆元、$H \subseteq G$</strong> </p>
+<p>群$&lt;G;*&gt;$的任一子群本身也是一个群</p>
+<p>群$&lt;G;<em>&gt;$的两个子群$&lt;G;</em>&gt;$、$&lt;{e};<em>&gt;$是群$&lt;G;</em>&gt;$的平凡子群</p>
+<p>定义集合$Z_6 = { 6i \mid i \in Z}$ ，显然$&lt;Z_6 ;+&gt;$是$&lt; Z ;+&gt;$的子代数，且$0 \in Z_6$ ，又对于任<br>一元素$6i \in Z_6$ ，有$6(- i) =-6i \in Z_6$ ，所以$&lt;Z_6;+&gt;$是$&lt; Z ;+&gt;$的的子群，一般地，对于任<br>意整数m,$&lt;Z_m;+&gt;$是$&lt;Z;+&gt;$的子群．</p>
+<p>上面的定义中，2.能够推出1.，因此有下面定理</p>
+<blockquote>
+<p>定理 设$&lt;H;<em>&gt;$是群$&lt;G;</em>&gt;$的子代数，当且仅当对于任意的$a\in H$，有$a^{-1} \in H$时，$&lt;H;<em>&gt;$是$&lt;G;</em>&gt;$的子群</p>
+</blockquote>
+<p>检验非空子集是否构成子群，只需检验<strong>封闭性</strong>和<strong>可逆性</strong>。</p>
+<blockquote>
+<p>定理 设$&lt;G;<em>&gt;$是一个群，H是G的一非空子集，则当且仅当由$a,b \in H$，可得$a*b^{-1} \in H$时，$&lt;H;</em>&gt;$是$&lt;G;*&gt;$的子群</p>
+</blockquote>
+<p>特别地，如果$&lt;G;*&gt;$是有限群，那么可逆性的要求也是多余的</p>
+<blockquote>
+<p>定理 设$&lt;G;<em>&gt;$是一个有限群，若$&lt;H;</em>&gt;$是$&lt;G;<em>&gt;$的子代数，则$&lt;H;</em>&gt;$是$&lt;G;*&gt;$的子群</p>
+</blockquote>
+<p>若给定一有限群$&lt;G;<em>&gt;$，只需检验其非空子集H对运算</em>是否封闭即可</p>
+<p>另外，只要H是G的有限子集合，不一定要求$&lt;G;*&gt;$是有限群</p>
+<blockquote>
+<p>定理 设$&lt;G;<em>&gt;$是一个群，$&lt;H;</em>&gt;$是$&lt;G;<em>&gt;$的有限子代数，则$&lt;H;</em>&gt;$是$&lt;G;*&gt;$是的子群</p>
+</blockquote>
+<p>任一阿贝尔群的子群也必为阿贝尔群</p>
+<blockquote>
+<p>$&lt;H;<em>&gt;$是$&lt;G;</em>&gt;$的子群的充要条件是:$&lt;H;*&gt;$是一个群。</p>
+<p>设$&lt;G;<em>&gt;$是一个群，H是G的一个非空子集，若$&lt;H;</em>&gt;$也是一个群，则称$&lt;H;<em>&gt;$是群$&lt;G;</em>&gt;$的子群．</p>
+</blockquote>
+<blockquote>
+<p>定义5-13 设$&lt;H;<em>&gt;$是群$&lt;G;</em>&gt;$的子群。a是G的任意一个元素，则集合$H * a = {h * a \mid h \in H}$称为子群$&lt;H;<em>&gt;$在群$&lt;G;</em>&gt;$中的一个右陪集．</p>
+<p>集合$a<em>H= {a*h \mid h \in H}$称为子群$&lt;H;</em>&gt;$在群$&lt;G;*&gt;$中的一个左陪集．</p>
+<p>如果$a \in H$ ，则$H<em>a=a</em>H=H$．这就是说， H 自身是一个右陪集且也是一个左陪集．</p>
+</blockquote>
+<blockquote>
+<p>设$&lt;H;<em>&gt;$是群$&lt;G;</em>&gt;$的子群，如果对于每一个$a \in G$，有$a<em>H=H*a$，称$&lt;H;</em>&gt;$是$&lt;G;*&gt;$的正规子群，此时右陪集和左陪集简称为陪集</p>
+</blockquote>
+<p>如果群是可交换的，它的所有子群都是正规子群。</p>
+<blockquote>
+<p>设H是群$&lt;G;<em>&gt;$是中G的一个子集．对于任一元素$a \in G$ ，用符号$a<em>H</em>a^{-1}$表示下面的集合$a</em> H * a^{-1} = {a<em>h</em>a^{-1} \mid h \in H}$一般地，若A、B 是G 的子集，定义$A* B = {a* b \mid a \in A,b \in B}$</p>
+</blockquote>
+<blockquote>
+<p>定理 设$&lt;H;<em>&gt;$是群$&lt;G;</em>&gt;$的子群，当且仅当对于任意$a\in G$，有$a<em>H</em>a^{-1}=H$时，$&lt;H;<em>&gt;$是$&lt;G;</em>&gt;$的正规子群。</p>
+</blockquote>
+<blockquote>
+<p>定理 设$&lt;H;<em>&gt;$是群$&lt;G;</em>&gt;$的子群，当且仅当对于任意$a\in G$，有$a<em>H</em>a^{-1}\subseteq H$时，$&lt;H;<em>&gt;$是$&lt;G;</em>&gt;$的正规子群。</p>
+</blockquote>
+<p>证明子群在群中的所有相异右陪集和相异左陪集分别组成P的一个分划</p>
+<blockquote>
+<p>定理 设$&lt;H;<em>&gt;$是群$&lt;G;</em>&gt;$的子群，a和b是G的任意两个元素，则有：</p>
+<ol>
+<li>$H<em>a=H</em>b$或$(H<em>a) \cap (H</em>b) = \emptyset$</li>
+<li>$a<em>H=b</em>H$或$(a<em>H) \cap (b</em>H) = \emptyset$</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>定理 设$&lt;H;<em>&gt;$是群$&lt;G;</em>&gt;$的子群，则：</p>
+<ol>
+<li>当且仅当$b\in H<em>a$时，$H</em>b=H*a$</li>
+<li>当且仅当$b\in a<em>H$时，$b</em>H=a*H$</li>
+</ol>
+</blockquote>
+<p>上述定理说明，由元素a所确定的$&lt;H;<em>&gt;$的右(左)陪集与该右(左)陪集中任一元素b所确定的右(左)陪集相同，由元素a所确定的$&lt;H;</em>&gt;$的右(左)陪集与该右(左)陪集以外的任一元素b所确定的右(左)陪集相交为空</p>
+<blockquote>
+<p>定理 设$&lt;H;<em>&gt;$是群$&lt;G;</em>&gt;$的子群，则：</p>
+<ol>
+<li>$&lt;G;<em>&gt;$中$&lt;H;</em>&gt;$所有相异的右陪集组成G的一个分划——右陪集分划</li>
+<li>$&lt;G;<em>&gt;$中$&lt;H;</em>&gt;$所有相异的左陪集组成G的一个分划——左陪集分划</li>
+</ol>
+<p>当$&lt;H;<em>&gt;$是群$&lt;G;</em>&gt;$的正规子群时，这种分划称为$&lt;G;<em>&gt;$中与$&lt;H;</em>&gt;$相关的陪集分划（左右陪集相等）</p>
+</blockquote>
+<blockquote>
+<p>定理 设$&lt;H;<em>&gt;$是群$&lt;G;</em>&gt;$的子群，则对于任意的$a\in G$，有$num (H<em>a)=num(a</em>H)=numH$</p>
+</blockquote>
+<p>$f:H \rightarrow H<em>a, f(h)=h</em>a$是一个双射</p>
+<blockquote>
+<p>定理  $&lt;H;*&gt;$所有相异右陪集个数和所有相异左陪集的个数相同</p>
+</blockquote>
+<blockquote>
+<p>定理 设$&lt;H;<em>&gt;$是群$&lt;G;</em>&gt;$的子群，群$&lt;G;<em>&gt;$中$&lt;H;</em>&gt;$的所有相异右(左)陪集的个数称为$&lt;H;<em>&gt;$在$&lt;G;</em>&gt;$中的指数</p>
+</blockquote>
+<blockquote>
+<p>定理 (拉格朗日定理) 设$&lt;G;<em>&gt;$是一具有子群$&lt;H;</em>&gt;$的有限群，且$&lt;H;<em>&gt;$在$&lt;G;</em>&gt;$中的指数为d，则#G=d*#H</p>
+<p>推论 素数阶的群只有平凡子群</p>
+<p>推论 任意有限群子群的阶必为该群的因子，#H是#G的因子</p>
+</blockquote>
+<blockquote>
+<p>定理 有限群$&lt;G;*&gt;$中，每个元素的周期都是#G的因子</p>
+<p>推论 若$&lt;G;<em>&gt;$是一n阶的有限群，那么对任何的$a\in G$，有$a^n=e$，若$&lt;G;</em>&gt;$是一素数阶的群，则G中任何非单位元素的周期恰好是#G</p>
+<p>素数阶的群必为循环群，且每个元素都是生成元</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T12:13:58.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Discrete-Mathematics/">Discrete Mathematics</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

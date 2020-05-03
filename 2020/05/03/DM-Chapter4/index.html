@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>DM_Chapter4 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>DM_Chapter4</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>宋牟平《离散数学》第四章 代数系统</p>
+<a id="more"></a>
+
+<h1 id="代数系统"><a href="#代数系统" class="headerlink" title="代数系统"></a>代数系统</h1><h2 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h2><blockquote>
+<p>定义：设有非空集合$A$，函数$f:A^n\rightarrow A$称为$A$上的一个$n$元运算，$n$称为这个运算的阶。</p>
+</blockquote>
+<p>$f:A^2\rightarrow A$ —– $f$是$A$上的二元运算</p>
+<ul>
+<li>$+ : I^2 \rightarrow I$ <ul>
+<li>$+(i_1,i_2) = i_1+i_2$    $i_1, i_2$是二元组$(i_1, i_2)$在$+$运算下的像</li>
+</ul>
+</li>
+</ul>
+<p>$f:A\rightarrow A$ —– $f$是$A$上的一元运算</p>
+<ul>
+<li>$ \sim : I \rightarrow I$ <ul>
+<li>$\sim(i) = -i$    求相反数运算</li>
+</ul>
+</li>
+</ul>
+<p>对于二元运算，$f(a_i,a_j)$可表示为$a_ifa_j$或$a_i\cdot a_j$</p>
+<h3 id="封闭性"><a href="#封闭性" class="headerlink" title="封闭性"></a>封闭性</h3><blockquote>
+<p>定义：如果作用在一个集合$A$的元素上的运算，其运算结果也仍然是这同一集合中的元素，那么就称这个运算在集合A上是封闭的。</p>
+</blockquote>
+<blockquote>
+<p>定义：设$\circ$是集合$A$上的一个$n$元运算，$S\subseteq A$，如果对于每一个$(a_1, a_2, \cdots, a_n) \in S^n$， 都有$\circ (a_1, a_2, \cdots, a_n)\in S$，则称运算$\circ$在$S$上是封闭的。 </p>
+</blockquote>
+<blockquote>
+<p>定理：设$\circ$是集合$A$上的一个$n$元运算，且在$A$的两个子集$S_1$和$S_2$上均封闭，则$\circ$在$S_1 \cap S_2$上也是封闭的。 </p>
+</blockquote>
+<h3 id="可交换"><a href="#可交换" class="headerlink" title="可交换"></a>可交换</h3><blockquote>
+<p>定义：设$*$是集合$A$上的一个二元运算，如果对于任意的$a,b\in A$，有$a * b=b * a$，</p>
+<p>则称运算$*$在$S$上是可交换的。 </p>
+</blockquote>
+<h3 id="可结合"><a href="#可结合" class="headerlink" title="可结合"></a>可结合</h3><blockquote>
+<p> 定义：设$<em>$是集合$A$上的一个二元运算，如果对于任意的$a,b,c\in A$，有$a</em>(b<em>c)=(a<em>b)</em>c$，则称运算$</em>$在$S$上是可结合的。 </p>
+</blockquote>
+<ul>
+<li>若二元运算$<em>$在$A$上是可结合的，则$a</em>(b<em>c)=(a<em>b)</em>c$常记作没有括号<br>的$a</em> b * c$。</li>
+<li>可用数学归纳法把结合律推广到任意$n$个对象。</li>
+<li>如果对于$A$中任意$n$个元素运算，$*$都是可结合的<ul>
+<li>$a_1<em>a_2</em>\cdots*a_n$唯一地表示$A$中的一个元素，记作$a^n$，称为$a$的$n$次幂</li>
+<li>对任意的正整数$m$,$n$有$a^m*a^n=a^{m+n}$, $(a^m)^n=a^{mn}$</li>
+</ul>
+</li>
+</ul>
+<h3 id="可分配"><a href="#可分配" class="headerlink" title="可分配"></a>可分配</h3><blockquote>
+<p> 定义：设$<em>$和$\circ$是集合$A$上的一个二元运算，如果对于任意的$a,b,c\in A$，有$a</em>(b\circ c)=(a<em>b)\circ(a<em>c)$，$(b\circ c)</em>a=(b<em>a)\circ(c</em>a)$则称运算$</em>$对于$\circ$是可分配的。 </p>
+</blockquote>
+<ul>
+<li><p>乘对加是可分配的，但加对于乘是不可分配的</p>
+</li>
+<li><p>任一集合的幂集上的并和交运算是可交换的和可结合的，而且并与交是相互可分配的。</p>
+</li>
+</ul>
+<h3 id="单位元"><a href="#单位元" class="headerlink" title="单位元"></a>单位元</h3><p>与二元运算相联系的一些特殊的元素</p>
+<blockquote>
+<p>定义：设$<em>$是集合$A$上的二元运算，如果存在一个元素$e_l \in A$ ，使得对于所有的$a \in A$ 有$e_l * a= a $ ，则称$e_l$ 是$A$ 上关于运算$</em>$的左单位元；如果存在一个元素$e_r \in A$ ，使得对于所有的$a \in A$ 有$a* e_r = a$ ，则称$e_r$ 是$A$ 上关于运算$<em>$的右单位元；如果存在一个元素$e\in A$ ，使得对于所有的$a \in A$ 有$e<em>a=a</em>e=a$，则称$e$是$A$上关于运算$</em>$的单位元．</p>
+</blockquote>
+<blockquote>
+<p>定理 设$<em>$是集合$A$上的二元运算，又设$e_l$和$e_r$分别是$</em>$的左单位元和右单位元，则$e_l = e_r = e$，且$e$是$*$的唯一的单位元。</p>
+</blockquote>
+<h3 id="零元"><a href="#零元" class="headerlink" title="零元"></a>零元</h3><blockquote>
+<p>定义 设$<em>$是集合$A$上的二元运算，如果存在一个元素$z_1\in A$使得对于所有的$a\in A$有$z_l*a=z_l$ ，则称$z_1$是$A$上关于运算$</em>$的左零元；如果存在一个元素$z_r \in A$，使得对于所有的$a \in A$有$a <em>z_r = z_r$ ，则称$z_r$是$A$上关于运算$</em>$的右零元；如果存在一个元素$z \in A$ ，使得对千所有的$a \in A$有$z<em>a=a*z＝z$，则称$z$是$A$上关于运算$</em>$的零元。</p>
+</blockquote>
+<blockquote>
+<p>定理 设$<em>$是集合$A$上的二元运算，又设$z_l$和$z_r$分别是$</em>$的左零元和右零元，则$z<br>_l=z_r=z$，且$z$是$*$的唯一的零元。</p>
+</blockquote>
+<ul>
+<li>对于实数集$R$上的加法运算来说，0是其单位元，它没有零元。</li>
+<li>乘法运算的单位元是1 ，零元是0。</li>
+<li>减法运算的右单位元是0 ，它没有左单位元，因而也没有单位元。</li>
+<li>在幂集$2^U$上，$\varnothing$是集合并运算的单位元、交运算的零元；$U$是交运算的单位元、并运算的零元。</li>
+</ul>
+<h3 id="幂等元"><a href="#幂等元" class="headerlink" title="幂等元"></a>幂等元</h3><blockquote>
+<p>定义 设$<em>$是集合$A$上的二元运算。如果$a*a=a$，则称元素$a \in A$是$A$上关于运算$</em>$的幂等元。</p>
+</blockquote>
+<ul>
+<li>二元运算的单位元和零元都是幂等元。</li>
+<li>除了单位元和零元外，还可能有其他的幂等元。<ul>
+<li>例如，每个集合都是并运算和交运算的幂等元。</li>
+</ul>
+</li>
+</ul>
+<h3 id="逆元"><a href="#逆元" class="headerlink" title="逆元"></a>逆元</h3><blockquote>
+<p>定义 设$<em>$是集合$A$上具有单位元$e$的二元运算，对于元素$a\in A$ ，如果存在一元素$a_l^{-1}\in A$ ，使得$a_l^{-1}*a=e$ ，则称元素$a$对于运算$</em>$是左可逆的，而称$a_l^{-1}$为$a$的左逆元；如果存在一元素$a_r^{-1}\in A$ ，使得$a<em>a_r^{-1}=e$ ，则称元素$a$关于运算$</em>$是右可逆的，而称$a_r^{-1}$为$a$的右逆元；如果存在一元素$a^{-1}\in A$，使得$a^{-1}<em>a=a*a^{-1}=e$，则称$a$关于运算$</em>$是可逆的，而称$a^{-1}$为$a$ 的逆元。</p>
+<p>定理 设$*$是集合$A$上具有单位元$e$且可结合的二元运算。如果元素$a\in A$有左逆元和右逆元，则其左、右逆元相等，并且就是$a$的唯一的逆元。</p>
+</blockquote>
+<ul>
+<li><p>如果$a \in A$有逆元$a^{-1}$，则有$a*a^{-1} =a^{-1} *a= e$. 因此$(a^{-1})^{-1}＝ a$( 即$a$是$a^{-1}$的逆元）。</p>
+</li>
+<li><p>每一个实数$r \in R$都有一个关千加法运算的逆元$-r$。</p>
+</li>
+<li><p>每一个非零实数$r \in R$都有一个关于乘法运算的逆元$1/r$ ，但数0不是可逆的。</p>
+</li>
+</ul>
+<blockquote>
+<p>定理 设$<em>$是集合$A$上的二元运算，且$＃ A&gt;1$ ，如果运算$</em>$有单位元$e$和零元$z$，则$e \ne z$。</p>
+</blockquote>
+<blockquote>
+<p>证明 设$e=z$，因为$＃A&gt;1$ ，所以至少还有一元素$x \in A$, $x \ne e$，但是$x=e<em>x=z</em>x=z=e$ ,与上式矛盾，故必有$e \ne z$，证毕。</p>
+</blockquote>
+<ul>
+<li>对于任何二元运算，单位元是可逆的，其逆元是单位元自身，但一般来说，零元不是可逆的。</li>
+</ul>
+<h2 id="代数系统-1"><a href="#代数系统-1" class="headerlink" title="代数系统"></a>代数系统</h2><blockquote>
+<p>定义 一个非空集合和定义在该集合上的一个或多个运算所组成的系统称为一个代数系统，用记号$\left \langle S;o_1,o_2,\cdots,o_n \right \rangle$表示，其中，$S$是非空集合，称为这个代数系统的域；$o_1,o_2,\cdots,o_n$是$S$上的运算。</p>
+</blockquote>
+<ul>
+<li><p>集合$S$上的各个运算可以是具有不同阶的运算，但需要在集合上封闭</p>
+</li>
+<li><p>代数系统$\left \langle S;o_1,o_2,\cdots,o_n \right \rangle$的基数与$S$的基数意义相同，因此当$S$是有限集时，$\left \langle S;o_1,o_2,\cdots,o_n \right \rangle$称为有限代数系统。</p>
+</li>
+<li><p>设$R_A$表示集合$A$上所有关系的集合，$\bullet$是求复合关系的运算。显然运算$\bullet$在$R_A$上是封闭的，因此它们可以构成一个代数系统$\left \langle R_A;\bullet \right \rangle$．其中$\bullet$是$R_A$上的二元运算。</p>
+</li>
+<li><p>运算$’,\cap,\cup$在全集合$U$的幂集$2^U$上显然是封闭的，因此可构成代数系统$\left \langle 2^U;’,\cap,\cup \right \rangle$ ，称之为集合代数。这里$＇$是$2^U$上的一元运算；$\cap$和$\cup$是二元运算．</p>
+</li>
+</ul>
+<h3 id="整环"><a href="#整环" class="headerlink" title="整环"></a>整环</h3><blockquote>
+<p>整数集$I$和定义在其上的通常的加法与乘法运算组成一个代数系统，记作$\left \langle I;+,\bullet \right \rangle$，这两个运算都是$I$上的二元运算</p>
+<ul>
+<li>交换律</li>
+<li>结合律</li>
+<li>分配律</li>
+<li>单位元</li>
+<li>关于加法可逆性</li>
+<li>消去律<ul>
+<li>如果$i \ne 0$ ，则对任意的$j,k \in I$ 由$i\cdot j=j \cdot k$ 可得$j = k$。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>不考虑任何特定的集合，也不给所具有的运算赋予任何特定的含义，这种系统的集合和运算仅仅是一些抽象的记号，相应的代数系统就称为抽象代数。</p>
+</blockquote>
+<blockquote>
+<p>定义：设$J$是一个非空集合，$+$和$\bullet$是$J$上的两个二元运算，如果运算$+$和$\bullet$满足前述性质(1) ~ (6)，则称代数系统$\left \langle J;+, \bullet \right \rangle$为整环。</p>
+</blockquote>
+<ul>
+<li>$\left \langle I;+, \bullet \right \rangle$ $\left \langle R;+, \bullet \right \rangle$$\left \langle Q;+, \bullet \right \rangle$$\left \langle B;+, \bullet \right \rangle$ 都是整环</li>
+</ul>
+<blockquote>
+<p>定义 设有两个代数系统$V_1 = \left \langle S_1;o_{11}, o_{12}, \cdots,o_{1n} \right \rangle$，$V_2 = \left \langle S_2;o_{21}, o_{22}, \cdots,o_{2n} \right \rangle$如果运算$o_{1i}$和$o_{2i}$$ (i = 1,2, \cdots,n)$ 具有相同的阶，则称代数系统$V_1$和$V_2$是同类型的。</p>
+</blockquote>
+<h3 id="真子系统"><a href="#真子系统" class="headerlink" title="真子系统"></a>真子系统</h3><blockquote>
+<p>定义 设$\left \langle S;o_1, o_2,\sim  \right \rangle$是一代数系统， $H$是$S$的一个非空子集，若$S$上的每一个运算在$H$上都是封闭的，即对于每一个二元运算$o_i$，及任意的有序二元组$(x_1,x_2) \in H^2$，都有$x_1o_ix_2\in H$，对于一元运算$\sim$及任意的$x \in H$ ，都有$\sim(x) \in H$ ，则称代数系统$\left \langle H;o^{‘}<em>{1}, o^{‘}</em>{2},\sim^{‘}  \right \rangle$是$\left \langle S;o_1, o_2,\sim  \right \rangle$的子系统或子代数，其中运算$o_i^{‘}(i=1,2)$是二元运算，对每一$(x_1,x_2)\in H^2$$x_1o^{‘}_{i}x_2 = x_1o_iX_2$。运算$\sim^{‘}$是一元运算，对每一$x\in H$，$\sim’(x) = \sim(x)$.</p>
+</blockquote>
+<blockquote>
+<p>若$H$是$S$的真子集，则称$\left \langle H;o^{‘}<em>{1}, o^{‘}</em>{2},\sim^{‘}  \right \rangle$是$\left \langle S;o_1, o_2,\sim  \right \rangle$的的真子系统或真子代数</p>
+</blockquote>
+<ul>
+<li><p>为简便起见，$\left \langle H;o^{‘}<em>{1}, o^{‘}</em>{2},\sim^{‘}  \right \rangle$有时就记作$\left \langle H;o_{1}, o_{2},\sim  \right \rangle$</p>
+</li>
+<li><p>代数系统$\left \langle E;+, \bullet  \right \rangle$（这里$E$是所有偶数的集合，$+$和$\bullet$是通常的加法和乘法）就是$\left \langle I;+, \bullet  \right \rangle$的子代数。若$M$表示所有奇数的集合，则$M$和运算$+$，$\bullet$不能构成$\left \langle I;+, \bullet  \right \rangle$的子代数</p>
+</li>
+<li><p>代数系统$\left \langle [0,1];\bullet  \right \rangle$（这里$\bullet$是通常的乘法）是$\left \langle R;\bullet  \right \rangle$的子代数．</p>
+</li>
+</ul>
+<h2 id="同态和同构"><a href="#同态和同构" class="headerlink" title="同态和同构"></a>同态和同构</h2><p>讨论元素运算的像等于元素的像的运算这种联系的函数。</p>
+<blockquote>
+<p>定义 设$V_1 =&lt;S_1; <em>_1,o_1, \sim_1&gt;$和$V_2 = &lt;S_2 ; *_2, o_2,\sim_2&gt;$是两个同类型的代数系统，其中$</em>_1$和$o_1$$(i = 1,2)$ 都是二元运算，$\sim_1$和$\sim_2$都是一元运算，$h$是一个从$S_1$到$S_2$的函数，若对于任意的$(x_1,x_2) \in S^2_i$，有$h(x_1<em>x_2) = h(x_1) *_2 h(x_2)$$\quad$$h(x_1o_1x_2) = h(x_1)o_2h(x_2)$<br>对任意的$x_1 \in S_1$ ，有$h(\sim_1(x_1))=\sim_2(h(x1))$，则称$h$是从代数系统$V_1$到$V_2$的一个同态。代数系统$V_2$常称为$V_1$在$h$下的同态像。有时称$h$将运算$</em>_1$传送到$*_2$ ，将运算$o_1$传送到$o_2$，将运算$\sim_1$传送到$\sim_2$</p>
+</blockquote>
+<p>$h$使得代数系统$V_1$和$V_2$中相对应的元素分别经过相对应的运算后的运算结果仍然保持对应关系；或者说代数系统$V_1$中的元素先进行运算然后再取像，与元素先取像然后再进行$V_2$中的相应运算其结果是一样的</p>
+<p>根据函数是内射、满射和双射，将相应的同态分别称为单一同态、满同态和同构</p>
+<blockquote>
+<p>集合代数、布尔代数、逻辑代数三者是同构的，在代数论的基础上统一了起来。</p>
+</blockquote>
+<p><strong>$S_1$中的元素之间由运算$<em>_1$所构成的关系，经$h$映射到$S_2$中后，其像之间的类似关系由$</em>_2$来构成，因此称同态是一个“保持运算”的映射。</strong></p>
+<hr>
+<p>同态能否保持运算的性质？</p>
+<blockquote>
+<p>可交换、可结合、单位元、零元、逆元、可分配</p>
+</blockquote>
+<p>若$h$不是一个满同态，则以上性质不一定成立</p>
+<p>当$h$是从代数系统$V_1$到$V_2$的同构时，$h$的逆函数$h^{-1}$是从$V_2$到$V_1$的同构．因此，称$V_1$和$V_2$是彼此同构的，所有元素一一对应、各个运算一一对应。</p>
+<p>每一个代数系统对其自身是同构的．又如果$V_1$对$V_2$是同构的，则$V_2$对$V_1$也是同构的．而且如果$V_1$对$V_2$是同构的，$V_2$对$V_3$是同构的，则$V_1$对$V_3$也是同构的。因此，在由代数系统所组成的集合上同构关系是一个等价关系．于是可将这个集合分划成一些等价类．其中每一类是由具有相同“结构”的同构代数系统所组成．</p>
+<blockquote>
+<p>若$V_1$和$V_2$是同一代数系统$V$，则从$V_1$到$V_2$的同态称为$V$的自同态；从$V_1$到$V_2$的同构称为自同构.</p>
+</blockquote>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T12:13:54.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Discrete-Mathematics/">Discrete Mathematics</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

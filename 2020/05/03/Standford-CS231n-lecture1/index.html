@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Standford_CS231n_lecture1 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Standford_CS231n_lecture1</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<p>Standford cs231n:Convolutional Neural Networks for Visual Recognition By Fei-Fei Li, Justin Johnson, Serena Yeung  lecture1</p>
+<a id="more"></a>
+
+<h1 id="Image-Classification"><a href="#Image-Classification" class="headerlink" title="Image Classification"></a>Image Classification</h1><h2 id="Challenges"><a href="#Challenges" class="headerlink" title="Challenges"></a>Challenges</h2><p>semantic gap 语义鸿沟</p>
+<ul>
+<li>viewpoint/scale variation</li>
+<li>illumination condition</li>
+<li>deformation</li>
+<li>occlusion</li>
+<li>background clutter</li>
+<li>intra-class variation</li>
+</ul>
+<h2 id="Data-driven-Approach"><a href="#Data-driven-Approach" class="headerlink" title="Data-driven Approach"></a>Data-driven Approach</h2><p>when we are making an image classifier, there’s no really clear, explicit algorithm that makes intuitive sense for how you might go about recognizing these objects, unlike algorithm or cryptography.</p>
+<p>the idea/approach of data-driven approach</p>
+<ol>
+<li>collect a dataset of images and labels, (training set of N images, K labels)</li>
+<li>use machine learning to train a classifier, learn a model</li>
+<li>evaluate the classifier on new images</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># comparison</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(images, labels)</span>:</span></span><br><span class="line">    <span class="comment"># Machine learning</span></span><br><span class="line">    <span class="keyword">return</span> model</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(model, test_images)</span>:</span></span><br><span class="line">    <span class="comment"># Use model to predict labels</span></span><br><span class="line">    <span class="keyword">return</span> test_labels</span><br></pre></td></tr></table></figure>
+
+<p>The simplest classifier is nearest neighbor</p>
+<ol>
+<li>memorize training data</li>
+<li>find closest train image</li>
+<li>predict label of nearest image</li>
+</ol>
+<p>decision region: training-set on it, color of region represents its label</p>
+<h2 id="CIFAR-10-dataset"><a href="#CIFAR-10-dataset" class="headerlink" title="CIFAR-10 dataset"></a>CIFAR-10 dataset</h2><p>32*32*3</p>
+<p>determine the comparison function </p>
+<ul>
+<li>L1 Manhattan distance <ul>
+<li>depends on your choice of coordinate system</li>
+</ul>
+</li>
+<li>L2 Euclidean distance<ul>
+<li>immune to the coordinate system</li>
+<li>tends to accept several medium distinctions instead of a single huge distinction</li>
+</ul>
+</li>
+</ul>
+<p>distance functions can be also used in texts comparison </p>
+<h2 id="K-Nearest-Neighbors"><a href="#K-Nearest-Neighbors" class="headerlink" title="K-Nearest Neighbors"></a>K-Nearest Neighbors</h2><p>L1 distance</p>
+<p>$d_1(I_1,I_2)=∑_p|I^p_1−I^p_2|$</p>
+<p>L2 distance</p>
+<p>$d_2(I_1,I_2)=\sqrt{∑_p(I^p_1−I^p_2)^2}$</p>
+<p><img src="https://cs231n.github.io/assets/nneg.jpeg" alt="img"></p>
+<h3 id="K-1"><a href="#K-1" class="headerlink" title="K=1"></a>K=1</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NearestNeighbor</span><span class="params">(object)</span>:</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(self, X, y)</span>:</span></span><br><span class="line">    <span class="string">""" X is N x D where each row is an example. Y is 1-dimension of size N """</span></span><br><span class="line">    <span class="comment"># the nearest neighbor classifier simply remembers all the training data</span></span><br><span class="line">    self.Xtr = X</span><br><span class="line">    self.ytr = y</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self, X)</span>:</span></span><br><span class="line">    <span class="string">""" X is N x D where each row is an example we wish to predict label for """</span></span><br><span class="line">    num_test = X.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># lets make sure that the output type matches the input type</span></span><br><span class="line">    Ypred = np.zeros(num_test, dtype = self.ytr.dtype)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># loop over all test rows</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(num_test):</span><br><span class="line">      <span class="comment"># find the nearest training image to the i'th test image</span></span><br><span class="line">      <span class="comment"># using the L1 distance (sum of absolute value differences)</span></span><br><span class="line">      distances = np.sum(np.abs(self.Xtr - X[i,:]), axis = <span class="number">1</span>)</span><br><span class="line">      <span class="comment"># using the L2 distance</span></span><br><span class="line">      <span class="comment"># distances = np.sqrt(np.sum(np.square(self.Xtr - X[i,:]), axis = 1))</span></span><br><span class="line">    </span><br><span class="line">      min_index = np.argmin(distances) <span class="comment"># get the index with smallest distance</span></span><br><span class="line">      Ypred[i] = self.ytr[min_index] <span class="comment"># predict the label of the nearest example</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Ypred</span><br><span class="line"></span><br><span class="line">Xtr, Ytr, Xte, Yte = load_CIFAR10(<span class="string">'data/cifar10/'</span>) <span class="comment"># a magic function we provide</span></span><br><span class="line"><span class="comment"># flatten out all images to be one-dimensional</span></span><br><span class="line">Xtr_rows = Xtr.reshape(Xtr.shape[<span class="number">0</span>], <span class="number">32</span> * <span class="number">32</span> * <span class="number">3</span>) <span class="comment"># Xtr_rows becomes 50000 x 3072</span></span><br><span class="line">Xte_rows = Xte.reshape(Xte.shape[<span class="number">0</span>], <span class="number">32</span> * <span class="number">32</span> * <span class="number">3</span>) <span class="comment"># Xte_rows becomes 10000 x 3072</span></span><br><span class="line">nn = NearestNeighbor() <span class="comment"># create a Nearest Neighbor classifier class</span></span><br><span class="line">nn.train(Xtr_rows, Ytr) <span class="comment"># train the classifier on the training images and labels</span></span><br><span class="line">Yte_predict = nn.predict(Xte_rows) <span class="comment"># predict labels on the test images</span></span><br><span class="line"><span class="comment"># and now print the classification accuracy, which is the average number</span></span><br><span class="line"><span class="comment"># of examples that are correctly predicted (i.e. label matches)</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">'accuracy: %f'</span> % ( np.mean(Yte_predict == Yte) )</span><br></pre></td></tr></table></figure>
+
+<h3 id="Increase-K"><a href="#Increase-K" class="headerlink" title="Increase K"></a>Increase K</h3><p>instead of copying label from nearest neighbor, take majority vote from K closest points</p>
+<p>increases in K tends to:</p>
+<ul>
+<li>smooth out your decision boundaries</li>
+<li>lead to better results</li>
+<li>better generalization performance</li>
+<li>ambiguous points - tied for at least 2 labels</li>
+</ul>
+<p>two different viewpoints</p>
+<ul>
+<li>idea of high dimensional points in the plane</li>
+<li>look at concrete images</li>
+</ul>
+<h2 id="Set-the-Best-Hyperparameters"><a href="#Set-the-Best-Hyperparameters" class="headerlink" title="Set the Best Hyperparameters"></a>Set the Best Hyperparameters</h2><p>How to make these choices of K and distance function for our problems and data?</p>
+<p><strong>Never use the test data to optimize hyperparameters, which will cause over-fitting.</strong></p>
+<p>these are hyperparameters: choices about the algorithm that we set rather than something the program needs to learn</p>
+<ul>
+<li>very problem-dependent</li>
+<li>must try them all out and see what works best</li>
+</ul>
+<p>Setting Hyperparameters</p>
+<ol>
+<li><p>BAD: choose ones that work best on data</p>
+<ul>
+<li>we don’t care about fitting the training data, we really care about how our classifier or method will perform on unseen data after training.</li>
+<li>k=1 always works perfectly on training data</li>
+</ul>
+</li>
+<li><p>BAD: split data into train and test, choose hyperparameters that apply best on test data.</p>
+<ul>
+<li>BAD: No idea how algorithm will perform on new data</li>
+</ul>
+</li>
+<li><p>Better: split data into train, val and test; choose hyperparameters on val and evaluate on test</p>
+<ul>
+<li><p>we can use validation data to adjust hyperparameters, but never do this on test data.</p>
+</li>
+<li><p>we only use the labels of the validation set</p>
+</li>
+<li><p>test data is only used for evaluation in the final process.</p>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># we want the 60000 images to be divided into three parts:1000 for validation,</span></span><br><span class="line"><span class="comment"># 49000 for training, 10000 for testing</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># assume we have Xtr_rows, Ytr, Xte_rows, Yte as before</span></span><br><span class="line"><span class="comment"># recall Xtr_rows is 50,000 x 3072 matrix</span></span><br><span class="line">Xval_rows = Xtr_rows[:<span class="number">1000</span>, :] <span class="comment"># take first 1000 for validation</span></span><br><span class="line">Yval = Ytr[:<span class="number">1000</span>]</span><br><span class="line">Xtr_rows = Xtr_rows[<span class="number">1000</span>:, :] <span class="comment"># keep last 49,000 for train</span></span><br><span class="line">Ytr = Ytr[<span class="number">1000</span>:]</span><br><span class="line"></span><br><span class="line"><span class="comment"># find hyperparameters that work best on the validation set</span></span><br><span class="line">validation_accuracies = []</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">50</span>, <span class="number">100</span>]:</span><br><span class="line"></span><br><span class="line">  <span class="comment"># use a particular value of k and evaluation on validation data</span></span><br><span class="line">  nn = NearestNeighbor()</span><br><span class="line">  nn.train(Xtr_rows, Ytr)</span><br><span class="line">  <span class="comment"># here we assume a modified NearestNeighbor class that can take a k as input</span></span><br><span class="line">  Yval_predict = nn.predict(Xval_rows, k = k)</span><br><span class="line">  acc = np.mean(Yval_predict == Yval)</span><br><span class="line">  <span class="keyword">print</span> <span class="string">'accuracy: %f'</span> % (acc,)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># keep track of what works on the validation set</span></span><br><span class="line">  validation_accuracies.append((k, acc))</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>Better: Cross-Validation: split data into folds, try each fold as validation and average the results, more common in small data<ul>
+<li>when the dataset is large, and the trainning is very computationally expensive, this may not be practical</li>
+<li>e.g. divide 50000 test-data into 5 folds and each time use 1 fold as the validation set and the others as the training set. Output the average value</li>
+<li>If the number of examples in the validation set is small (perhaps only a few hundred or so), it is safer to use cross-validation</li>
+<li>In practice, 3-fold, 5-fold, 10-fold</li>
+</ul>
+</li>
+</ol>
+<p>Example: 5-fold cross-validation for the value of K, and base on that to determine the best K</p>
+<h2 id="Pros-and-Cons-of-Nearest-Neighbor-classifier"><a href="#Pros-and-Cons-of-Nearest-Neighbor-classifier" class="headerlink" title="Pros and Cons of Nearest Neighbor classifier"></a>Pros and Cons of Nearest Neighbor classifier</h2><p>K-Nearest Neighbor on images are never used</p>
+<ul>
+<li><p>simple to implement and understand.</p>
+</li>
+<li><p>how fast? Train O(1) , predict O(N).</p>
+</li>
+<li><p>this is bad, we want classifiers that are fast at prediction, slow for training is OK. Conv-nets and others are reverses of this</p>
+</li>
+<li><p>takes no time to train, since all that is required is to store and possibly index the training data.</p>
+</li>
+<li><p>very slow at test time</p>
+</li>
+<li><p>distance metricson pixels are not informative(the distance function may not be capturing the full description of distance or difference between distance)</p>
+<ul>
+<li>boxed, shifted, tinted images may have same L2 distances</li>
+</ul>
+</li>
+<li><p>curse of dimensionality</p>
+<ul>
+<li>when we use training data to try to densely cover the space in order to get better performance, the number of needed data is increasing in exponential level when the dimension of the problem increases.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><ul>
+<li>We introduced the problem of <strong>Image Classification</strong>, in which we are given a set of images that are all labeled with a single category. We are then asked to predict these categories for a novel set of test images and measure the accuracy of the predictions.</li>
+<li>We introduced a simple classifier called the <strong>Nearest Neighbor classifier</strong>. We saw that there are multiple hyper-parameters (such as value of k, or the type of distance used to compare examples) that are associated with this classifier and that there was no obvious way of choosing them.</li>
+<li>We saw that the correct way to set these hyperparameters is to split your training data into two: a training set and a fake test set, which we call <strong>validation set</strong>. We try different hyperparameter values and keep the values that lead to the best performance on the validation set.</li>
+<li>If the lack of training data is a concern, we discussed a procedure called <strong>cross-validation</strong>, which can help reduce noise in estimating which hyperparameters work best.</li>
+<li>Once the best hyperparameters are found, we fix them and perform a single <strong>evaluation</strong> on the actual test set.</li>
+<li>We saw that Nearest Neighbor can get us about 40% accuracy on CIFAR-10. It is simple to implement but requires us to store the entire training set and it is expensive to evaluate on a test image.</li>
+<li>Finally, we saw that the use of L1 or L2 distances on raw pixel values is not adequate since the distances correlate more strongly with backgrounds and color distributions of images than with their semantic content.</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T12:27:14.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/cs231n/">cs231n</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Image-Classification/">Image Classification</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/kNN/">kNN</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Hyperparameters/">Hyperparameters</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

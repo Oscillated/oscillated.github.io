@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Oscillate.</title>
+  <title>LeetCode1 | Oscillate.</title>
   
   
   
@@ -78,53 +78,14 @@
 
     <div class="container">
         <div data-pager-shell>
-            <ul class="Index">
-  
+            <div>
+  <article class='ContentView'>
     <header class='PageTitle'>
-        <h1>{ Trifies }</h1>
+        <h1>LeetCode1</h1>
     </header>
-  
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2020/05/03/LeetCode1/">LeetCode1</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-05-03T12:10:38.000Z" itemprop="datePublished">
-    2020-05-03
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/LeetCode/">LeetCode</a> }
-  </li>
 
-
-  </ul>
-  
-  
-  / 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/categories/Trifies/">Trifies</a> }
-  </li>
-
-
-  </ul>
-  
-</div>
-
-    </header>
-    <div>
-      
-        <head>
+    <section>
+      <head>
     <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -216,65 +177,35 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> * <span class="title">longestCommonPrefix</span><span class="params">(<span class="keyword">char</span> ** strs, <span class="keyword">int</span> strsSize)</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *prefix = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span>(strsSize == <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> strs[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">int</span> i,j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;strsSize&amp;&amp; strs[i][j] != <span class="string">'\0'</span>;++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(strs[i][j] != strs[i+<span class="number">1</span>][j])</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">if</span>( i == strsSize - <span class="number">2</span>) &#123;</span><br><span class="line">            i = <span class="number">-1</span>; <span class="comment">// 这轮比完了，准备第二列的比较</span></span><br><span class="line">            ++j;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    prefix = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">char</span>) * (j+<span class="number">1</span>)); <span class="comment">// 先确定公共前缀的字符数再分配空间</span></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;j;++i)</span><br><span class="line">        prefix[i] = strs[<span class="number">0</span>][i];</span><br><span class="line">    prefix[i] = <span class="string">'\0'</span>;  <span class="comment">// 末尾数组添0</span></span><br><span class="line">    <span class="keyword">return</span> prefix;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
+
       
-    </div>
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-03T12:10:38.000Z" itemprop="datePublished">
+              2020-05-03
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/LeetCode/">LeetCode</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
 </article>
 
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2020/05/03/Markdown-Usage/">Markdown-Usage</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-05-03T11:26:17.000Z" itemprop="datePublished">
-    2020-05-03
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/Markdown/">Markdown</a> }
-  </li>
-
-
-  </ul>
-  
-  
-  / 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/categories/Trifies/">Trifies</a> }
-  </li>
-
-
-  </ul>
   
 </div>
-
-    </header>
-    <div>
-      
-        <p>Markdown基本用法示例</p>
-        
-          <div class="more-link">
-            <a href="/2020/05/03/Markdown-Usage/#more">Read More</a>
-          </div>
-        
-      
-    </div>
-</article>
-
-    </li>
-  
-</ul>
-
 
             <footer>
     <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">

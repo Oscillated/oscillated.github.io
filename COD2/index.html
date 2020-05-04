@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>COD2 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>COD2</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>ZJU Computer Organization &amp; Design By 刘鹏 2(lec03 lec04)</p>
+<a id="more"></a>
+
+<h1 id="Lec03-RISC-V-ASM-lw-sw"><a href="#Lec03-RISC-V-ASM-lw-sw" class="headerlink" title="Lec03:RISC-V ASM-lw, sw"></a>Lec03:RISC-V ASM-lw, sw</h1><ul>
+<li><p>In processor, registers is fast but has limited space to hold values</p>
+<ul>
+<li>32 words (128 Bytes) (<strong>one word each register</strong>)</li>
+<li>about 100-500 times faster</li>
+</ul>
+</li>
+<li><p>In memory, there is much larger space to hold values, but it’s slower than registers</p>
+<ul>
+<li>DRAM: 2 GB to 64 GB</li>
+</ul>
+</li>
+</ul>
+<p>So we handle instructions in registers with <strong>load/store</strong> bus between processor and memory</p>
+<p><img src="https://img.cfssr.xyz/imgs/2020/05/e6717b99cbd239eb.png" alt=""></p>
+<h2 id="Memory-addresses-are-in-bytes"><a href="#Memory-addresses-are-in-bytes" class="headerlink" title="Memory addresses are in bytes"></a>Memory addresses are in bytes</h2><ul>
+<li>8 bit is called a <strong>byte</strong></li>
+<li>a <strong>word</strong> equals 4 bytes, Word addresses are 4 bytes apart</li>
+</ul>
+<h3 id="little-endian-big-endian-convention"><a href="#little-endian-big-endian-convention" class="headerlink" title="little-endian/big-endian convention"></a>little-endian/big-endian convention</h3><p><img src="https://img.cfssr.xyz/imgs/2020/05/1768dfe481948137.png" alt=""></p>
+<h2 id="Load-from-Memory-to-Register"><a href="#Load-from-Memory-to-Register" class="headerlink" title="Load from Memory to Register"></a>Load from Memory to Register</h2><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">int</span> A[<span class="hljs-number">100</span>];<br>g = h + A[<span class="hljs-number">3</span>];<br></code></pre></td></tr></table></figure>
+
+<p><strong>lw</strong>: data flow is $\leftarrow$</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm">lw <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-number">12</span>(<span class="hljs-keyword">x</span><span class="hljs-number">15</span>)<br><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">11</span>, <span class="hljs-keyword">x</span><span class="hljs-number">12</span>, <span class="hljs-keyword">x</span><span class="hljs-number">10</span> # g = h + A[<span class="hljs-number">3</span>]<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>x15 represents the base register, or A[0]</li>
+<li>offset is 12 in bytes in this example, which must be <strong>multiples of 4</strong>, because 4 bytes is a word</li>
+</ul>
+<h2 id="Store-from-Register-to-Memory"><a href="#Store-from-Register-to-Memory" class="headerlink" title="Store from Register to Memory"></a>Store from Register to Memory</h2><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">int</span> A[<span class="hljs-number">100</span>];<br>A[<span class="hljs-number">10</span>] = h + A[<span class="hljs-number">3</span>];<br></code></pre></td></tr></table></figure>
+
+<p><strong>sw</strong>: data flow is $\rightarrow$</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm">lw <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-number">12</span>(<span class="hljs-keyword">x</span><span class="hljs-number">15</span>) # Temp reg <span class="hljs-keyword">x</span><span class="hljs-number">10</span> gets A[<span class="hljs-number">3</span>]<br><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">12</span>, <span class="hljs-keyword">x</span><span class="hljs-number">10</span> # h = h + A[<span class="hljs-number">3</span>]<br>sw <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-number">40</span>(<span class="hljs-keyword">x</span><span class="hljs-number">15</span>) # A[<span class="hljs-number">10</span>] = h<br></code></pre></td></tr></table></figure>
+
+<h2 id="Loading-and-Storing-Bytes"><a href="#Loading-and-Storing-Bytes" class="headerlink" title="Loading and Storing Bytes"></a>Loading and Storing Bytes</h2><p>There are byte data transfers in RISC-V:</p>
+<ul>
+<li>load byte: <strong>lb</strong></li>
+<li>store byte: <strong>sb</strong></li>
+<li>load byte (unsigned): <strong>lbu</strong></li>
+<li>no store byte (unsigned), because storing means directly overwriting the original data</li>
+</ul>
+<p>Same format as lw, sw</p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm">lb <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-number">3</span>(<span class="hljs-keyword">x</span><span class="hljs-number">11</span>)<br></code></pre></td></tr></table></figure>
+
+<p>additional <strong>“sign-extend”</strong> operation</p>
+<ul>
+<li>for lb<ul>
+<li><img src="https://img.cfssr.xyz/imgs/2020/05/def0ef2c5b8352b7.png" alt=""></li>
+</ul>
+</li>
+<li>for lbu<ul>
+<li>use 0 to fill out all high bits</li>
+</ul>
+</li>
+</ul>
+<p>Memory is byte-addressable, but lw and sw access one word at a time</p>
+<p>A pointer (used by lw and sw) is just a memory address, we can add to it or subtract from it (using offset).</p>
+<h1 id="Lec04-RISC-V-ASM-decisions"><a href="#Lec04-RISC-V-ASM-decisions" class="headerlink" title="Lec04:RISC-V ASM-decisions"></a>Lec04:RISC-V ASM-decisions</h1><p>if-statement instruction in RISC-V:</p>
+<figure class="highlight armasm"><table><tr><td class="code"><pre><code class="hljs armasm"><span class="hljs-keyword">beq </span>register1, register2, L1<br></code></pre></td></tr></table></figure>
+
+<p>it means:</p>
+<ul>
+<li><p>if (value in register1) == (value in register2),</p>
+<ul>
+<li>go to statement labeled L1</li>
+</ul>
+</li>
+<li><p>Otherwise, go to next statement</p>
+</li>
+</ul>
+<ul>
+<li>Conditional Branch<ul>
+<li><strong>beq</strong>: branch if equal</li>
+<li><strong>bne</strong>: branch if not equal</li>
+<li><strong>blt</strong>: branch if less than</li>
+<li><strong>bltu</strong>: branch if less than (treat registers as unsigned integers)</li>
+<li><strong>bge</strong>: branch if greater than or equal</li>
+</ul>
+</li>
+<li>Unconditional Branch<ul>
+<li><strong>jump $j$</strong>: jump to label $j$</li>
+</ul>
+</li>
+</ul>
+<h2 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h2><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span>(i==j)<br>    f = g + h;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm">bne <span class="hljs-keyword">x</span><span class="hljs-number">13</span>, <span class="hljs-keyword">x</span><span class="hljs-number">14</span>, Exit # i-<span class="hljs-keyword">x</span><span class="hljs-number">13</span>, j-<span class="hljs-keyword">x</span><span class="hljs-number">14</span><br><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">11</span>, <span class="hljs-keyword">x</span><span class="hljs-number">12</span> # f-<span class="hljs-keyword">x</span><span class="hljs-number">10</span>, g-<span class="hljs-keyword">x</span><span class="hljs-number">11</span>, h-<span class="hljs-keyword">x</span><span class="hljs-number">12</span><br>Exit:<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span>(i==j)<br>    f = g + h;<br><span class="hljs-keyword">else</span><br>    f = g - h;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm">bne <span class="hljs-keyword">x</span><span class="hljs-number">13</span>, <span class="hljs-keyword">x</span><span class="hljs-number">14</span>, Else # i-<span class="hljs-keyword">x</span><span class="hljs-number">13</span>, j-<span class="hljs-keyword">x</span><span class="hljs-number">14</span><br><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">11</span>, <span class="hljs-keyword">x</span><span class="hljs-number">12</span> # f-<span class="hljs-keyword">x</span><span class="hljs-number">10</span>, g-<span class="hljs-keyword">x</span><span class="hljs-number">11</span>, h-<span class="hljs-keyword">x</span><span class="hljs-number">12</span><br>j Exit<br>Else:<br><span class="hljs-keyword">sub</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">11</span>, <span class="hljs-keyword">x</span><span class="hljs-number">12</span> # f-<span class="hljs-keyword">x</span><span class="hljs-number">10</span>, g-<span class="hljs-keyword">x</span><span class="hljs-number">11</span>, h-<span class="hljs-keyword">x</span><span class="hljs-number">12</span><br>Exit:<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// loop in C</span><br><span class="hljs-keyword">int</span> A[<span class="hljs-number">20</span>];<br><span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++)<br>	sum += A[i];<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm"><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">9</span>, <span class="hljs-keyword">x</span><span class="hljs-number">8</span>, <span class="hljs-keyword">x</span><span class="hljs-number">0</span> # <span class="hljs-keyword">x</span><span class="hljs-number">9</span>=&amp;A[<span class="hljs-number">0</span>]<br><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">0</span>, <span class="hljs-keyword">x</span><span class="hljs-number">0</span> # sum=<span class="hljs-number">0</span><br><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">11</span>, <span class="hljs-keyword">x</span><span class="hljs-number">0</span>, <span class="hljs-keyword">x</span><span class="hljs-number">0</span> # i=<span class="hljs-number">0</span><br>addi <span class="hljs-keyword">x</span><span class="hljs-number">13</span>,<span class="hljs-keyword">x</span><span class="hljs-number">0</span>, <span class="hljs-number">20</span> # <span class="hljs-keyword">x</span><span class="hljs-number">13</span>=<span class="hljs-number">20</span><br>Loop:<br>    bge <span class="hljs-keyword">x</span><span class="hljs-number">11</span>,<span class="hljs-keyword">x</span><span class="hljs-number">13</span>,Done<br>    lw <span class="hljs-keyword">x</span><span class="hljs-number">12</span>, <span class="hljs-number">0</span>(<span class="hljs-keyword">x</span><span class="hljs-number">9</span>) # <span class="hljs-keyword">x</span><span class="hljs-number">12</span>=A[i]<br>    <span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>,<span class="hljs-keyword">x</span><span class="hljs-number">10</span>,<span class="hljs-keyword">x</span><span class="hljs-number">12</span> # sum+=A[i]<br>    addi <span class="hljs-keyword">x</span><span class="hljs-number">9</span>, <span class="hljs-keyword">x</span><span class="hljs-number">9</span>,<span class="hljs-number">4</span> # &amp;A[i+<span class="hljs-number">1</span>]<br>    addi <span class="hljs-keyword">x</span><span class="hljs-number">11</span>,<span class="hljs-keyword">x</span><span class="hljs-number">11</span>,<span class="hljs-number">1</span> # i++<br>    j Loop<br>Done:<br></code></pre></td></tr></table></figure>
+
+<p>All types of loops in C:</p>
+<ul>
+<li>while</li>
+<li>do … while</li>
+<li>for</li>
+</ul>
+<p>can be rewritten as either of the other two, so can be written in RISC-V</p>
+<p>Though there are multiple ways of writing a loop in RISC-V, the key to decision-making is conditional branch</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-04T15:21:23.000Z" itemprop="datePublished">
+              2020-05-04
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Computer-Organization-Design/">Computer Organization &amp; Design</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ASM9 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>ASM9</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>白洪欢《汇编语言程序设计基础》笔记9</p>
+<a id="more"></a>
+
+<h1 id="通用数据传送指令"><a href="#通用数据传送指令" class="headerlink" title="通用数据传送指令"></a>通用数据传送指令</h1><h2 id="move"><a href="#move" class="headerlink" title="move"></a>move</h2><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-comment">; 错误写法，两个操作数不能同时为内存变量</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">byte</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">ds</span>:[<span class="hljs-built_in">bx</span>], <span class="hljs-built_in">byte</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">di</span>]<br><span class="hljs-comment">; 正确写法</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">di</span>]<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>:[<span class="hljs-built_in">bx</span>], <span class="hljs-built_in">al</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="push-pop"><a href="#push-pop" class="headerlink" title="push, pop"></a>push, pop</h2><p>设eax=12345678h, ebx=89ABCDEFh, ss=1000h, sp=2000h</p>
+<p>32位push、pop过程</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">push</span> <span class="hljs-built_in">eax</span><span class="hljs-comment">;</span><br><span class="hljs-keyword">push</span> <span class="hljs-built_in">ebx</span><span class="hljs-comment">;</span><br><span class="hljs-keyword">pop</span> <span class="hljs-built_in">ebx</span><span class="hljs-comment">;</span><br><span class="hljs-keyword">pop</span> <span class="hljs-built_in">eax</span><span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>堆栈布局</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript"><span class="hljs-number">1000</span>:<span class="hljs-number">1</span>FF8 EF   &lt;- (<span class="hljs-number">2</span>)<br><span class="hljs-number">1000</span>:<span class="hljs-number">1</span>FF9 CD<br><span class="hljs-number">1000</span>:<span class="hljs-number">1</span>FFA AB<br><span class="hljs-number">1000</span>:<span class="hljs-number">1</span>FFB <span class="hljs-number">89</span><br><span class="hljs-number">1000</span>:<span class="hljs-number">1</span>FFC <span class="hljs-number">78</span>h  &lt;- (<span class="hljs-number">1</span>)(<span class="hljs-number">3</span>)<br><span class="hljs-number">1000</span>:<span class="hljs-number">1</span>FFD <span class="hljs-number">56</span>h<br><span class="hljs-number">1000</span>:<span class="hljs-number">1</span>FFE <span class="hljs-number">34</span>h<br><span class="hljs-number">1000</span>:<span class="hljs-number">1</span>FFF <span class="hljs-number">12</span>h<br><span class="hljs-number">1000</span>:<span class="hljs-number">2000</span> ??   &lt;-(<span class="hljs-number">4</span>)<br></code></pre></td></tr></table></figure>
+
+<p>push/pop后面也可以跟变量,例如:</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">push</span> <span class="hljs-built_in">word</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">ds</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>]<br><span class="hljs-keyword">pop</span> <span class="hljs-built_in">word</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">di</span>]<br></code></pre></td></tr></table></figure>
+
+<p>8086中, push不能跟常数, 但80386及以后的cpu允许push一个常数。</p>
+<p>push/pop后面不能跟一个8位的寄存器或变量。</p>
+<h2 id="xchg"><a href="#xchg" class="headerlink" title="xchg"></a>xchg</h2><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">1</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">2</span><br><span class="hljs-keyword">xchg</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">bx</span><span class="hljs-comment">; 则ax=2, bx=1 交换效率高无需借助第三方，C中需要引入第三方</span><br><span class="hljs-comment">; xchg ax, ds:[bx]</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="乘法指令-mul"><a href="#乘法指令-mul" class="headerlink" title="乘法指令 mul"></a>乘法指令 mul</h1><p><strong>只有一个操作数寄存器 另一个被乘数寄存器是al/ax/eax</strong></p>
+<p>例如<code>mul bh</code>表示ax=al*bh</p>
+<h2 id="8位乘法"><a href="#8位乘法" class="headerlink" title="8位乘法"></a>8位乘法</h2><p>两个乘数分别是al和操作数寄存器，乘积在ax</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">12h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bl</span>, <span class="hljs-number">10h</span><br><span class="hljs-keyword">mul</span> <span class="hljs-built_in">bl</span> <span class="hljs-comment">; ax=120h</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="16位乘法"><a href="#16位乘法" class="headerlink" title="16位乘法"></a>16位乘法</h2><p>两个乘数分别是ax和操作数寄存器，乘积在dx:ax，意思是乘积结果为dx*$2^{16}$+ax，因为结果是32位一个16位寄存器无法存储，需要保存在两个寄存器中</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">1234h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">100h</span><br><span class="hljs-keyword">mul</span> <span class="hljs-built_in">bx</span><span class="hljs-comment">; dx = 0012h, ax = 3400h 看的时候应该理解为00123400h</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="32位乘法"><a href="#32位乘法" class="headerlink" title="32位乘法"></a>32位乘法</h2><p>两个乘数分别是eax和操作数寄存器，乘积在edx:eax，意思是乘积结果为edx*$2^{16}$+eax</p>
+<p>利用乘法指令把十进制字符串转化为32位整数：</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm">comment #<br>    y          x<br><span class="hljs-number">16</span>位段地址:<span class="hljs-number">32</span>位偏移地址<br>t是一张表<br>t+y-&gt;<span class="hljs-number">64</span>位的值, 其中的<span class="hljs-number">32</span>位表示y这个段的段首地址<br>这种寻址模式称为保护模式(protected mode)<br><br>    y          x<br><span class="hljs-number">16</span>位段地址:<span class="hljs-number">16</span>位偏移地址<br>y*<span class="hljs-number">10h</span>+x得到物理地址这种寻址模式称为实模式(real<br>mode)。dos启动后，它会把<span class="hljs-meta">cpu</span>切换到实模式，而非<br>保护模式<span class="hljs-comment">; windows/linux启动后，它会把cpu切换到</span><br>保护模式。<br>#<br><span class="hljs-meta">.386</span><br>data <span class="hljs-meta">segment</span> <span class="hljs-meta">use16</span> <span class="hljs-comment">; use16表示段内的偏移地址仍旧采用16位的偏移地址，不能采用32位偏移地址</span><br><span class="hljs-comment">; 地址仍旧采用16位，但是寄存器可以采用32位的</span><br>s <span class="hljs-built_in">db</span> <span class="hljs-string">"2147483647"</span>, <span class="hljs-number">0</span><span class="hljs-comment">; 7FFF FFFFh 需要把字符串引号脱掉，0表示字符串结束标记</span><br>abc <span class="hljs-built_in">dd</span> <span class="hljs-number">0</span><br>data ends<br>code <span class="hljs-meta">segment</span> <span class="hljs-meta">use16</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code, <span class="hljs-built_in">ds</span>:data<br><span class="hljs-symbol">main:</span><br><span class="hljs-comment">; shl ax, 4 ;只在386以上的cpu支持,即在最开始要写.386</span><br><span class="hljs-comment">; 否则(8086下)写作</span><br><span class="hljs-comment">; mov cl, 4</span><br><span class="hljs-comment">; shl ax, cl</span><br><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>, <span class="hljs-number">0</span><span class="hljs-comment">; 被乘数</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">si</span>, <span class="hljs-number">0</span><span class="hljs-comment">; 数组s的下标</span><br><span class="hljs-symbol">again:</span><br>   <span class="hljs-keyword">cmp</span> s[<span class="hljs-built_in">si</span>], <span class="hljs-number">0</span><span class="hljs-comment">; 判断是否到达数组的结束标志</span><br>   <span class="hljs-keyword">je</span> done<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ebx</span>, <span class="hljs-number">10</span><br>   <span class="hljs-keyword">mul</span> <span class="hljs-built_in">ebx</span>	<span class="hljs-comment">; edx:eax=eax*ebx, 其中EDX=0</span><br>          	<span class="hljs-comment">; 或写成imul eax, ebx</span><br>          <br><span class="hljs-comment">; 能不能写作mul ebx, 10呢？</span><br><span class="hljs-comment">; 显然不行，因为10作为常数，宽度不确定，因此无法知道是什么位数乘法相乘</span><br><span class="hljs-comment">; 那么程序中为什么要用ebx不能用bx呢？</span><br><span class="hljs-comment">; 因为随着倍数越来越多，被乘数越来越大，16位寄存器无法表示，因此要采用32位寄存器</span><br><span class="hljs-comment">; e.g. dx:ax = 214748 * 10 + 3</span><br><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">edx</span>, <span class="hljs-number">0</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dl</span>, s[<span class="hljs-built_in">si</span>]<span class="hljs-comment">; DL='1'</span><br>   <span class="hljs-keyword">sub</span> <span class="hljs-built_in">dl</span>, <span class="hljs-string">'0'</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">eax</span>, <span class="hljs-built_in">edx</span><br><span class="hljs-comment">;不能写作 add eax, dl 因为宽度不等不可以</span><br><span class="hljs-comment">;汇编操作数必须是等宽的，虽然dl是整个edx最后8位，但是要注意前面做了一步操作mob edx,0</span><br><span class="hljs-comment">;即已经对edx做了清零操作，所以可以add eax, edx等价于add eax, dl</span><br><span class="hljs-comment">;在汇编语言中，常数是没有宽度的</span><br><span class="hljs-comment">;mov dl, s[si]</span><br><span class="hljs-comment">;sub dl, '0'</span><br><span class="hljs-comment">;movzx edx, dl</span><br><span class="hljs-comment">;add eax, edx</span><br>   <span class="hljs-keyword">inc</span> <span class="hljs-built_in">si</span> <span class="hljs-comment">; 数组下标+1</span><br>   <span class="hljs-keyword">jmp</span> again<br><span class="hljs-symbol">done:</span><br>   <span class="hljs-keyword">mov</span> abc, <span class="hljs-built_in">eax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>code ends<br>end main<br></code></pre></td></tr></table></figure>
+
+<p>利用乘法指令把十进制字符串转化成16位整数的例子</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm">data <span class="hljs-meta">segment</span><br>s   <span class="hljs-built_in">db</span> <span class="hljs-string">"12345"</span>,<span class="hljs-number">0</span><br>abc <span class="hljs-built_in">dw</span> <span class="hljs-number">0</span><br>data ends<br>code <span class="hljs-meta">segment</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code, <span class="hljs-built_in">ds</span>:data<br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">0</span><span class="hljs-comment">; 数组s的下标</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">0</span><span class="hljs-comment">; 被乘数=0</span><br><span class="hljs-symbol">again:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">0</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cl</span>, s[<span class="hljs-built_in">bx</span>]<br>   <span class="hljs-keyword">cmp</span> <span class="hljs-built_in">cl</span>, <span class="hljs-number">0</span><br>   <span class="hljs-keyword">je</span> done<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">si</span>, <span class="hljs-number">10</span><span class="hljs-comment">; 乘数=10</span><br>   <span class="hljs-keyword">mul</span> <span class="hljs-built_in">si</span><span class="hljs-comment">; 乘积在dx:ax中</span><br>   <span class="hljs-keyword">sub</span> <span class="hljs-built_in">cl</span>, <span class="hljs-string">'0'</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">inc</span> <span class="hljs-built_in">bx</span><br>   <span class="hljs-keyword">jmp</span> again<br><span class="hljs-symbol">done:</span><br>   <span class="hljs-keyword">mov</span> abc, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>code ends<br>end main<br></code></pre></td></tr></table></figure>
+
+<h2 id="imul"><a href="#imul" class="headerlink" title="imul"></a>imul</h2><p>对符号数做乘法运算</p>
+<h3 id="1个操作数"><a href="#1个操作数" class="headerlink" title="1个操作数"></a>1个操作数</h3><p>同mul一样</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript">mov al, <span class="hljs-number">0</span>FFh ; mov al, <span class="hljs-number">0</span>FFh<br>mov bl, <span class="hljs-number">0</span>FFh ; mov bl, <span class="hljs-number">0</span>FFh<br>mul bl 		 ; imul bl<br>;<span class="hljs-number">255</span>*<span class="hljs-number">255</span> 	 ; <span class="hljs-number">-1</span> * <span class="hljs-number">-1</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="多个操作数"><a href="#多个操作数" class="headerlink" title="多个操作数"></a>多个操作数</h3><p>寄存器*寄存器</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">imul</span> <span class="hljs-built_in">eax</span>, <span class="hljs-built_in">ebx</span><span class="hljs-comment">; eax = eax * ebx</span><br></code></pre></td></tr></table></figure>
+
+<p>寄存器和常数</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">imul</span> <span class="hljs-built_in">eax</span>, <span class="hljs-built_in">ebx</span>, <span class="hljs-number">3</span><span class="hljs-comment">; eax = ebx * 3（左边一定为寄存器，右边一定为常数，中间可以为变量或者寄存器）</span><br></code></pre></td></tr></table></figure>
+
+<p>上面两种用法的第二个操作数可以是寄存器也可以是变量，第三个操作数只能是常数<br>两面两种用法与被乘数隐藏、乘积隐藏的第三种用法（8位，16位，32位）相比较，虽然方便了不少，但是有一个很大的缺陷：可能发生溢出<br>16位CPU也支持这种用法（<code>imul ax, bx</code>），不只有32位以上的cpu才支持这种用法<br>但是一定要在386以上CPU中才可以，也就是要提前声明</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript"><span class="hljs-number">.386</span> ;<span class="hljs-number">386</span>以上CPU才支持<span class="hljs-number">32</span>位,这样程序中才可以使用<span class="hljs-number">32</span>位寄存器<br>code segment use16<br></code></pre></td></tr></table></figure>
+
+<h1 id="除法指令-div"><a href="#除法指令-div" class="headerlink" title="除法指令 div"></a>除法指令 div</h1><h2 id="16位除以8位得8位"><a href="#16位除以8位得8位" class="headerlink" title="16位除以8位得8位"></a>16位除以8位得8位</h2><p>AX / 除数 = AL … AH （被除数在ax，除数是操作数寄存器，商在al，余数在ah）</p>
+<p>记忆：小端规则，al存商在先，ah存余数在后</p>
+<p>设ax=123h, bh=10h</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><code class="hljs routeros">div bh<br>; <span class="hljs-attribute">al</span>=12h, <span class="hljs-attribute">ah</span>=03h<br></code></pre></td></tr></table></figure>
+
+<h2 id="32位除以16位得16位"><a href="#32位除以16位得16位" class="headerlink" title="32位除以16位得16位"></a>32位除以16位得16位</h2><p>dx:ax / 除数 = ax … dx （被除数”段地址“在dx，”偏移地址“在ax，除数是操作数寄存器，商在ax，余数在dx）</p>
+<p>设dx=123h, ax=4567h, bx=1000h</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><code class="hljs routeros">div bx<br>; <span class="hljs-attribute">ax</span>=1234h, <span class="hljs-attribute">dx</span>=0567h<br></code></pre></td></tr></table></figure>
+
+<h2 id="64位除以32位得32位"><a href="#64位除以32位得32位" class="headerlink" title="64位除以32位得32位"></a>64位除以32位得32位</h2><p>edx:eax / 除数 = eax … edx （被除数”段地址“在edx，”偏移地址“在eax，除数是操作数寄存器，商在eax，余数在edx）</p>
+<p>假定要把一个32位整数如7FFFFFFFh转化成十进制格式，则一定要采用这种除法防止发生除法溢出。</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-meta">.386</span><br>data <span class="hljs-meta">segment</span> <span class="hljs-meta">use16</span><br>abc <span class="hljs-built_in">dd</span> <span class="hljs-number">7FFFFFFFh</span> <span class="hljs-comment">; 获得64位的被除数：高32位填0，低32位为本身</span><br>s <span class="hljs-built_in">db</span> <span class="hljs-number">10</span> dup(<span class="hljs-string">' '</span>), <span class="hljs-number">0Dh</span>, <span class="hljs-number">0Ah</span>, <span class="hljs-string">'$'</span><br>data ends<br>code <span class="hljs-meta">segment</span> <span class="hljs-meta">use16</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code, <span class="hljs-built_in">ds</span>:data<br><span class="hljs-symbol">main:</span><br><span class="hljs-comment">;不采用除法也是考虑到溢出，除的商可能不是16位</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">di</span>, <span class="hljs-number">0</span><span class="hljs-comment">; 数组s的下标</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>, abc<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">0</span><span class="hljs-comment">; 统计push的次数</span><br><span class="hljs-symbol">again:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">edx</span>, <span class="hljs-number">0</span><span class="hljs-comment">; 被除数为EDX:EAX</span><br><span class="hljs-comment">; mov edx, 0一定不能移到again上方，否则程序会死循环，因为下面有一步需要add dl,'0'如果mov edx,0在again上方，则程序永远不会结束，死循环</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ebx</span>, <span class="hljs-number">10</span><br>   <span class="hljs-keyword">div</span> <span class="hljs-built_in">ebx</span><span class="hljs-comment">; EAX=商, EDX=余数</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">dl</span>, <span class="hljs-string">'0'</span><br><span class="hljs-comment">; 用 add dx, '0'也可以</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">dx</span> <span class="hljs-comment">;dx中还有dl 此处不能是8位</span><br>   <span class="hljs-keyword">inc</span> <span class="hljs-built_in">cx</span><span class="hljs-comment">; 相当于add cx, 1 inc 表示++，循环结束时需要统计一共产生了几个位，每Push一次需要一次计数</span><br>   <span class="hljs-keyword">cmp</span> <span class="hljs-built_in">eax</span>, <span class="hljs-number">0</span> <span class="hljs-comment">; 检查商是否为0</span><br>   <span class="hljs-keyword">jne</span> again<br><span class="hljs-symbol">pop_again:</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">dx</span><br>   <span class="hljs-keyword">mov</span> s[<span class="hljs-built_in">di</span>], <span class="hljs-built_in">dl</span><br>   <span class="hljs-keyword">inc</span> <span class="hljs-built_in">di</span><br>   <span class="hljs-keyword">dec</span> <span class="hljs-built_in">cx</span><span class="hljs-comment">; 相当于sub cx, 1，与inc相反</span><br>   <span class="hljs-keyword">jnz</span> pop_again<br><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">9</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, offset s<br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>code ends<br>end main<br></code></pre></td></tr></table></figure>
+
+<p>乘除速度很慢，除法运算速度肯定没有移位运算来得快<br>C语言做字符转化 <code>x = atoi(&quot;12345&quot;) /*ascii to integer*/</code></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">x = <span class="hljs-number">12345</span><br>atol() <span class="hljs-comment">/*ascii to long*/</span><br>atof() <span class="hljs-comment">/*ascii to float*/</span><br></code></pre></td></tr></table></figure>
+
+<p>用数组模拟键盘输入</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">char</span> s[]=<span class="hljs-string">"12345"</span>;<br><span class="hljs-keyword">int</span> y;<br><span class="hljs-built_in">sscanf</span>(s,<span class="hljs-string">"%d"</span>,&amp;y);<span class="hljs-comment">/*用字符串内容模拟键盘输入内容*/</span><br><span class="hljs-comment">//y=12345</span><br><span class="hljs-built_in">sscanf</span>(s,<span class="hljs-string">"%x"</span>,&amp;y);<span class="hljs-comment">//y = 0x12345</span><br><span class="hljs-comment">//汇编中没有这些库函数，全部自己写</span><br>用数组模拟屏幕的输出<br><span class="hljs-keyword">int</span> y = <span class="hljs-number">12345</span>;<br><span class="hljs-keyword">char</span> s[];<br><span class="hljs-built_in">sprintf</span>(s,<span class="hljs-string">"%d"</span>,y);<br><span class="hljs-comment">//函数功能：把格式化的数据写入某个字符串</span><br><span class="hljs-comment">//函数原型：int sprintf( char *buffer, const char *format [, argument] … );</span><br><span class="hljs-comment">//返回值：字符串长度（strlen）</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="除法溢出"><a href="#除法溢出" class="headerlink" title="除法溢出"></a>除法溢出</h2><p>除0</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">1234h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-number">bh</span>, <span class="hljs-number">0</span><br><span class="hljs-keyword">div</span> <span class="hljs-number">bh</span><span class="hljs-comment">; 此时因为除以0, 所以会发生除法溢出</span><br></code></pre></td></tr></table></figure>
+
+<p>商无法保存到al中</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">123h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-number">bh</span>, <span class="hljs-number">1</span><br><span class="hljs-keyword">div</span> <span class="hljs-number">bh</span><span class="hljs-comment">; 此时由于商123h无法保存到AL（只有8位）中, 因此也会发生溢出。其效果与除0一样</span><br></code></pre></td></tr></table></figure>
+
+<p>溢出时的系统响应</p>
+<p>除法溢出时会在此处插入int 00h并执行，在dos系统下, int 00h会显示溢出信息并终止程序运行</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">123h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-number">bh</span>, <span class="hljs-number">1</span><br><span class="hljs-keyword">div</span> <span class="hljs-number">bh</span><span class="hljs-comment">; 此处发生除法溢出</span><br><span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><span class="hljs-comment">; \ 这2条指令将不可能被执行到</span><br><span class="hljs-keyword">int</span> <span class="hljs-number">21h</span> <span class="hljs-comment">; /</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="地址传送指令"><a href="#地址传送指令" class="headerlink" title="地址传送指令"></a>地址传送指令</h1><h1 id="lea"><a href="#lea" class="headerlink" title="lea"></a>lea</h1><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">lea</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">ds</span>:[<span class="hljs-number">1000h</span>] <span class="hljs-comment">; DX=1000h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, <span class="hljs-number">1000h</span><span class="hljs-comment">; 上述lea指令的效果等同于mov指令</span><br><br><span class="hljs-keyword">lea</span> <span class="hljs-built_in">dx</span>, abc <span class="hljs-comment">; 效果等价于以下指令</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, offset abc<br><br><span class="hljs-keyword">lea</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">ds</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-built_in">si</span>+<span class="hljs-number">3</span>]<span class="hljs-comment">; dx=bx+si+3</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">bx</span>+<span class="hljs-built_in">si</span>+<span class="hljs-number">3</span><span class="hljs-comment">; 错误</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">bx</span><span class="hljs-comment">; \</span><br><span class="hljs-keyword">add</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">si</span><span class="hljs-comment">;  | 效果等同于上述lea指令</span><br><span class="hljs-keyword">add</span> <span class="hljs-built_in">dx</span>, <span class="hljs-number">3</span> <span class="hljs-comment">; /</span><br><br><span class="hljs-keyword">lea</span> <span class="hljs-built_in">eax</span>, [<span class="hljs-built_in">eax</span>+<span class="hljs-number">4</span>*<span class="hljs-built_in">eax</span>]<span class="hljs-comment">; EAX=EAX*5 用lea做乘法</span><br><span class="hljs-keyword">lea</span> <span class="hljs-built_in">eax</span>, [<span class="hljs-built_in">eax</span>+<span class="hljs-built_in">eax</span>*<span class="hljs-number">2</span>]<span class="hljs-comment">; EAX=EAX*3</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="远指针、近指针"><a href="#远指针、近指针" class="headerlink" title="远指针、近指针"></a>远指针、近指针</h2><p>远指针 far pointer</p>
+<p>16位汇编中，远指针是指16位段地址+16位偏移地址;</p>
+<p>32位汇编中，远指针是指16位段地址+32位偏移地址。</p>
+<p>近指针 near pointer</p>
+<p>16位汇编中，近指针是指16位的偏移地址；</p>
+<p>32位汇编中，近指针是指32位的偏移地址；</p>
+<p>远指针(far pointer)包括段地址及偏移地址两个部分；</p>
+<p>近指针(near pointer)只包括偏移地址，不包含段地址。</p>
+<p>把一个远指针1234:5678存放到地址1000:0000</p>
+<p>1000:0000 78h</p>
+<p>1000:0001 56h </p>
+<p>1000:0002 34h </p>
+<p>1000:0003 12h </p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-comment">;把1000:0000中存放的远指针取出来，存放到es:bx中</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">1000h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br><span class="hljs-keyword">les</span> <span class="hljs-built_in">bx</span>, <span class="hljs-built_in">dword</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">ds</span>:[<span class="hljs-number">0000h</span>]<br><span class="hljs-comment">; es=1234h, bx=5678h</span><br></code></pre></td></tr></table></figure>
+
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-05T04:05:33.000Z" itemprop="datePublished">
+              2020-05-05
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/ASM/">ASM</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

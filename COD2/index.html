@@ -171,7 +171,8 @@
 </li>
 </ul>
 <ul>
-<li>Conditional Branch<ul>
+<li><p>Conditional Branch</p>
+<ul>
 <li><strong>beq</strong>: branch if equal</li>
 <li><strong>bne</strong>: branch if not equal</li>
 <li><strong>blt</strong>: branch if less than</li>
@@ -179,20 +180,24 @@
 <li><strong>bge</strong>: branch if greater than or equal</li>
 </ul>
 </li>
-<li>Unconditional Branch<ul>
+<li><p>Unconditional Branch</p>
+<ul>
 <li><strong>jump $j$</strong>: jump to label $j$</li>
 </ul>
 </li>
 </ul>
-<h2 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h2><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span>(i==j)<br>    f = g + h;<br></code></pre></td></tr></table></figure>
+<h2 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h2><p>if condition:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span>(i==j)<br>    f = g + h;<br></code></pre></td></tr></table></figure>
 
 <figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm">bne <span class="hljs-keyword">x</span><span class="hljs-number">13</span>, <span class="hljs-keyword">x</span><span class="hljs-number">14</span>, Exit # i-<span class="hljs-keyword">x</span><span class="hljs-number">13</span>, j-<span class="hljs-keyword">x</span><span class="hljs-number">14</span><br><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">11</span>, <span class="hljs-keyword">x</span><span class="hljs-number">12</span> # f-<span class="hljs-keyword">x</span><span class="hljs-number">10</span>, g-<span class="hljs-keyword">x</span><span class="hljs-number">11</span>, h-<span class="hljs-keyword">x</span><span class="hljs-number">12</span><br>Exit:<br></code></pre></td></tr></table></figure>
 
+<p>if-else condition:</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">if</span>(i==j)<br>    f = g + h;<br><span class="hljs-keyword">else</span><br>    f = g - h;<br></code></pre></td></tr></table></figure>
 
 <figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm">bne <span class="hljs-keyword">x</span><span class="hljs-number">13</span>, <span class="hljs-keyword">x</span><span class="hljs-number">14</span>, Else # i-<span class="hljs-keyword">x</span><span class="hljs-number">13</span>, j-<span class="hljs-keyword">x</span><span class="hljs-number">14</span><br><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">11</span>, <span class="hljs-keyword">x</span><span class="hljs-number">12</span> # f-<span class="hljs-keyword">x</span><span class="hljs-number">10</span>, g-<span class="hljs-keyword">x</span><span class="hljs-number">11</span>, h-<span class="hljs-keyword">x</span><span class="hljs-number">12</span><br>j Exit<br>Else:<br><span class="hljs-keyword">sub</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">11</span>, <span class="hljs-keyword">x</span><span class="hljs-number">12</span> # f-<span class="hljs-keyword">x</span><span class="hljs-number">10</span>, g-<span class="hljs-keyword">x</span><span class="hljs-number">11</span>, h-<span class="hljs-keyword">x</span><span class="hljs-number">12</span><br>Exit:<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// loop in C</span><br><span class="hljs-keyword">int</span> A[<span class="hljs-number">20</span>];<br><span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++)<br>	sum += A[i];<br></code></pre></td></tr></table></figure>
+<p>for loop:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">int</span> A[<span class="hljs-number">20</span>];<br><span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++)<br>	sum += A[i];<br></code></pre></td></tr></table></figure>
 
 <figure class="highlight llvm"><table><tr><td class="code"><pre><code class="hljs llvm"><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">9</span>, <span class="hljs-keyword">x</span><span class="hljs-number">8</span>, <span class="hljs-keyword">x</span><span class="hljs-number">0</span> # <span class="hljs-keyword">x</span><span class="hljs-number">9</span>=&amp;A[<span class="hljs-number">0</span>]<br><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>, <span class="hljs-keyword">x</span><span class="hljs-number">0</span>, <span class="hljs-keyword">x</span><span class="hljs-number">0</span> # sum=<span class="hljs-number">0</span><br><span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">11</span>, <span class="hljs-keyword">x</span><span class="hljs-number">0</span>, <span class="hljs-keyword">x</span><span class="hljs-number">0</span> # i=<span class="hljs-number">0</span><br>addi <span class="hljs-keyword">x</span><span class="hljs-number">13</span>,<span class="hljs-keyword">x</span><span class="hljs-number">0</span>, <span class="hljs-number">20</span> # <span class="hljs-keyword">x</span><span class="hljs-number">13</span>=<span class="hljs-number">20</span><br>Loop:<br>    bge <span class="hljs-keyword">x</span><span class="hljs-number">11</span>,<span class="hljs-keyword">x</span><span class="hljs-number">13</span>,Done<br>    lw <span class="hljs-keyword">x</span><span class="hljs-number">12</span>, <span class="hljs-number">0</span>(<span class="hljs-keyword">x</span><span class="hljs-number">9</span>) # <span class="hljs-keyword">x</span><span class="hljs-number">12</span>=A[i]<br>    <span class="hljs-keyword">add</span> <span class="hljs-keyword">x</span><span class="hljs-number">10</span>,<span class="hljs-keyword">x</span><span class="hljs-number">10</span>,<span class="hljs-keyword">x</span><span class="hljs-number">12</span> # sum+=A[i]<br>    addi <span class="hljs-keyword">x</span><span class="hljs-number">9</span>, <span class="hljs-keyword">x</span><span class="hljs-number">9</span>,<span class="hljs-number">4</span> # &amp;A[i+<span class="hljs-number">1</span>]<br>    addi <span class="hljs-keyword">x</span><span class="hljs-number">11</span>,<span class="hljs-keyword">x</span><span class="hljs-number">11</span>,<span class="hljs-number">1</span> # i++<br>    j Loop<br>Done:<br></code></pre></td></tr></table></figure>
 

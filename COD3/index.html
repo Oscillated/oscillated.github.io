@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>COD3 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>COD3</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<p>ZJU Computer Organization &amp; Design By 刘鹏 3(lec05 lec06)</p>
+<a id="more"></a>
+
+<h1 id="Lec05-RISC-V-ASM-Logical"><a href="#Lec05-RISC-V-ASM-Logical" class="headerlink" title="Lec05:RISC-V ASM-Logical"></a>Lec05:RISC-V ASM-Logical</h1><p><strong>and</strong>, <strong>or</strong>, <strong>xor</strong></p>
+<p><strong>sll</strong>: shift left logical</p>
+<p><strong>srl</strong>: shift right logical</p>
+<p>operation of two types:</p>
+<ul>
+<li>Register<ul>
+<li><code>and x5, x6, x7</code> # x5 = x6 &amp; x7</li>
+</ul>
+</li>
+<li>Immediate<ul>
+<li><code>andi x5, x6, 3</code> # x5 = x6 &amp; 3</li>
+</ul>
+</li>
+</ul>
+<p>logical operations can be used for masks</p>
+<ul>
+<li>andi with 0000 00FFh isolates the least significant byte</li>
+<li>andi with FF00 0000h isolates the most significant byte</li>
+</ul>
+<h2 id="no-NOT-in-RISC-V"><a href="#no-NOT-in-RISC-V" class="headerlink" title="no NOT in RISC-V"></a>no NOT in RISC-V</h2><p>substitution: <strong>xor with 1111 1111b</strong></p>
+<p>for simplicity</p>
+<h2 id="logical-shifting"><a href="#logical-shifting" class="headerlink" title="logical shifting"></a>logical shifting</h2><h3 id="shift-left-logical-and-immediate"><a href="#shift-left-logical-and-immediate" class="headerlink" title="shift left logical and immediate"></a>shift left logical and immediate</h3><p><code>slli x11, x12, 2</code> # x12 shifted by 2 bits, <strong>insert 0’s on right</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">x11 = x12 &lt;&lt; <span class="hljs-number">2</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="shift-right-logical-and-immediate"><a href="#shift-right-logical-and-immediate" class="headerlink" title="shift right logical and immediate"></a>shift right logical and immediate</h3><p>srl is opposite shift</p>
+<h3 id="arithmetic-shifting"><a href="#arithmetic-shifting" class="headerlink" title="arithmetic shifting"></a>arithmetic shifting</h3><p>sla, slai, sra, srai</p>
+<p>Shift right arithmetic(sra, srai) moves n bits to the right (<strong>insert high-order sign bit into empty bits</strong>)</p>
+<p>the result of arithmetic shifting n bits is not same as dividing by $2^n$</p>
+<h3 id="example"><a href="#example" class="headerlink" title="example"></a>example</h3><figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript"># x10 holds <span class="hljs-number">0x34FF</span><br>slli x12,x10,<span class="hljs-number">0x10</span>   # <span class="hljs-number">0x0000</span> <span class="hljs-number">34</span>FF<br>srli x12,x12,<span class="hljs-number">0x08</span>   # <span class="hljs-number">0x34FF</span> <span class="hljs-number">0000</span><br><span class="hljs-keyword">and</span> x12,x12,x10     # <span class="hljs-number">0x0034</span> FF00<br>					# <span class="hljs-number">0x0000</span> <span class="hljs-number">3400</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="Lec06-RISC-V-ASM-Procedures"><a href="#Lec06-RISC-V-ASM-Procedures" class="headerlink" title="Lec06:RISC-V ASM-Procedures"></a>Lec06:RISC-V ASM-Procedures</h1><ul>
+<li>Symbolic register names<ul>
+<li>a0-a7 for argument registers (x10-x17)</li>
+<li>zero for a0</li>
+</ul>
+</li>
+<li>Pseudo-instructions<ul>
+<li>Shorthand syntax for common assembly idioms</li>
+<li>mv rd, rs = addi rd, rs, 0</li>
+<li>li rd, 13 = addi rd, x0, 13</li>
+</ul>
+</li>
+</ul>
+<h2 id="assembler-to-machine-code"><a href="#assembler-to-machine-code" class="headerlink" title="assembler to machine code"></a>assembler to machine code</h2><p><img src="https://img.cfssr.xyz/imgs/2020/05/739cc7086825e665.png" alt=""></p>
+<h2 id="Program-Execution"><a href="#Program-Execution" class="headerlink" title="Program Execution"></a>Program Execution</h2><p>store a program: all RISC-V instructions is 32 bits(4 bytes). Instructions are stored in memory just like data</p>
+<ul>
+<li>PC (program counter) is internal register inside processor holding byte address of <strong>next instruction</strong> to be executed</li>
+<li>Instruction is fetched from memory, then control unit executes instruction using datapath and memory system, and updates program counter (default is add +4 bytes to PC, to move to next sequential instruction; branches, jumps alter)</li>
+<li>the CPU must keep track of calling a function</li>
+</ul>
+<p><img src="https://img.cfssr.xyz/imgs/2020/05/432d3a007d51b368.png" alt=""></p>
+<h2 id="Calling-a-function"><a href="#Calling-a-function" class="headerlink" title="Calling a function"></a>Calling a function</h2><ol>
+<li>放置传递函数Put parameters in a place where function can access them</li>
+<li>移交控制权到函数Transfer control to function</li>
+<li>申请函数的存储空间Acquire (local) storage resources needed for function</li>
+<li>执行函数功能Perform desired task of the function</li>
+<li>存放结果值、释放存储空间Put result value in a place where calling code can access it and restore any registers you used; release local storage</li>
+<li>返还控制权到调用者Return control to point of origin, since a function can be called from several points in a program</li>
+</ol>
+<ul>
+<li>Registers are faster than memory, so use them to execute the function.</li>
+<li>a0–a7 (x10-x17): eight argument registers to pass parameters and two return values (usually a0-a1)</li>
+<li><em>ra</em>: one return address register to return to the point of origin (x1)</li>
+<li>s0-s1 (x8-x9) and s2-s11 (x18-x27): saved register</li>
+</ul>
+<p><img src="https://img.cfssr.xyz/imgs/2020/05/29726116686dc874.png" alt=""></p>
+<p>use <strong>jr</strong> instead of <strong>j</strong> : sum might be called by many places, so we can’t return to a fixed place. </p>
+<p>The calling proc to sum must be able to say “return here” somehow. ra stores the pre-determined return address before calling the sum function</p>
+<p><strong>jal</strong> : Single instruction to jump and save return address(actually <strong>link and jump</strong>)</p>
+<p><code>jal FunctionLabel</code></p>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-number">1008</span> <span class="hljs-keyword">addi </span><span class="hljs-built_in">ra</span>, <span class="hljs-built_in">zero</span>, <span class="hljs-number">1016</span> <span class="hljs-comment"># ra=1016</span><br><span class="hljs-number">1012</span> <span class="hljs-keyword">j </span>sum 				 <span class="hljs-comment"># goto sum</span><br><span class="hljs-comment"># the instructions above can be rewritten as:</span><br><span class="hljs-number">1008</span> <span class="hljs-keyword">jal </span>sum 			 <span class="hljs-comment"># ra=1012, then go to sum</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>jal</strong> : Jumps to address and simultaneously saves the address of <strong>the following instruction</strong> in register <em>ra</em></p>
+<ul>
+<li>Makes the common case fast: function calls very common</li>
+<li>Reduces program size</li>
+<li>Doesn’t have to know where code is in memory with jal!</li>
+<li>“link” means forming an address or link that points to calling site to allow function to return to proper address</li>
+</ul>
+<p><strong>jr</strong> : jump register instruction</p>
+<ul>
+<li>Unconditional jump to address specified in register: <code>jr ra</code></li>
+<li>Assembler shorthand: <code>ret = jr ra</code></li>
+</ul>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><ul>
+<li>Registers<ul>
+<li>a0-a7 for function arguments, a0-a1 for return values</li>
+<li><em>ra</em> return address</li>
+<li>s0-s11 saved registers</li>
+<li>zero</li>
+</ul>
+</li>
+<li>Instructions we know:<ul>
+<li>Arithmetic: add, addi, sub</li>
+<li>Logical: sll, srl, sla, slli, srli, slai, and, or, xor, andi, ori, xori</li>
+<li>Decision: beq, bne, blt, bge</li>
+<li>Unconditional branches (jumps): j, jr</li>
+<li>Functions called with <code>jal FunctionLabel</code>, return with <code>jr ra</code>.</li>
+</ul>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-05T09:15:16.000Z" itemprop="datePublished">
+              2020-05-05
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Computer-Organization-Design/">Computer Organization &amp; Design</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

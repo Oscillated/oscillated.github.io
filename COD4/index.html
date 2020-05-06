@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>COD4 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>COD4</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>ZJU Computer Organization &amp; Design By 刘鹏 4(lec07)</p>
+<a id="more"></a>
+
+<h1 id="Lec07-RISC-V-ASM-Stack"><a href="#Lec07-RISC-V-ASM-Stack" class="headerlink" title="Lec07:RISC-V ASM-Stack"></a>Lec07:RISC-V ASM-Stack</h1><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Leaf</span><span class="hljs-params">(<span class="hljs-keyword">int</span> g, <span class="hljs-keyword">int</span> h, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">int</span> f;<br>    f = (g + h) – (i + j);<br>    <span class="hljs-keyword">return</span> f;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>Parameter variables g, h, i, and j in argument registers a0, a1, a2, and a3, and f in s0</li>
+<li>Assume need one temporary register s1</li>
+</ul>
+<h2 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h2><ul>
+<li>To save old values before call function, and restore them when returning.</li>
+<li>last-in-first-out(LIFO) queue</li>
+<li>growing stack down <strong>from high to low addresses</strong></li>
+</ul>
+<p>Stack is in memory, need a register to point to it.</p>
+<h3 id="stack-pointer-sp"><a href="#stack-pointer-sp" class="headerlink" title="stack pointer (sp)"></a>stack pointer (sp)</h3><ul>
+<li>push decrements sp</li>
+<li>pop increments sp</li>
+</ul>
+<img src="https://img.cfssr.xyz/imgs/2020/05/73462249dfe57dde.png" style="zoom:50%;" />
+
+<h3 id="content-of-stack"><a href="#content-of-stack" class="headerlink" title="content of stack"></a>content of stack</h3><ul>
+<li>return instruction address (ra)</li>
+<li>parameters</li>
+<li>space for other local variables</li>
+</ul>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">addi </span><span class="hljs-built_in">sp</span>,<span class="hljs-built_in">sp</span>,-<span class="hljs-number">8</span> 	<span class="hljs-comment"># adjust stack for 2 items</span><br><span class="hljs-keyword">sw </span><span class="hljs-built_in">s1</span>, <span class="hljs-number">4</span>(<span class="hljs-built_in">sp</span>) 	<span class="hljs-comment"># save s1 for use afterwards</span><br><span class="hljs-keyword">sw </span><span class="hljs-built_in">s0</span>, <span class="hljs-number">0</span>(<span class="hljs-built_in">sp</span>) 	<span class="hljs-comment"># save s0 for use afterwards</span><br><span class="hljs-keyword">add </span><span class="hljs-built_in">s0</span>,<span class="hljs-built_in">a0</span>,<span class="hljs-built_in">a1</span> 	<span class="hljs-comment"># f = g + h</span><br><span class="hljs-keyword">add </span><span class="hljs-built_in">s1</span>,<span class="hljs-built_in">a2</span>,<span class="hljs-built_in">a3</span> 	<span class="hljs-comment"># s1 = i + j</span><br><span class="hljs-keyword">sub </span><span class="hljs-built_in">a0</span>,<span class="hljs-built_in">s0</span>,<span class="hljs-built_in">s1</span> 	<span class="hljs-comment"># return value (g + h) – (i + j) in a0</span><br><span class="hljs-keyword">lw </span><span class="hljs-built_in">s0</span>, <span class="hljs-number">0</span>(<span class="hljs-built_in">sp</span>) 	<span class="hljs-comment"># restore register s0 for caller</span><br><span class="hljs-keyword">lw </span><span class="hljs-built_in">s1</span>, <span class="hljs-number">4</span>(<span class="hljs-built_in">sp</span>) 	<span class="hljs-comment"># restore register s1 for caller</span><br><span class="hljs-keyword">addi </span><span class="hljs-built_in">sp</span>,<span class="hljs-built_in">sp</span>,<span class="hljs-number">8</span> 	<span class="hljs-comment"># adjust stack to delete 2 items</span><br><span class="hljs-keyword">jr </span><span class="hljs-built_in">ra</span> 			<span class="hljs-comment"># jump back to calling routine</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://img.cfssr.xyz/imgs/2020/05/0c3e48ad2d984de0.png" alt=""></p>
+<h2 id="Recursive-Function-Calls"><a href="#Recursive-Function-Calls" class="headerlink" title="Recursive Function Calls"></a>Recursive Function Calls</h2><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">sumSquare</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> mult(x, x) + y;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>Need to save sumSquare return address(ra) before calling mult, because ra will be overwritten by the call(jal) to mul</strong></p>
+<p><strong>Use stack.</strong></p>
+<ul>
+<li>caller : the calling function</li>
+<li>callee: the function being called</li>
+</ul>
+<p>When the callee returns from executing, the caller needs to know which registers may have changed and which are guaranteed to be unchanged.</p>
+<p>Generally, there is a set of accepted rules about which registers will be unchanged after a function calling while which will not.</p>
+<ul>
+<li>Preserved registers across function call : Caller can rely on values being unchanged<ul>
+<li><strong>sp, gp, tp, “saved registers” s0-s11 (s0 == fp)</strong></li>
+</ul>
+</li>
+<li>Not preserved across function call : Caller cannot rely on values being unchanged<ul>
+<li><strong>Argument/return registers a0-a7, ra, “temporary registers” t0-t6</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img.cfssr.xyz/imgs/2020/05/593d07f3e5df7916.png" alt=""></p>
+<p><img src="https://img.cfssr.xyz/imgs/2020/05/8b5f01bb996c92a5.png" alt=""></p>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-symbol">sumSquare:</span> <br>    <span class="hljs-keyword">addi </span><span class="hljs-built_in">sp</span>,<span class="hljs-built_in">sp</span>,-<span class="hljs-number">8</span> 	<span class="hljs-comment"># space on stack </span><br>    <span class="hljs-keyword">sw </span><span class="hljs-built_in">ra</span>, <span class="hljs-number">4</span>(<span class="hljs-built_in">sp</span>) 	<span class="hljs-comment"># save ret addr </span><br>    <span class="hljs-keyword">sw </span><span class="hljs-built_in">a1</span>, <span class="hljs-number">0</span>(<span class="hljs-built_in">sp</span>) 	<span class="hljs-comment"># save y </span><br>    mv <span class="hljs-built_in">a1</span>,<span class="hljs-built_in">a0</span> 		<span class="hljs-comment"># mult(x,x) </span><br>    <span class="hljs-keyword">jal </span><span class="hljs-keyword">mult </span>		<span class="hljs-comment"># call mult, the arguments used are a0 and a1. the return value of mult() is in a0.</span><br>    <span class="hljs-keyword">lw </span><span class="hljs-built_in">a1</span>, <span class="hljs-number">0</span>(<span class="hljs-built_in">sp</span>) 	<span class="hljs-comment"># restore y </span><br>    <span class="hljs-keyword">add </span><span class="hljs-built_in">a0</span>,<span class="hljs-built_in">a0</span>,<span class="hljs-built_in">a1</span> 	<span class="hljs-comment"># mult()+y </span><br>    <span class="hljs-keyword">lw </span><span class="hljs-built_in">ra</span>, <span class="hljs-number">4</span>(<span class="hljs-built_in">sp</span>) 	<span class="hljs-comment"># get ret addr </span><br>    <span class="hljs-keyword">addi </span><span class="hljs-built_in">sp</span>,<span class="hljs-built_in">sp</span>,<span class="hljs-number">8</span> 	<span class="hljs-comment"># restore stack </span><br>    <span class="hljs-keyword">jr </span><span class="hljs-built_in">ra</span> <br><span class="hljs-keyword">mult: </span>...<br></code></pre></td></tr></table></figure>
+
+<h2 id="Memory-allocation"><a href="#Memory-allocation" class="headerlink" title="Memory allocation"></a>Memory allocation</h2><p>For a C program:</p>
+<ul>
+<li>Static: Variables declared once per program, cease to exist only after execution completes<ul>
+<li>e.g., C globals</li>
+</ul>
+</li>
+<li>Heap: Variables declared dynamically <ul>
+<li>via malloc</li>
+</ul>
+</li>
+<li>Stack: Space to be used by procedure during execution<ul>
+<li>this is where we can save register values and other local variables if needed</li>
+</ul>
+</li>
+</ul>
+<img src="https://img.cfssr.xyz/imgs/2020/05/999c22e1f8dcd1aa.png" style="zoom:50%;" />
+
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>Registers we know so far (All of them!)<ul>
+<li>a0-a7 for function arguments, a0-a1 for return values</li>
+<li>sp, stack pointer, ra return address</li>
+<li>s0-s11 saved registers</li>
+<li>t0-t6 temporaries</li>
+<li>zero</li>
+</ul>
+</li>
+<li>Instructions we know:<ul>
+<li>Arithmetic: add, addi, sub</li>
+<li>Logical: sll, srl, sla, slli, srli, slai, and, or, xor, andi, ori, xori</li>
+<li>Decision: beq, bne, blt, bge</li>
+<li>Unconditional branches (jumps): j, jr</li>
+<li>Functions called with jal, return with jr ra.</li>
+</ul>
+</li>
+<li>The stack is your friend: Use it to save anything you need</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-06T16:11:55.000Z" itemprop="datePublished">
+              2020-05-07
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Computer-Organization-Design/">Computer Organization &amp; Design</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

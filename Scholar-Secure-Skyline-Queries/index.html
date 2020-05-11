@@ -85,7 +85,22 @@
     </header>
 
     <section>
-      <h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>大规模数据存储和查询处理已经转移到云服务器上，但一些敏感数据需要在云服务器上被保护以避免泄露。针对这一问题，一种解决方案是将加密后的数据发送到云端，同时将客户发送给云服务器的查询请求进行加密，云服务器处理加密数据查询后，进行加密数据的处理。但支持对加密数据的各种查询，同时云服务器在访问加密数据的各种过程中不会获取有关数据、查询和查询结果的任何知识仍然很困难。</p>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>“学者云会面”讲座1</p>
+<a id="more"></a>
+
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>大规模数据存储和查询处理已经转移到云服务器上，但一些敏感数据需要在云服务器上被保护以避免泄露。针对这一问题，一种解决方案是将加密后的数据发送到云端，同时将客户发送给云服务器的查询请求进行加密，云服务器处理加密数据查询后，进行加密数据的处理。但支持对加密数据的各种查询，同时云服务器在访问加密数据的各种过程中不会获取有关数据、查询和查询结果的任何知识仍然很困难。</p>
 <p>本文研究了Skyline Query，它有助于多标准决策，但是它的计算也很复杂。本文使用语义安全加密技术，提出了一种针对加密数据的完全安全的Skyline Query的协议；同时还提出了一个新的安全支配协议，这个子模块可以用作其他的Query；最后进行了协议的串行和并行实现，从效率和可扩展性方面验证了这一解决方案的可行性。</p>
 <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The Skyline or Pareto of  a  multi-dimensional  dataset  given  a  query point consists  of  the  data  points  that  are  not dominated by other points.  A data point dominates another if it is  closer  to  the query point in at least one dimension and at least as close to the query point in every other dimension.</p>
 <blockquote>

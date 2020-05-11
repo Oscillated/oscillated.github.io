@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <ul class="Index">
+  
+    <header class='PageTitle'>
+        <h1>{ Scholar }</h1>
+    </header>
+  
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/Scholar-Secure-Skyline-Queries/">Scholar_Secure_Skyline_Queries</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-05-11T12:27:50.000Z" itemprop="datePublished">
+    2020-05-11
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/Cloud-Server/">Cloud Server</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Security/">Security</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Cryptography/">Cryptography</a> }
+  </li>
+
+
+  </ul>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/Scholar/">Scholar</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>大规模数据存储和查询处理已经转移到云服务器上，但一些敏感数据需要在云服务器上被保护以避免泄露。针对这一问题，一种解决方案是将加密后的数据发送到云端，同时将客户发送给云服务器的查询请求进行加密，云服务器处理加密数据查询后，进行加密数据的处理。但支持对加密数据的各种查询，同时云服务器在访问加密数据的各种过程中不会获取有关数据、查询和查询结果的任何知识仍然很困难。</p>
+<p>本文研究了Skyline Query，它有助于多标准决策，但是它的计算也很复杂。本文使用语义安全加密技术，提出了一种针对加密数据的完全安全的Skyline Query的协议；同时还提出了一个新的安全支配协议，这个子模块可以用作其他的Query；最后进行了协议的串行和并行实现，从效率和可扩展性方面验证了这一解决方案的可行性。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The Skyline or Pareto of  a  multi-dimensional  dataset  given  a  query point consists  of  the  data  points  that  are  not dominated by other points.  A data point dominates another if it is  closer  to  the query point in at least one dimension and at least as close to the query point in every other dimension.</p>
+<blockquote>
+<p>Dominate的定义：A dominate B $\Leftrightarrow$ A在任何轴的坐标值都小于等于B对应的轴的坐标值，并且不能全部等于.</p>
+</blockquote>
+<blockquote>
+<p>Skyline Point的定义：A 是 Skyline Point $\Leftrightarrow$ A是点集中不会被其他点dominate的点</p>
+<ul>
+<li>创建一个点集的最小堆，则堆中的最小点一定是Skyline Point</li>
+<li>判断v会不会被其他点dominate，只需要判断所有Skyline Point能不能dominate v，如果这些点无法dominate v，那么其他点更不用考虑。（dominate具有传递性）</li>
+</ul>
+</blockquote>
+<p>当难以定义全部维度的距离度量时，天际线查询对于选择数据集中的相似（或最佳）记录特别有用。可以通过计算任两个记录在各维度上的相似性获得所有属性对之间的相似性。</p>
+<p>在实际情况中，所有数据的相对权重并不一定预先知道，因此想要获得各数据之间的相对权重依靠的就是天际线查询。</p>
+<p>确定一个高维度数据集内各点的相对domination关系需要复杂的比较和计算，同时庞大的中间数据产生也可能会显示所保护数据的间接信息，这是要让不获得有关数据和其间接数据模式的挑战所在。</p>
+<h3 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h3><ul>
+<li>使用语义安全性研究了加密数据的安全天际线问题，假设数据由Parllier Cryptosystem加密，具有语义安全性和部分同态</li>
+<li>提出了一种完全安全的Domination协议，可以用作天际线查询以及其他查询</li>
+<li>提出了两种安全的天际线查询协议。第一个作为一种基本而有效的解决方案，它向云服务器提供了一些间接数据模式。第二个是完全安全的，可确保云服务器不了解包括间接模式在内的数据。所提出的协议利用部分（加法）同态性以及新颖的置换和扰动技术来确保在保证隐私的同时计算出正确的结果。</li>
+<li>提供了所提出协议的安全性和复杂性分析和可实际部署的完整版本，包括串行和并行版本；研究了在不同参数设置下协议的效率和可扩展性，验证了解决方案的可行性</li>
+</ul>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>本文使用半诚实模型在两个非竞争性云服务器上提出了一种完全安全的天际线协议用于加密数据。它确保语义安全，因为云服务器不了解数据，包括间接的数据模式、查询以及查询结果。另外，客户端和数据所有者不需要参与计算；提出了一种安全主导协议，该协议可用于天际线查询以及其他查询；最后介绍了该协议的实现并证明了该解决方案的可行性和效率。未来的工作是优化通信时间复杂度，以进一步提高协议的性能。</p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+</ul>
+
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

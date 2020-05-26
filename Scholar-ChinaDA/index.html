@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Scholar_ChinaDA | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Scholar_ChinaDA</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<p>“学者云会面”讲座2</p>
+<a id="more"></a>
+
+<h1 id="background"><a href="#background" class="headerlink" title="background"></a>background</h1><p>AI与EDA互相影响</p>
+<ul>
+<li>设计EDA助力AI芯片的高效设计，最优化PPA，加快AI算法的部署过程</li>
+<li>在EDA工具中应用AI算法以赋能芯片设计</li>
+</ul>
+<h1 id="advantage"><a href="#advantage" class="headerlink" title="advantage"></a>advantage</h1><p>AI中可适用在EDA处理数据时的领域知识：</p>
+<ul>
+<li>监督学习、无监督学习、主动学习、强化学习</li>
+<li>SVM、随机树</li>
+<li>MLP、卷积网络、GCN等网络模型</li>
+</ul>
+<p>AI适用于在经验学习中改善具体算法的性能，它能够根据数据以及以往经验，来优化程序的性能标准。在经过大量的训练之后，能够进行自我决策，而对于芯片设计工程师来说，每天有大量工作都涉及决策。AI的学习应用过程与EDA的工作流程有较多的相似性：</p>
+<ol>
+<li>model architecture</li>
+<li>training</li>
+<li>compiling/synthesis</li>
+<li>hardware platform</li>
+</ol>
+<p>每一个步骤中都有AI可能的应用领域</p>
+<p>在模拟设计中，AI可以作为仿真验证的工具</p>
+<p>Performance of AI is making progress every day</p>
+<p>provide low cost design flow access</p>
+<h1 id="disadvantage"><a href="#disadvantage" class="headerlink" title="disadvantage"></a>disadvantage</h1><p>EDA的仿真往往是层次较低、搜索域非常大且约束关系复杂的计算，与AI擅长的不太相符</p>
+<p>EDA的多数问题是模型驱动的，缺少足够的数据</p>
+<p>相比EDA，AI往往需要非常大容量的数据集</p>
+<p>no worst case performance guarantee</p>
+<p>heavily depends on the availability, quality, and completeness of training data and design of  its framework/algorithm</p>
+<p>security issues</p>
+<h1 id="future"><a href="#future" class="headerlink" title="future"></a>future</h1><p>自动化的解决方案</p>
+<p>自动神经网络架构搜索NAS</p>
+<ul>
+<li>search space</li>
+<li>search strategy</li>
+<li>evaluation strategy 当前仍然是耗时的</li>
+</ul>
+<h2 id="Research"><a href="#Research" class="headerlink" title="Research"></a>Research</h2><ul>
+<li>考虑延时搜索</li>
+<li>分析NN硬件加速器计算模式，建立应用层错误模型</li>
+<li>让架构性能的预测器更准确</li>
+</ul>
+<p>与硬件系统的协同，找到硬件部署效率更高、最适合的架构</p>
+<p>future direction 针对低精度网络的架构搜索</p>
+<p>低精度极端：二值化网络</p>
+<p>AI在复用能力方面已经得到了充分验证，在EDA技术领域的创造和复用部分需要进一步明确</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li><p>Non-conventional hardware architectures</p>
+</li>
+<li><p>Automated co-design workflow</p>
+</li>
+</ul>
+<p>AI运用最成功的领域是CV，其中又以分类和生成问题最为成熟，因此EDA领域内与此相关的一些问题可能是适合于AI完成的，如版图生成</p>
+<p>国产EDA目前的市场占比极低，在当前绝大多数电路设计软件均来自美国，EDA的AI化可能成为国产EDA的新转机。EDA上云是未来的趋势之一，利用云端庞大的运算能力能够有效解决仿真耗时的问题，直接降低芯片创业者获取EDA工具的成本，中国或许可以借助当前发展较好的云服务助推EDA领域的发展。</p>
+<p>EDA最终是工具，追求的是普适性，主流EDA又已经出现垄断现象，各公司的数据库并不会直接共享，且芯片设计的盈利方式特殊、盈利周期长，国内外的生态变优或许能加速AI与EDA交互的过程。</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-23T03:08:44.000Z" itemprop="datePublished">
+              2020-05-23
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/EDA/">EDA</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/AI/">AI</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

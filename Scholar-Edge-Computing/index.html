@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Scholar_Edge_Computing | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Scholar_Edge_Computing</h1>
+    </header>
+
+    <section>
+      <p>“学者云会面”讲座4</p>
+<a id="more"></a>
+
+<h1 id="Resource-Management-in-Mobile-Edge-Computing"><a href="#Resource-Management-in-Mobile-Edge-Computing" class="headerlink" title="Resource Management in Mobile Edge Computing"></a>Resource Management in Mobile Edge Computing</h1><h2 id="Introduction-of-mobile-edge-computing-MEC"><a href="#Introduction-of-mobile-edge-computing-MEC" class="headerlink" title="Introduction of mobile edge computing(MEC)"></a>Introduction of mobile edge computing(MEC)</h2><p>从<strong>集中式移动云计算</strong>（MCC）向<strong>移动边缘计算</strong>（MEC）的转变</p>
+<p>MEC的主要功能是将移动计算\网络控制和存储推向网络边缘（例如基站和接入点），以便在资源受限的移动设备上启用计算密集型和延迟关键型应用程序。MEC研究的主要目的是无缝融合<strong>无线通信</strong>和<strong>移动计算</strong>这两个学科，从而产生了各种各样的新设计，从计算分流技术到网络体系结构。</p>
+<p>用户远程利用云端的资源进行运算，但是<strong>远距离传输延迟</strong>是硬伤。对响应时间要求很高的应用显然不合适。</p>
+<p>在5G无线系统中，超高密度边缘设备将被部署。每台边缘计算机的计算能力可与十年前的计算机服务器相媲美。因此，大量的设备将在任何时候都处于空闲状态，因此能从网络边缘获取大量的计算和静态资源，这将足以支持无处不在的移动计算。</p>
+<ul>
+<li>低延迟<ul>
+<li>三部分延时：传播延时，计算延时，通信延时。MEC能在设备与节点距离、网络流量限制两个方面胜过中心节点的云计算，且自身下载算力也足够5G应用运行</li>
+</ul>
+</li>
+<li>节省能量<ul>
+<li>IoT设备电量存储有限，但还需要执行复杂任务，如各种监测，通过频率给物联网设备充电仍然是不实用的，那么充电就是一笔大开销。采用MEC，能够把设备的计算等任务转移到基站边缘端来执行，减少了设备的能量消耗，延长了他们的寿命。</li>
+</ul>
+</li>
+<li>上下文感知计算<ul>
+<li>实时的感知任务，比如博物馆中根据位置预测兴趣</li>
+</ul>
+</li>
+<li>隐私保护<ul>
+<li>数据分布松散</li>
+</ul>
+</li>
+</ul>
+<p>移动设备 - MEC服务器</p>
+<p>MEC服务器——云和电信运营商部署的小型数据中心，与终端用户距离很近，可以与无线APs一起使用。通过网关，服务器通过Internet连接到数据中心。移动设备和服务器由空中接口分隔，利用先进的无线通信和网络技术可以建立可靠的无线连接。</p>
+<h2 id="Computation-Task-Models"><a href="#Computation-Task-Models" class="headerlink" title="Computation Task Models"></a>Computation Task Models</h2><p>一个简单的任务不能被分割，要么在本地计算，要么传送给边缘节点计算</p>
+<p>最简单的就是数据二进制。然而数据之间往往不是独立的，有些任务的执行顺序必须按照要求，有些任务必须在本地（比如图像显示）。这就要求任务分配能考虑数据内在的联系，其中一种是任务调用图，将任务作为节点，任务之间的关系作为边，就可以建模任务在完成顺序以及完成位置的要求。</p>
+<p>对于集中式的云计算系统，着重于处理大规模的数据处理与核心网络的延迟，而不是无限传感的延时，因此他们经常假设无线传输像一个管道一样，速率恒定。MEC不一样，边缘节点本身的数据范围就不大，而且要满足一些对传输时间严格要求的应用，所以我们必须使用更接近现实的模型，精确化信息传输的延时。先来看一看无线信道和有限信道的差距</p>
+<ul>
+<li>现实环境的物体会影响无线传输的质量，包括悬浮物/建筑物等等。</li>
+<li>信号的互相干扰很难避免，无线传输最常用的就是广播，如果占用了同一频谱，信号就会冲突。干扰管理是无线传输很重要的一部分。</li>
+<li>频谱资源短缺。</li>
+</ul>
+<p>无线传输环境动态变化，有时候信号很差，将数据分流给边缘节点的传输率很低，还不如本地算，当然也可以增大发送频率，但这样同时也会增大能量消耗，如何在二者之间取得一个折中也是一个值得研究的问题。</p>
+<h2 id="Resource-management-in-mobile-edge-computing"><a href="#Resource-management-in-mobile-edge-computing" class="headerlink" title="Resource management in mobile edge computing"></a>Resource management in mobile edge computing</h2><p>无线资源和计算资源的管理是实现节省能耗的关键</p>
+<p><strong>对某个任务而言，到底应该分流到边缘基站还是本地计算？</strong></p>
+<h3 id="单一用户MEC系统"><a href="#单一用户MEC系统" class="headerlink" title="单一用户MEC系统"></a>单一用户MEC系统</h3><ul>
+<li><p>二进制分流：</p>
+<ul>
+<li>分流带来较小延迟时（数据小计算量大，云端计算快或者数据传输速度高的情况）</li>
+<li>分流节省能量时</li>
+</ul>
+</li>
+<li><p>任务分解成子任务进行部分分流，也就是之前说的图模型或者任务随便分流， 通过将耗时或耗能的子任务分流到MEC服务器，与二进制分流相比，部分分流可以实现更大的节能效果和更小的计算延迟。 图论是根据任务依赖图设计卸载调度的强大工具。</p>
+</li>
+<li><p>随机任务模型:针对随机任务到达的MEC系统，已经制定了资源管理策略，随机任务模型以随机任务到达为特征，到达但尚未执行的任务加入任务缓冲区的队列。长期的平均能耗和执行延迟，与确定性的任务到达更相关。</p>
+</li>
+</ul>
+<h3 id="多用户MEC系统"><a href="#多用户MEC系统" class="headerlink" title="多用户MEC系统"></a>多用户MEC系统</h3><p>多个终端设备共享一个边缘节点，这种情况下就会出现很多的问题：</p>
+<ul>
+<li>多用户联合无线和计算资源分配<ul>
+<li>如何合理的分配无线传输和计算的资源尤为重要。</li>
+<li>为了最小化移动总能耗，具有<strong>较大的通道增益</strong>和<strong>较低的本地计算能耗</strong>的用户具有较高的分流计算的优先级，因为他们可以做出较大的节能贡献。然而，过多的分流用户会导致严重的用户间通信干扰，这又会减小系统收益。</li>
+</ul>
+</li>
+<li>MEC服务器调度<ul>
+<li>为了有效地减少多个用户的计算延迟，MEC服务器的调度设计应该将更高的优先级分配给延迟要求更严格、计算负载更重的用户。此外，并行计算还可以进一步提高服务器的计算速度。</li>
+</ul>
+</li>
+<li>多用户协作边缘计算<ul>
+<li>服务器的负担可以通过点对点移动协作计算来减轻</li>
+<li>在用户之间共享计算资源可以平衡计算工作负载和计算能力在用户之间的不均匀分布。</li>
+</ul>
+</li>
+</ul>
+<h3 id="不同边缘服务器与中心云的调度"><a href="#不同边缘服务器与中心云的调度" class="headerlink" title="不同边缘服务器与中心云的调度"></a>不同边缘服务器与中心云的调度</h3><h4 id="选取"><a href="#选取" class="headerlink" title="选取"></a>选取</h4><p>对每一个使用者，一个关键的问题是将计算分流到哪一个服务器，既可以是中心节点，也可以是边缘节点。考虑具有多个计算任务和异构服务器的MEC系统。为了减少总和计算延迟，最好将<strong>延迟不敏感但计算密集型</strong>的任务转移到远程中央云服务器，而将<strong>延迟敏感</strong>的任务转移到边缘服务器。</p>
+<h4 id="合作"><a href="#合作" class="headerlink" title="合作"></a>合作</h4><p>通过服务器合作实现资源共享，不仅可以提高资源利用率，增加计算服务提供商的收入，还可以为移动用户提供更多的资源，增强用户体验。此外，服务器协作设计还应考虑时空计算任务到达和服务器的计算能力、时变信道和服务器的个人收益。</p>
+<h4 id="计算迁移"><a href="#计算迁移" class="headerlink" title="计算迁移"></a>计算迁移</h4><p>MEC服务器上的计算迁移是由分流用户的移动性驱动的。当用户移动到新的MEC服务器时，网络控制器可以选择将计算迁移到这个服务器，或者在原来的服务器中计算任务，然后通过新服务器将结果转发给用户。最经典的是基于随机行走迁移模型的MDP问题。结果表明，最优策略具有一个基于阈值的结构，即，只有当两个服务器的距离被两个给定的阈值限制时，才应该选择迁移。</p>
+<hr>
+<p>未完待续</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-30T12:14:57.000Z" itemprop="datePublished">
+              2020-05-30
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Edge-computing/">Edge computing</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Cloud-server/">Cloud server</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Resource-management/">Resource management</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

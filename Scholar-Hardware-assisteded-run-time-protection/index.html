@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Scholar_Hardware-Assisteded_run-Time_protection | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Scholar_Hardware-Assisteded_run-Time_protection</h1>
+    </header>
+
+    <section>
+      <p>“学者云会面”讲座3</p>
+<a id="more"></a>
+
+<h1 id="Hardware-Security-Building-Blocks"><a href="#Hardware-Security-Building-Blocks" class="headerlink" title="Hardware Security Building Blocks"></a>Hardware Security Building Blocks</h1><p>使用内存不安全的高级语言如C和C++开发的系统软件容易受到内存漏洞的Runtime攻击，为了应对这种攻击，防御者想到了跳脱出软件系统的措施——硬件防御。</p>
+<p>硬件防御近年来开始流行，向着安全性和成本限制的平衡发展，</p>
+<p>硬件保护分为3类：CPU保护、内存保护和I/O保护</p>
+<h2 id="CPU-Protection"><a href="#CPU-Protection" class="headerlink" title="CPU Protection"></a>CPU Protection</h2><p>用户无法给CPU一个永久持续的进程，否则其他进程无法执行。为了实现这一功能，系统内部的一个计时器负责给一个进程设置一个时间，时间终止后会使进程强制离开CPU。</p>
+<h2 id="Memory-Protection"><a href="#Memory-Protection" class="headerlink" title="Memory Protection"></a>Memory Protection</h2><p>当内存中有两个及以上的进程时，可能会发生一个进程访问其他进程的内存的情况。为了防止这一情况，Bare Register和Limit Register分别用于记录进程的起始地址和其内存大小，当一个进程想要访问内存时，检查它是否能够被允许访问对应的内存空间。</p>
+<h2 id="I-O-Protection"><a href="#I-O-Protection" class="headerlink" title="I/O Protection"></a>I/O Protection</h2><p>I/O 保护用于防止内存的以下情况</p>
+<ul>
+<li>Termination I/O of other process</li>
+<li>View I/O of other process</li>
+<li>Giving priority to a particular process I/O</li>
+</ul>
+<p>当应用程序进程想要访问任何I/O设备时，都需要通过系统调用，进而由操作系统监视这一调用的安全性。</p>
+<p>如C中的write()和read()就是对文件读写的系统调用</p>
+<ul>
+<li>在用户模式下 user mode<ul>
+<li>系统代替应用程序执行这个任务，用户的应用程序无法直接访问硬件及其相关内存</li>
+</ul>
+</li>
+<li>在核模式下 kernel mode<ul>
+<li>每当需要直接访问硬件时，应用程序就会使用系统调用。</li>
+</ul>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-05-26T09:48:29.000Z" itemprop="datePublished">
+              2020-05-26
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/run-time/">run-time</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/computer-architecture/">computer architecture</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/hardware-defenses/">hardware defenses</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

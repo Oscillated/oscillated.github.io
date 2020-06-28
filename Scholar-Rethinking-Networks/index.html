@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Scholar_Rethinking_Networks | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Scholar_Rethinking_Networks</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<p>“学者云会面”讲座5</p>
+<a id="more"></a>
+
+<h1 id="how-data-plane-programmability-can-affect"><a href="#how-data-plane-programmability-can-affect" class="headerlink" title="how data plane programmability can affect"></a>how data plane programmability can affect</h1><p>CPU and System OS</p>
+<p>network systems were built bottom up before</p>
+<p>Now it is programmed from up to down</p>
+<h1 id="Rise-of-programmable-devices"><a href="#Rise-of-programmable-devices" class="headerlink" title="Rise of programmable devices"></a>Rise of programmable devices</h1><p>Alibaba, Azure, …</p>
+<h1 id="Good-times-for-hardware-people"><a href="#Good-times-for-hardware-people" class="headerlink" title="Good times for hardware people"></a>Good times for hardware people</h1><ul>
+<li>Software alone is not enough anymore, need hardware</li>
+</ul>
+<h1 id="Not-just-pushing-everything-in-hardware"><a href="#Not-just-pushing-everything-in-hardware" class="headerlink" title="Not just pushing everything in hardware"></a>Not just pushing everything in hardware</h1><ul>
+<li>Hardware - Kernel Space - User Space</li>
+<li>NIC - Driver - Kernel Core - Application</li>
+</ul>
+<h1 id="Dealing-with-Programmable-Hardware-is-not-that-easy"><a href="#Dealing-with-Programmable-Hardware-is-not-that-easy" class="headerlink" title="Dealing with Programmable Hardware is not that easy"></a>Dealing with Programmable Hardware is not that easy</h1><h2 id="Many-constraints"><a href="#Many-constraints" class="headerlink" title="Many constraints"></a>Many constraints</h2><ul>
+<li>Memory</li>
+<li>Low complexity algebra</li>
+</ul>
+<h2 id="Programmable-NICs"><a href="#Programmable-NICs" class="headerlink" title="Programmable NICs"></a>Programmable NICs</h2><ul>
+<li>PCIe and interaction with host</li>
+<li>Need for smart HW/SW co-designs</li>
+</ul>
+<p>PCIe is important and its performance is unpredictable</p>
+<p>The offload implementation has to handle this</p>
+<h2 id="Programmable-Switches"><a href="#Programmable-Switches" class="headerlink" title="Programmable Switches"></a>Programmable Switches</h2><ul>
+<li>many limitations</li>
+</ul>
+<h2 id="PISA-Protocol-Independent-Switch-Architecture"><a href="#PISA-Protocol-Independent-Switch-Architecture" class="headerlink" title="PISA: Protocol Independent Switch Architecture"></a>PISA: Protocol Independent Switch Architecture</h2><ul>
+<li>Configurable Packet Parser<ul>
+<li>No shared state</li>
+</ul>
+</li>
+<li>Match/Action<ul>
+<li>Limited stages</li>
+</ul>
+</li>
+<li>Recirculation Path<ul>
+<li>Limited per-packet computation</li>
+</ul>
+</li>
+</ul>
+<h2 id="INT"><a href="#INT" class="headerlink" title="INT"></a>INT</h2><p>Unprecedented level of visibility -&gt; In-band Network Telemetry (INT)</p>
+<p>INT is expensive</p>
+<h1 id="Insight"><a href="#Insight" class="headerlink" title="Insight"></a>Insight</h1><p>don’t need to collect all per-packet, per-hop values</p>
+<p>An INT query triggers every switch along the path to embed their own information</p>
+<p>Spread out the information over multiple packets to minimize the per-packet overhead</p>
+<h1 id="Path-Tracing"><a href="#Path-Tracing" class="headerlink" title="Path Tracing"></a>Path Tracing</h1><ul>
+<li>Check policy violations</li>
+<li>Get traffic volume between switch pairs</li>
+<li>Detect loops</li>
+<li>Find flows using a congested link</li>
+</ul>
+<p>Goal: encode switch IDs on packets while minimizing overhead</p>
+<p>How: not all switches can embed their information</p>
+<p>How to decide who can store information?</p>
+<h2 id="Path-Tracing-with-Probabilistic-INT-PINT"><a href="#Path-Tracing-with-Probabilistic-INT-PINT" class="headerlink" title="Path Tracing with Probabilistic INT (PINT)"></a>Path Tracing with Probabilistic INT (PINT)</h2><p>Each switch decides whether to put its information on a packet or not</p>
+<p>Reservoir Sampling to ensure each switch has an equal chance of appearing at a packet.</p>
+<p>$i^{th}$ element to be chosen with probability $1/i$</p>
+<p>use the TTL</p>
+<p>How to compress information stored within packets?</p>
+<ul>
+<li>Store hash of the information -&gt; h(K, switchID)</li>
+</ul>
+<p>g(k,TTL) and h(k,swichID) are globally known.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><ul>
+<li>Programmable Data Planes are great</li>
+<li>Innovation</li>
+<li>Make new cool ideas run on commodity systems</li>
+</ul>
+<h1 id="What’s-the-right-programming-model"><a href="#What’s-the-right-programming-model" class="headerlink" title="What’s the right programming model"></a>What’s the right programming model</h1><ol>
+<li>Current programmable switches works on per-packet basis</li>
+<li>Network algorithms are event-driven</li>
+</ol>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-06-04T12:05:26.000Z" itemprop="datePublished">
+              2020-06-04
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Rethinking-Networks/">Rethinking Networks</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/Programmable-Data-Planes/">Programmable Data Planes</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

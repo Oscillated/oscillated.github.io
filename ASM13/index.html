@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ASM13 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>ASM13</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>白洪欢《汇编语言程序设计基础》笔记13</p>
+<a id="more"></a>
+
+<h1 id="跳跃-jmp"><a href="#跳跃-jmp" class="headerlink" title="跳跃 jmp"></a>跳跃 jmp</h1><p>演示短跳、近跳、远跳</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><code class="hljs awk">code segment<br>assume cs:code<br>main:<br>   jmp <span class="hljs-keyword">next</span>; jmp short <span class="hljs-keyword">next</span><br><span class="hljs-keyword">exit</span>:<br>   mov ah, <span class="hljs-number">4</span>Ch<br>   int <span class="hljs-number">21</span>h<br><span class="hljs-keyword">next</span>:<br>   mov ah, <span class="hljs-number">2</span><br>   mov dl, <span class="hljs-string">'A'</span><br>   int <span class="hljs-number">21</span>h<br>   jmp abc; jmp near ptr abc<br>   db <span class="hljs-number">200</span>h dup(<span class="hljs-number">0</span>)<br>abc:<br>   jmp far ptr away; jmp far ptr away<br>code ends<br><br>fff segment<br>assume cs:fff<br>away:<br>   mov ah, <span class="hljs-number">2</span><br>   mov dl, <span class="hljs-string">'F'</span><br>   int <span class="hljs-number">21</span>h<br>   jmp far ptr <span class="hljs-keyword">exit</span>; jmp far ptr <span class="hljs-keyword">exit</span><br>fff ends<br>end main<br></code></pre></td></tr></table></figure>
+
+<h1 id="循环指令：LOOP"><a href="#循环指令：LOOP" class="headerlink" title="循环指令：LOOP"></a>循环指令：LOOP</h1><p><code>loop  dest</code></p>
+<p>操作过程:</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript">cx = cx - <span class="hljs-number">1</span>   	; 循环次数减<span class="hljs-number">1</span><br><span class="hljs-keyword">if</span>(cx != <span class="hljs-number">0</span>)   	; 若CX不等于<span class="hljs-number">0</span>，则<br> goto  dest 	; 跳转至dest<br></code></pre></td></tr></table></figure>
+
+<p>例: 求1+2+3的和</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript">mov ax, <span class="hljs-number">0</span><br>mov cx, <span class="hljs-number">3</span><br>next:<br>add ax, cx	; ax +<span class="hljs-number">3</span>, +<span class="hljs-number">2</span>, +<span class="hljs-number">1</span><br>loop next	; cx=<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> 注意是先cx自减再判断cx是否为<span class="hljs-number">0</span><br>           	; dec cx<br>           	; jnz next<br>done:<br>...<br></code></pre></td></tr></table></figure>
+
+<p>如果cx初始赋为0：</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">0</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">0</span><br><span class="hljs-comment">; jcxz done  这条指令可以防止cx为0时进入循环</span><br><span class="hljs-symbol">next:</span><br><span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">cx</span><br><span class="hljs-keyword">loop</span> next<span class="hljs-comment">; +0 +FFFF +FFFE ... +1 循环FFFF+1=10000h次，最大的循环次数</span><br><span class="hljs-symbol">done:</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="call-ret指令"><a href="#call-ret指令" class="headerlink" title="call, ret指令"></a>call, ret指令</h1><p>f:</p>
+<p>​    1000:2000 inc ax</p>
+<p>​    1000:2001 ret -&gt; 1000:3006</p>
+<p>main:</p>
+<p>​    1000:3000 mov ax, 3</p>
+<p>​    1000:3003 call 2000 -&gt; 1000:2000</p>
+<p>​    1000:3006 mov ah, 4Ch</p>
+<p>​    1000:3008 int 21h</p>
+<p>设ss=2000, sp=4000</p>
+<p><strong>call 2000 时，cpu会把下条指令的偏移地址即3006压入堆栈</strong>；之后cpu再执行jmp 2000 指令。</p>
+<p><strong>ret 时，cpu会从堆栈中弹出一个字，并把此字赋值给ip</strong>，实现了jmp 3006</p>
+<p>ss:3FFE 3006</p>
+<p>ss:4000 ??</p>
+<p>call相比jmp，跳了以后还能回来，因为跳之前把下一条指令地址压栈保存了，返回时把指令地址赋给ip</p>
+<p>32位cpu下call时压入32位地址，ret弹出32位地址</p>
+<h2 id="汇编语言中的三种参数传递方式"><a href="#汇编语言中的三种参数传递方式" class="headerlink" title="汇编语言中的三种参数传递方式"></a>汇编语言中的三种参数传递方式</h2><h3 id="寄存器传递"><a href="#寄存器传递" class="headerlink" title="寄存器传递"></a>寄存器传递</h3><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">f:</span><br>	<span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">ax</span><span class="hljs-comment">; ax=2*ax</span><br>	<span class="hljs-keyword">ret</span>        <span class="hljs-comment">; 返回时ax又是函数值</span><br><span class="hljs-symbol">main:</span><br>	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">3</span><span class="hljs-comment">; ax就是f()的参数</span><br>	<span class="hljs-keyword">call</span> f<br><span class="hljs-symbol">next:</span><br>	<span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>	<span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="变量传递"><a href="#变量传递" class="headerlink" title="变量传递"></a>变量传递</h3><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">f:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, var<br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">ax</span><span class="hljs-comment">; ax就是函数值</span><br>   <span class="hljs-keyword">ret</span><br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">mov</span> var, <span class="hljs-number">3</span><span class="hljs-comment">; var是一个16位的变量, 用作参数</span><br>   <span class="hljs-keyword">call</span> f<br></code></pre></td></tr></table></figure>
+
+<p>变量传递的缺点，函数f不能同时被重用(reentrant)，f不能支持多线程</p>
+<p>在汇编语言中，用db、dw等关键词定义的变量均为全局变量。在堆栈中定义的变量才是局部变量。</p>
+<h3 id="堆栈传递"><a href="#堆栈传递" class="headerlink" title="堆栈传递"></a>堆栈传递</h3><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">f:</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">bp</span>			<span class="hljs-comment">;(3)</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bp</span>, <span class="hljs-built_in">sp</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">4</span>]	<span class="hljs-comment">; 从堆栈中取得参数</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">bp</span>			<span class="hljs-comment">;(4)</span><br>   <span class="hljs-keyword">ret</span>				<span class="hljs-comment">;(5)</span><br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">3</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span>			<span class="hljs-comment">; 参数压入到堆栈 (1)</span><br>   <span class="hljs-keyword">call</span> f			<span class="hljs-comment">; (2)</span><br><span class="hljs-symbol">back:</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">sp</span>, <span class="hljs-number">2</span>		<span class="hljs-comment">; 清理压入的3，不用考虑pop到其他寄存器的问题 (6)</span><br></code></pre></td></tr></table></figure>
+
+<p>设ss=1000h，sp=2000h</p>
+<p>ss:1FFA old bp &lt;- (3), new bp = sp</p>
+<p>ss:1FFC back     &lt;- (2) (4)</p>
+<p>ss:1FFE 3            &lt;- (1) , [new bp+4] (5)</p>
+<p>ss:2000 ??          &lt;- ss:sp (6)</p>
+<p>在函数开始时，通过push bp和mov bp, sp可以构造堆栈框架(stack frame)</p>
+<p>每个函数都需要一个bp来寻找自己需要的参数，如果g不加bp的保护(构造堆栈框架的两句话)，它返回的f就会混乱</p>
+<p>虽然32位cpu支持[esp+常数]的用法，但16位不支持[sp+常数]，只能用[bp+常数]形式</p>
+<h2 id="C语言函数调用y-f-2-3-求两数之和转化成汇编语言"><a href="#C语言函数调用y-f-2-3-求两数之和转化成汇编语言" class="headerlink" title="C语言函数调用y=f(2,3)求两数之和转化成汇编语言"></a>C语言函数调用y=f(2,3)求两数之和转化成汇编语言</h2><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">f:</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">bp</span><span class="hljs-comment">;(4)</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bp</span>, <span class="hljs-built_in">sp</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">4</span>]<br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">6</span>]<br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">bp</span><span class="hljs-comment">; (5)</span><br>   <span class="hljs-keyword">ret</span><span class="hljs-comment">; (6)</span><br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">3</span>  <span class="hljs-comment">; 从右向左地压入参数</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><span class="hljs-comment">; (1)</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">2</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><span class="hljs-comment">; (2)</span><br>   <span class="hljs-keyword">call</span> f<span class="hljs-comment">; (3)</span><br><span class="hljs-symbol">here:</span><br>   <span class="hljs-keyword">add</span> <span class="hljs-built_in">sp</span>, <span class="hljs-number">4</span><span class="hljs-comment">;(7) 清掉栈内的两个参数</span><br></code></pre></td></tr></table></figure>
+
+<p>上述程序运行过程中的堆栈布局如下：</p>
+<p>设ss=1000h，sp=2000h</p>
+<p>ss:1FF8 old bp &lt;- (4), new bp<br>ss:1FFA here &lt;- (3)(5)<br>ss:1FFC 2   &lt;- (2)(6), [new bp+4]<br>ss:1FFE 3   &lt;- (1), [new bp+6]<br>ss:2000 ??   &lt;- (7)</p>
+<h2 id="参数个数可变的函数"><a href="#参数个数可变的函数" class="headerlink" title="参数个数可变的函数"></a>参数个数可变的函数</h2><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *s, ...)</span> <span class="hljs-comment">// s是f的第一个参数</span></span><br><span class="hljs-function"></span>&#123;  <br>    <span class="hljs-keyword">double</span> y=<span class="hljs-number">0</span>;<br>   	<span class="hljs-keyword">char</span> *p = (<span class="hljs-keyword">char</span> *)&amp;s; <span class="hljs-comment">/* p = bp+4 */</span><br>    p += <span class="hljs-keyword">sizeof</span>(s); <span class="hljs-comment">/* p = bp+6 */</span><br>    <span class="hljs-keyword">while</span>(*s != <span class="hljs-string">'\0'</span>)<br>    &#123;<br>        <span class="hljs-keyword">if</span>(*s == <span class="hljs-string">'i'</span>)<br>        &#123;<br>            y += *(<span class="hljs-keyword">int</span> *)p;<br>            p += <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">int</span>);<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(*s == <span class="hljs-string">'l'</span>)<br>        &#123;<br>            y += *(<span class="hljs-keyword">long</span>*)p;<br>            p += <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">long</span>);<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(*s == <span class="hljs-string">'d'</span>)<br>        &#123;<br>            y += *(<span class="hljs-keyword">double</span> *)p;<br>            p += <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">double</span>);<br>        &#125;<br>        s++;<br>    &#125;<br>    <span class="hljs-keyword">return</span> y;<br>&#125;<br>main()<br>&#123;<br>    <span class="hljs-keyword">double</span> y;<br>    y = f(<span class="hljs-string">"ild"</span>, <span class="hljs-number">10</span>, <span class="hljs-number">20L</span>, <span class="hljs-number">3.14</span>); <span class="hljs-comment">// ild标识后面输入的数据类型和要求的输出顺序</span><br>    <span class="hljs-comment">// push 3.14</span><br>    <span class="hljs-comment">// push 20L</span><br>    <span class="hljs-comment">// push 10</span><br>    <span class="hljs-comment">// push "ild"的首地址</span><br>    <span class="hljs-comment">// call f</span><br>    <span class="hljs-comment">// 利用bp+4获得格式串</span><br>    <span class="hljs-comment">// 如果C的函数是从左到右压入参数的，就无法获取格式串</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"y=%lf\n"</span>, y);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="用堆栈传递参数"><a href="#用堆栈传递参数" class="headerlink" title="用堆栈传递参数"></a>用堆栈传递参数</h1><h2 id="cdecl"><a href="#cdecl" class="headerlink" title="__cdecl"></a>__cdecl</h2><ol>
+<li><p>参数从右到左顺序压入堆栈</p>
+</li>
+<li><p>由调用者清理堆栈;</p>
+</li>
+</ol>
+<p>C语言参数传递规范</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">f:</span><br><span class="hljs-keyword">push</span> <span class="hljs-built_in">bp</span>				<span class="hljs-comment">; (4)</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bp</span>, <span class="hljs-built_in">sp</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">4</span>]		<span class="hljs-comment">; arg0</span><br><span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">6</span>]		<span class="hljs-comment">; arg1</span><br><span class="hljs-keyword">pop</span> <span class="hljs-built_in">bp</span>				<span class="hljs-comment">; (5)</span><br><span class="hljs-keyword">ret</span>					<span class="hljs-comment">; (6)</span><br><span class="hljs-symbol">main:</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">20</span>			<span class="hljs-comment">; arg1</span><br><span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span>				<span class="hljs-comment">; (1)</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">10</span>			<span class="hljs-comment">; arg0</span><br><span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span>				<span class="hljs-comment">; (2)</span><br><span class="hljs-keyword">call</span> f				<span class="hljs-comment">; (3)</span><br><span class="hljs-symbol">here:</span><br><span class="hljs-keyword">add</span> <span class="hljs-built_in">sp</span>, <span class="hljs-number">4</span>			<span class="hljs-comment">; (7)</span><br></code></pre></td></tr></table></figure>
+
+<p>cdecl堆栈布局:</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript">ss:<span class="hljs-number">1</span>FF8 old bp 	&lt;- bp (<span class="hljs-number">4</span>)<br>ss:<span class="hljs-number">1</span>FFA here 	&lt;- (<span class="hljs-number">3</span>)(<span class="hljs-number">5</span>)<br>ss:<span class="hljs-number">1</span>FFC <span class="hljs-number">10</span> 		&lt;- (<span class="hljs-number">2</span>)(<span class="hljs-number">6</span>)<br>ss:<span class="hljs-number">1</span>FFE <span class="hljs-number">20</span> 		&lt;- (<span class="hljs-number">1</span>)<br>ss:<span class="hljs-number">2000</span>    		&lt;- (<span class="hljs-number">7</span>)<br></code></pre></td></tr></table></figure>
+
+<h2 id="pascal"><a href="#pascal" class="headerlink" title="__pascal"></a>__pascal</h2><ol>
+<li>参数从左到右顺序压入堆栈</li>
+<li>由被调用者清理堆栈;</li>
+</ol>
+<p>Pascal语言参数传递规范</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">f:</span><br><span class="hljs-keyword">push</span> <span class="hljs-built_in">bp</span>				<span class="hljs-comment">; (4)</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bp</span>, <span class="hljs-built_in">sp</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">6</span>]		<span class="hljs-comment">; arg0</span><br><span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">4</span>]		<span class="hljs-comment">; arg1</span><br><span class="hljs-keyword">pop</span> <span class="hljs-built_in">bp</span>				<span class="hljs-comment">; (5)</span><br><span class="hljs-keyword">ret</span> <span class="hljs-number">4</span>				<span class="hljs-comment">; (6) 表示在pop ip时顺便做sp=sp+4</span><br><span class="hljs-symbol">main:</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">10</span><br><span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span>				<span class="hljs-comment">; (1) arg0</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">20</span><br><span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span>				<span class="hljs-comment">; (2) arg1</span><br><span class="hljs-keyword">call</span> f				<span class="hljs-comment">; (3)</span><br><span class="hljs-symbol">here:</span><br></code></pre></td></tr></table></figure>
+
+<p>pascal的堆栈布局:</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript">ss:<span class="hljs-number">1</span>FF8 old bp		&lt;- bp (<span class="hljs-number">4</span>)<br>ss:<span class="hljs-number">1</span>FFA here 		&lt;- (<span class="hljs-number">3</span>)(<span class="hljs-number">5</span>)<br>ss:<span class="hljs-number">1</span>FFC <span class="hljs-number">20</span> 			&lt;- (<span class="hljs-number">2</span>)<br>ss:<span class="hljs-number">1</span>FFE <span class="hljs-number">10</span> 			&lt;- (<span class="hljs-number">1</span>)<br>ss:<span class="hljs-number">2000</span>    			&lt;- (<span class="hljs-number">6</span>)<br></code></pre></td></tr></table></figure>
+
+
+<h2 id="stdcall"><a href="#stdcall" class="headerlink" title="__stdcall"></a>__stdcall</h2><ol>
+<li>参数从右到左顺序压入堆栈</li>
+<li>由被调用者清理堆栈;</li>
+</ol>
+<p>是Windows API函数的参数传递规范。</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">f:</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">bp</span>			<span class="hljs-comment">; (4)</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bp</span>, <span class="hljs-built_in">sp</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">4</span>]	<span class="hljs-comment">; arg0</span><br>    <span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">6</span>]	<span class="hljs-comment">; arg1</span><br>    <span class="hljs-keyword">pop</span> <span class="hljs-built_in">bp</span>			<span class="hljs-comment">; (5)</span><br>    <span class="hljs-keyword">ret</span> <span class="hljs-number">4</span>			<span class="hljs-comment">; (6)</span><br><span class="hljs-symbol">main:</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">20</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span>			<span class="hljs-comment">; (1) arg1</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">10</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span>			<span class="hljs-comment">; (2) arg0</span><br>    <span class="hljs-keyword">call</span> f			<span class="hljs-comment">; (3)</span><br><span class="hljs-symbol">here:</span><br></code></pre></td></tr></table></figure>
+
+<p>__stdcall的堆栈布局:</p>
+<p>ss:1FF8 old bp              &lt;- bp (4)<br>ss:1FFA here                 &lt;- (3)(5)<br>ss:1FFC 10                     &lt;- (2)<br>ss:1FFE 20                     &lt;- (1)<br>ss:2000                          &lt;-(6)</p>
+<h3 id="32位stdcall"><a href="#32位stdcall" class="headerlink" title="32位stdcall"></a>32位stdcall</h3><figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">f:</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">ebp</span><span class="hljs-comment">;(4)</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ebp</span>, <span class="hljs-built_in">esp</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,[<span class="hljs-built_in">ebp</span>+<span class="hljs-number">8</span>]<span class="hljs-comment">;arg0</span><br>    <span class="hljs-keyword">add</span> <span class="hljs-built_in">eax</span>,[<span class="hljs-built_in">ebp</span>+<span class="hljs-number">0Ch</span>]<span class="hljs-comment">;arg1</span><br>    <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ebp</span><span class="hljs-comment">;(5)</span><br>    <span class="hljs-keyword">ret</span> <span class="hljs-number">8</span><span class="hljs-comment">;(6)</span><br><span class="hljs-symbol">main:</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-number">20</span><span class="hljs-comment">;(1) arg1</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-number">10</span><span class="hljs-comment">;(2) arg0</span><br>    <span class="hljs-keyword">call</span> f<span class="hljs-comment">;(3)</span><br><span class="hljs-symbol">here:</span><br></code></pre></td></tr></table></figure>
+
+<p>32位__stdcall的堆栈布局:</p>
+<p>ss:1FF0 old ebp        &lt;- ebp (4)<br>ss:1FF4 here             &lt;- (3)(5)<br>ss:1FF8 10                 &lt;- (2)<br>ss:1FFC 20                 &lt;- (1)<br>ss:2000                      &lt;- (6)</p>
+<h1 id="动态变量"><a href="#动态变量" class="headerlink" title="动态变量"></a>动态变量</h1><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">int</span> c; <span class="hljs-comment">/* c是局部动态变量 */</span><br>    c = a+b;<br>    <span class="hljs-keyword">return</span> c;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上述C语言函数可翻译成以下汇编代码:</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">f:</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">bp</span>			<span class="hljs-comment">; (4)</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bp</span>, <span class="hljs-built_in">sp</span><br>    <span class="hljs-keyword">sub</span> <span class="hljs-built_in">sp</span>, <span class="hljs-number">2</span>		<span class="hljs-comment">; (5) 这里挖的坑就是给变量c的</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">4</span>]<br>    <span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">6</span>]<br>    <span class="hljs-keyword">mov</span> [<span class="hljs-built_in">bp</span>-<span class="hljs-number">2</span>], <span class="hljs-built_in">ax</span>  <span class="hljs-comment">; [bp-2]即变量c </span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>-<span class="hljs-number">2</span>]  <span class="hljs-comment">; ax 作返回值</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">sp</span>, <span class="hljs-built_in">bp</span>		<span class="hljs-comment">; (6) 做对齐，此时变量c死亡</span><br>    <span class="hljs-keyword">pop</span> <span class="hljs-built_in">bp</span>			<span class="hljs-comment">; (7)</span><br>    <span class="hljs-keyword">ret</span>				<span class="hljs-comment">; (8)</span><br><span class="hljs-symbol">main:</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">20</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span>			<span class="hljs-comment">; (1)</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">10</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span>			<span class="hljs-comment">; (2)</span><br>    <span class="hljs-keyword">call</span> f			<span class="hljs-comment">; (3)</span><br><span class="hljs-symbol">here:</span><br><span class="hljs-keyword">add</span> <span class="hljs-built_in">sp</span>, <span class="hljs-number">4</span>			<span class="hljs-comment">;(9)此时参数a,b死亡</span><br></code></pre></td></tr></table></figure>
+
+<p>执行上述代码时, 堆栈布局如下:</p>
+<p>ss:1FF6 [30]             &lt;- (5) 变量c<br>ss:1FF8 old bp        &lt;- bp (4)(6)<br>ss:1FFA here           &lt;- (3)(7)<br>ss:1FFC 10               &lt;- (2)(8)<br>ss:1FFE 20               &lt;- (1)<br>ss:2000                    &lt;- (9)</p>
+<p>如果c是数组，挖坑时多挖一点</p>
+<p><code>int c[4]</code> -&gt; <code>sub sp, 8</code></p>
+<p><code>c[0]</code> -&gt; <code>[bp-8]</code></p>
+<p>其他是一样的</p>
+<h1 id="C中需要保护bp-bx-si-di"><a href="#C中需要保护bp-bx-si-di" class="headerlink" title="C中需要保护bp, bx, si, di"></a>C中需要保护bp, bx, si, di</h1><p>可以放在中括号的寄存器</p>
+<p>C语言的函数里面除了不能破坏bp外，还要保护bx,si,di的值：</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">f:</span><br><span class="hljs-keyword">push</span> <span class="hljs-built_in">bp</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">bp</span>, <span class="hljs-built_in">sp</span><br><span class="hljs-keyword">sub</span> <span class="hljs-built_in">sp</span>, n<span class="hljs-comment">; 其中n一个常数,用来为动态变量分配空间</span><br><span class="hljs-keyword">push</span> <span class="hljs-built_in">bx</span><br><span class="hljs-keyword">push</span> <span class="hljs-built_in">si</span><br><span class="hljs-keyword">push</span> <span class="hljs-built_in">di</span><br>...<br><span class="hljs-keyword">pop</span> <span class="hljs-built_in">di</span><br><span class="hljs-keyword">pop</span> <span class="hljs-built_in">si</span><br><span class="hljs-keyword">pop</span> <span class="hljs-built_in">bx</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">sp</span>, <span class="hljs-built_in">bp</span><br><span class="hljs-keyword">pop</span> <span class="hljs-built_in">bp</span><br><span class="hljs-keyword">ret</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h1><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span>(n==<span class="hljs-number">1</span>)<br>       <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> n+f(n<span class="hljs-number">-1</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>每次重新调用f都会生成一个新的n值</p>
+<p>上述C语言递归函数可翻译成以下汇编代码:</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">f:</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">bp</span><span class="hljs-comment">;(3)(6)(9)</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bp</span>, <span class="hljs-built_in">sp</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">4</span>] <span class="hljs-comment">; ax=3 ax=2 ax=1 ax=0</span><br>    <span class="hljs-keyword">cmp</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">1</span><br>    <span class="hljs-keyword">je</span> done<br>    <span class="hljs-keyword">dec</span> <span class="hljs-built_in">ax</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><span class="hljs-comment">;(4)(7)</span><br>    <span class="hljs-keyword">call</span> f<span class="hljs-comment">;(5)(8)</span><br><span class="hljs-symbol">there:</span><br>    <span class="hljs-keyword">add</span> <span class="hljs-built_in">sp</span>, <span class="hljs-number">2</span><span class="hljs-comment">;(12)(15)</span><br>    <span class="hljs-keyword">add</span> <span class="hljs-built_in">ax</span>, [<span class="hljs-built_in">bp</span>+<span class="hljs-number">4</span>]<br><span class="hljs-symbol">done:</span><br>    <span class="hljs-keyword">pop</span> <span class="hljs-built_in">bp</span><span class="hljs-comment">;(10)(13)(16)</span><br>    <span class="hljs-keyword">ret</span><span class="hljs-comment">;(11)(14)(17)</span><br><span class="hljs-symbol">main:</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">3</span> <span class="hljs-comment">; 调用计算f(3)</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><span class="hljs-comment">;(1)</span><br>    <span class="hljs-keyword">call</span> f<span class="hljs-comment">;(2)</span><br><span class="hljs-symbol">here:</span><br>    <span class="hljs-keyword">add</span> <span class="hljs-built_in">sp</span>, <span class="hljs-number">2</span><span class="hljs-comment">;(18)</span><br></code></pre></td></tr></table></figure>
+
+<p>执行上述代码时的堆栈布局如下:</p>
+<p>ss:1FEE oldbp        &lt;-bp(9)<br>ss:1FF0 there        &lt;-(8)(10)<br>ss:1FF2 1                &lt;-(7)(11)<br>ss:1FF4 oldbp        &lt;-bp(6)(12)<br>ss:1FF6 there        &lt;-(5)(13)<br>ss:1FF8 2                &lt;-(4)(14)<br>ss:1FFA oldbp        &lt;-bp(3)(15)<br>ss:1FFC here         &lt;-(2)(16)<br>ss:1FFE 3               &lt;-(1)(17)<br>ss:2000                   &lt;-(18)</p>
+<hr>
+<h1 id="混合语言编程"><a href="#混合语言编程" class="headerlink" title="混合语言编程"></a>混合语言编程</h1><p><a href="http://10.71.45.100/bhh/asm_c.txt" target="_blank" rel="noopener">http://10.71.45.100/bhh/asm_c.txt</a></p>
+<ol>
+<li>C源代码中嵌入汇编指令</li>
+<li>把.c和.asm分别编译成.obj，再通过link把两个.obj加起来生成.exe</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> *argv[], <span class="hljs-keyword">char</span> *env[])</span></span><br><span class="hljs-function"></span>&#123;<br>    ...<br>&#125;   <span class="hljs-comment">// env[i]指向诸如path这样的信息</span><br></code></pre></td></tr></table></figure>
+
+<p>可以把对方的exe改造成dll，再把它的某个函数导出，即给该函数命名，再在自己的exe里面调用该函数，假定那个函数的地址是0x10002000</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c">__asm<br>&#123;<br>    mov eax, <span class="hljs-number">0x10002000</span><br>    push p2<br>    push p1<br>    push p0<br>    call eax<br>    add esp, <span class="hljs-number">0</span>Ch<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> <span class="hljs-title">F</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b, <span class="hljs-keyword">int</span> c)</span></span>;<br>F *pf; <span class="hljs-comment">// 函数指针</span><br>pf = (F *)<span class="hljs-number">0x10002000</span>;<br>(*pf)(p1, p2, p3);<br></code></pre></td></tr></table></figure>
+
+<h1 id="远调用和远返回"><a href="#远调用和远返回" class="headerlink" title="远调用和远返回"></a>远调用和远返回</h1><p>call far ptr / call dword ptr 先压入下条指令的段地址即cs，再压入偏移地址</p>
+<p>call dword ptr [abc]</p>
+<p>表示变量abc里面保存了一个远指针</p>
+<p>retf (return far) 先弹出pop ip再pop cs</p>
+<p>call far ptr 0018:12345678</p>
+<p>或</p>
+<p>call fword</p>
+<h1 id="int、iret"><a href="#int、iret" class="headerlink" title="int、iret"></a>int、iret</h1><p>int 21h对应的函数首地址（中断向量）保存在0:84h处, 该地址是一个远指针。<br>0:84 78h<br>0:85 56h<br>0:86 34h<br>0:87 12h<br>dword ptr 0:[84h]称为int 21h的中断向量(其实是它的函数首地址) 32位<br>int n对应的中断向量的存储位置一定是0:n*4<br>n的取值范围是[00, FF], 所以256个中断向量会占用0:0~0:3FF之间共400h个字节的内存，这块区域称为中断向量表。</p>
+<p>后128个几乎是空的</p>
+<p>int 00h的中断向量保存在dword ptr 0:[0];</p>
+<p>int 01h的中断向量保存在dword ptr 0:[4];</p>
+<p>int 02h的中断向量保存在dword ptr 0:[8];</p>
+<p>int 03h的中断向量保存在dword ptr 0:[0Ch];</p>
+<p>int 08h的中断向量保存在dword ptr 0:[20h];<br>int 0FFh的中断向量保存在dword ptr 0:[3FCh];<br>BIOS会完成部分中断向量的填写, 如int 10h、int 16h、int 8h, int 9h, int 13h这几个BIOS中断的向量在DOS启动前就已经填好了; DOS启动完成后，会填入int 21h的中断向量。</p>
+<p>用户可以修改中断向量，但修改时通常需要保存原来的中断向量以便让代码与旧代码能够链接</p>
+<p>例如 int 21的旧中断向量为1234:5678，现在把他保存在old_21h(4字节变量)中，将其改成自己的函数地址如cs:my_int21</p>
+<p>设es=0, bx=84h</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>], offset my_int21<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>], <span class="hljs-built_in">cs</span><br><span class="hljs-symbol">my_int21:</span><br>	<span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><br>	<span class="hljs-keyword">push</span> <span class="hljs-built_in">bx</span><br>	<span class="hljs-keyword">push</span> <span class="hljs-built_in">cx</span><br>	...<br>	<span class="hljs-keyword">cmp</span> <span class="hljs-number">ah</span>, <span class="hljs-number">1</span><br>	<span class="hljs-keyword">jne</span> skip<br><span class="hljs-symbol">	is_input:</span> <span class="hljs-comment">; hook技术</span><br>	... 改变<span class="hljs-keyword">int</span> <span class="hljs-number">21h</span>/<span class="hljs-number">ah</span>=<span class="hljs-number">1</span>的功能，做修改，之后回到old <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br><span class="hljs-symbol">	skip:</span><br>	<span class="hljs-keyword">pop</span> <span class="hljs-built_in">cx</span><br>	<span class="hljs-keyword">pop</span> <span class="hljs-built_in">bx</span><br>	<span class="hljs-keyword">pop</span> <span class="hljs-built_in">ax</span><br>	<span class="hljs-keyword">jmp</span> <span class="hljs-built_in">dword</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">cs</span>:[old_21h] <span class="hljs-comment">; 跳到老的int 21h</span><br></code></pre></td></tr></table></figure>
+
+<p>1000:2000 mov ah, 2<br>1000:2002 mov dl, ‘A’<br>1000:2004 int 21h<br>1000:2006 mov ah,4Ch<br>上面这条int 21h指令执行时, cpu做了以下4件事:</p>
+<p>pushf<br>push cs即1000h<br>push 下条指令的偏移地址即2006h<br>jmp dword ptr 0:[84h]; jmp 1234h:5678h</p>
+<p>上面这条jmp会跳转到int 21h的中断服务函数内部:<br>1234:5678  …<br>             …<br>1234:56FF  iret; 中断返回<br>iret在执行时, cpu做了以下3件事情:<br>pop ip即ip=2006h<br>pop cs即cs=1000h<br>popf</p>
+<p>1000:2000 call 1234:5678; 远调用<br>;此时会push 1000h 再 push 2005h<br>;最后jmp 1234:5678<br>1000:2005 mov ah, 4Ch<br>1000:2007 int 21h<br>…<br>1234:5678 …<br>            retf; 此时执行pop ip再pop cs</p>
+<p>中断程序例子:</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm">code <span class="hljs-meta">segment</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code<br>old_00h <span class="hljs-built_in">dw</span> <span class="hljs-number">0</span>, <span class="hljs-number">0</span><br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">xor</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">0</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>]<br>   <span class="hljs-keyword">mov</span> old_00h[<span class="hljs-number">0</span>], <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>]<br>   <span class="hljs-keyword">mov</span> old_00h[<span class="hljs-number">2</span>], <span class="hljs-built_in">ax</span><br>   <span class="hljs-comment">;</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">word</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>], offset int_00h<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>], <span class="hljs-built_in">cs</span><br>   <span class="hljs-comment">;</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">1234h</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">dh</span>, <span class="hljs-number">0</span><br><span class="hljs-comment">;int 00h</span><br><br><span class="hljs-symbol">here:</span><br>   <span class="hljs-keyword">div</span> <span class="hljs-number">dh</span><br><span class="hljs-symbol">next:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, old_00h[<span class="hljs-number">0</span>]<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>], <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, old_00h[<span class="hljs-number">2</span>]<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>], <span class="hljs-built_in">ax</span><br>   <span class="hljs-comment">;</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>msg <span class="hljs-built_in">db</span> <span class="hljs-string">"Divided by 0!!!"</span>, <span class="hljs-number">0Dh</span>, <span class="hljs-number">0Ah</span>, <span class="hljs-string">'$'</span><br><span class="hljs-symbol">int_00h:</span> <span class="hljs-comment">; 中断函数务必保存每个可能改变的寄存器</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">bp</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bp</span>, <span class="hljs-built_in">sp</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">dx</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ds</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">cs</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ds</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">9</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, offset msg<br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ds</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">dx</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">word</span> <span class="hljs-built_in">ptr</span> [<span class="hljs-built_in">bp</span>+<span class="hljs-number">2</span>], offset next<br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">bp</span><br>   <span class="hljs-keyword">iret</span><br>code ends<br>end main<br></code></pre></td></tr></table></figure>
+
+
+
+<p><a href="http://10.71.45.100/bhh/int80.asm" target="_blank" rel="noopener">http://10.71.45.100/bhh/int80.asm</a><br><a href="http://10.71.45.100/bhh/int00.asm" target="_blank" rel="noopener">http://10.71.45.100/bhh/int00.asm</a><br><a href="http://10.71.45.100/bhh/int8.asm" target="_blank" rel="noopener">http://10.71.45.100/bhh/int8.asm</a></p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><br>data <span class="hljs-meta">segment</span><br>s <span class="hljs-built_in">db</span> <span class="hljs-string">'0'</span>,<span class="hljs-number">17h</span><br>count <span class="hljs-built_in">db</span> <span class="hljs-number">0</span><br>stop <span class="hljs-built_in">db</span> <span class="hljs-number">0</span><br>data ends<br>code <span class="hljs-meta">segment</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code, <span class="hljs-built_in">ds</span>:data<br><span class="hljs-symbol">main:</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">xor</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>, <span class="hljs-built_in">ax</span><span class="hljs-comment">; ES=0</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">8h</span>*<span class="hljs-number">4</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>]<br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">cs</span>:old8h[<span class="hljs-number">0</span>]<span class="hljs-comment">; old8h[0] = es:[bx]</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>]<br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">cs</span>:old8h[<span class="hljs-number">2</span>]<br><br>   <span class="hljs-keyword">cli</span><span class="hljs-comment">; IF=0禁止中断</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">word</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>], offset int8h<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>], <span class="hljs-built_in">cs</span><span class="hljs-comment">; 或seg int8h或code</span><br>   <span class="hljs-keyword">sti</span><span class="hljs-comment">; IF=1允许中断</span><br><span class="hljs-symbol">wait_a_while:</span><br>   <span class="hljs-keyword">cmp</span> stop, <span class="hljs-number">1</span><br>   <span class="hljs-keyword">jne</span> wait_a_while<br>   <span class="hljs-keyword">cli</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">cs</span>:old8h[<span class="hljs-number">0</span>]<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>], <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>,<span class="hljs-built_in">cs</span>:old8h[<span class="hljs-number">2</span>]<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>:[<span class="hljs-built_in">bx</span>+<span class="hljs-number">2</span>],<span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">sti</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">4Ch</span><br>   <span class="hljs-keyword">int</span> <span class="hljs-number">21h</span><br><span class="hljs-symbol">int8h:</span>    <span class="hljs-comment">; interrupt service routine</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">si</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">di</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">ds</span><br>   <span class="hljs-keyword">push</span> <span class="hljs-built_in">es</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">0B800h</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">di</span>, <span class="hljs-number">0</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br>   <span class="hljs-keyword">inc</span> count<br>   <span class="hljs-keyword">cmp</span> count, <span class="hljs-number">18</span><br>   <span class="hljs-keyword">jb</span> skip<br>   <span class="hljs-keyword">mov</span> count, <span class="hljs-number">0</span><br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">si</span>, offset s<br>   <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">2</span><br>   <span class="hljs-keyword">cld</span><br>   <span class="hljs-keyword">rep</span> <span class="hljs-keyword">movsb</span><br>   <span class="hljs-keyword">inc</span> s[<span class="hljs-number">0</span>]<br>   <span class="hljs-keyword">cmp</span> s[<span class="hljs-number">0</span>], <span class="hljs-string">'9'</span><br>   <span class="hljs-keyword">jbe</span> skip<br>   <span class="hljs-keyword">mov</span> stop, <span class="hljs-number">1</span><br><span class="hljs-symbol">skip:</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">es</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ds</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">di</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">si</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">cx</span><br>   <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ax</span><br>   <span class="hljs-comment">;push ax</span><br>   <span class="hljs-comment">;mov al, 20h</span><br>   <span class="hljs-comment">;out 20h, al</span><br>   <span class="hljs-comment">;pop ax</span><br>   <span class="hljs-comment">;iret</span><br>   <span class="hljs-keyword">jmp</span> <span class="hljs-built_in">dword</span> <span class="hljs-built_in">ptr</span> <span class="hljs-built_in">cs</span>:[old8h]<br>old8h <span class="hljs-built_in">dw</span> <span class="hljs-number">1234h</span>, <span class="hljs-number">5678h</span><br><span class="hljs-comment">;设原int 8h的中断向量为5678h:1234h</span><br>code ends<br>end main<br></code></pre></td></tr></table></figure>
+
+
+
+<ol start="7">
+<li><p>缓冲溢出<br><a href="http://10.71.45.100/bhh/overflow.rar" target="_blank" rel="noopener">http://10.71.45.100/bhh/overflow.rar</a></p>
+</li>
+<li><p>期末考试重点<br><a href="http://10.71.45.100/bhh/asm_sum.doc" target="_blank" rel="noopener">http://10.71.45.100/bhh/asm_sum.doc</a></p>
+</li>
+</ol>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-06-02T10:43:45.000Z" itemprop="datePublished">
+              2020-06-02
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/ASM/">ASM</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

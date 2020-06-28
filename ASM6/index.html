@@ -190,6 +190,16 @@
 <p>会影响标志位的指令(add sub cmp等)后面都可以接以上指令</p>
 <figure class="highlight routeros"><table><tr><td class="code"><pre><code class="hljs routeros">mov ah, 0FFh<br><span class="hljs-builtin-name">add</span> ah, 1 ;<span class="hljs-attribute">AH</span>=0 <span class="hljs-attribute">CF</span>=1<br>jb next<br></code></pre></td></tr></table></figure>
 
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm">  <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, rows<br><span class="hljs-symbol">row_display_loop:</span><br>  <span class="hljs-keyword">cmp</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">0</span><br>  <span class="hljs-keyword">je</span> row_display_loop_end<br>  ...<br>  <span class="hljs-keyword">dec</span> <span class="hljs-built_in">cx</span><br>  <span class="hljs-keyword">jmp</span> row_display_loop<br><span class="hljs-symbol">row_display_loop_end:</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm">	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">0</span><br><span class="hljs-symbol">row_display_loop:</span><br>	<span class="hljs-keyword">cmp</span> <span class="hljs-built_in">cx</span>, rows<br>	<span class="hljs-keyword">je</span> row_display_loop_end<br>	...<br>	<span class="hljs-keyword">inc</span> <span class="hljs-built_in">cx</span><br>	<span class="hljs-keyword">jmp</span> row_display_loop<br><span class="hljs-symbol">row_display_loop_end:</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
 
 
       

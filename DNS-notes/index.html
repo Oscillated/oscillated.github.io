@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Oscillate.</title>
+  <title>DNS_notes | Oscillate.</title>
   
   
   
@@ -78,178 +78,68 @@
 
     <div class="container">
         <div data-pager-shell>
-            <ul class="Index">
-  
+            <div>
+  <article class='ContentView'>
     <header class='PageTitle'>
-        <h1>{ ASM }</h1>
+        <h1>DNS_notes</h1>
     </header>
-  
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/ASM3/">ASM3</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-05-03T10:25:26.000Z" itemprop="datePublished">
-    2020-05-03
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/ASM/">ASM</a> }
-  </li>
 
+    <section>
+      <p>期末结束了，开始补更，先记录自己之前遇到的浏览器DNS问题</p>
+<a id="more"></a>
 
-  </ul>
-  
-  
-  / 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/categories/Notes/">Notes</a> }
-  </li>
-
-
-  </ul>
-  
-</div>
-
-    </header>
-    <div>
-      
-        <p>白洪欢《汇编语言程序设计基础》笔记3</p>
-<p>operation</p>
-        
-          <div class="more-link">
-            <a href="/ASM3/#more">Read More</a>
-          </div>
-        
-      
-    </div>
-</article>
-
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/ASM2/">ASM2</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-05-03T10:20:26.000Z" itemprop="datePublished">
-    2020-05-03
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/ASM/">ASM</a> }
-  </li>
-
-
-  </ul>
-  
-  
-  / 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/categories/Notes/">Notes</a> }
-  </li>
-
-
-  </ul>
-  
-</div>
-
-    </header>
-    <div>
-      
-        <p>白洪欢《汇编语言程序设计基础》笔记2</p>
-<p>variables, registers</p>
-        
-          <div class="more-link">
-            <a href="/ASM2/#more">Read More</a>
-          </div>
-        
-      
-    </div>
-</article>
-
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/ASM1/">ASM1</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-05-03T10:18:50.000Z" itemprop="datePublished">
-    2020-05-03
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/ASM/">ASM</a> }
-  </li>
-
-
-  </ul>
-  
-  
-  / 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/categories/Notes/">Notes</a> }
-  </li>
-
-
-  </ul>
-  
-</div>
-
-    </header>
-    <div>
-      
-        <p>白洪欢《汇编语言程序设计基础》笔记1</p>
-<p>demo code</p>
-        
-          <div class="more-link">
-            <a href="/ASM1/#more">Read More</a>
-          </div>
-        
-      
-    </div>
-</article>
-
-    </li>
-  
+<p>5月的时候，Chrome下用bing搜索出了点问题：</p>
+<p><img src="https://img.cfssr.xyz/imgs/2020/06/35cbc10f4d97ddd2.jpg" alt=""></p>
+<p>载入国内版必应（国内版必应原先就有重定向），后缀的<code>mkt=zh-CN</code>每次重复的个数不等，之后进行搜索就会报重定向次数过多次数错误：</p>
+<p><img src="https://img.cfssr.xyz/imgs/2020/06/739b5af34663f9fd.jpg" alt=""></p>
+<p>在98问问题无果后自己探索了下</p>
+<ol>
+<li>用Chrome以及Chromium内核的新Edge浏览器都会出现这一问题，而使用Firefox则不会</li>
+<li>可以正常使用百度等别的搜索引擎</li>
+<li>去网上搜了相关经验感觉是本地的DNS出了问题，也就是域名转换成IP地址时的索引问题</li>
+</ol>
+<p><code>控制面板-查看网络状态和任务-更改适配器设置</code>可以进入对应网络属性查看DNS情况，然而自己改了还是不行…</p>
+<hr>
+<p>尝试下了个腾讯电脑管家（用完马上就卸了），用里面的DNS修复工具，发现切换不同的DNS，以上的问题能够解决，但是可能只是治标工作。</p>
+<hr>
+<p>之后看到先前必应被封的时候使用www2.bing.com可以暂时替代进行正常搜索，试了下是可行的，应该是这个域名没有被DNS污染的原因。</p>
+<ul>
+<li>结果<ul>
+<li>把Chrome等其他浏览器的必应网址都改成了www2.bing.com</li>
+<li>一步到位入手Chromium内核的新Edge浏览器。Edge作为国内日常访问主力浏览器，Chrome用于翻墙科研时的需要。因为这两个浏览器的内核相同，基本区别就是外观和账号的一点差异，插件、收藏夹、快捷键和内部的设置几乎可以无缝同步切换，并且有说法是新Edge比Chrome的内存占用要小一些（笔记本8G用户狂喜）。</li>
+</ul>
+</li>
 </ul>
 
-  <section id="nav-wrapper">
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/tags/ASM/">« prev</a><a class="page-number" href="/tags/ASM/">1</a><span class="page-number current">2</span>
-    </nav>
-  </section>
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-06-27T14:29:22.000Z" itemprop="datePublished">
+              2020-06-27
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/DNS/">DNS</a> }
+  </li>
 
 
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
 
             <footer>
     <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">

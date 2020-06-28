@@ -96,8 +96,7 @@
         });
     </script>
 <meta name="generator" content="Hexo 4.2.0"></head>
-
-<p>白洪欢《汇编语言程序设计基础》笔记12</p>
+白洪欢《汇编语言程序设计基础》笔记12
 <a id="more"></a>
 
 <h1 id="字符串操作指令"><a href="#字符串操作指令" class="headerlink" title="字符串操作指令"></a>字符串操作指令</h1><h2 id="字符串传送指令-movsb-movsw-movsd"><a href="#字符串传送指令-movsb-movsw-movsd" class="headerlink" title="字符串传送指令 movsb, movsw, movsd"></a>字符串传送指令 movsb, movsw, movsd</h2><p>strcpy</p>
@@ -181,10 +180,11 @@
 <h3 id="rep-stosb"><a href="#rep-stosb" class="headerlink" title="rep stosb"></a>rep stosb</h3><p>循环CX次stosb<br>rep stosb的操作过程:</p>
 <figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">again:</span><br>if(<span class="hljs-built_in">cx</span> == <span class="hljs-number">0</span>) goto done<span class="hljs-comment">;</span><br><span class="hljs-symbol">ES:</span>[<span class="hljs-built_in">DI</span>] = <span class="hljs-built_in">AL</span><br><span class="hljs-built_in">DI</span>++<span class="hljs-comment">; 当DF=1时, 为DI--</span><br><span class="hljs-built_in">CX</span>--<br>goto again<span class="hljs-comment">;</span><br><span class="hljs-symbol">done:</span><br></code></pre></td></tr></table></figure>
 
-<p>例: 把从地址1000:10A0开始共100h个字节的<br>内存单元全部填0</p>
+<p>例: 把从地址1000:10A0开始共100h 256个字节的<br>内存单元全部填0</p>
 <p><code>memset(buf, 0, sizeof(buf))</code></p>
 <figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">1000h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>, <span class="hljs-built_in">ax</span><span class="hljs-comment">; ES=1000h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">di</span>, <span class="hljs-number">10A0h</span>                    	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">di</span>,<span class="hljs-number">10A0h</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">100h</span>     <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">80h</span>    	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>,<span class="hljs-number">40h</span><br><span class="hljs-keyword">cld</span>              <span class="hljs-keyword">cld</span>         		<span class="hljs-keyword">cld</span> <br><span class="hljs-keyword">xor</span> <span class="hljs-built_in">al</span>, <span class="hljs-built_in">al</span>       <span class="hljs-keyword">xor</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">ax</span>   		<span class="hljs-keyword">xor</span> <span class="hljs-built_in">eax</span>, <span class="hljs-built_in">eax</span><br><span class="hljs-keyword">rep</span> <span class="hljs-keyword">stosb</span>        <span class="hljs-keyword">rep</span> <span class="hljs-keyword">stosw</span>      	<span class="hljs-keyword">rep</span> <span class="hljs-keyword">stosd</span><br></code></pre></td></tr></table></figure>
 
+<p>0B800h:0000 开始 填入 80*16个0020h 80*16个字</p>
 <h2 id="lodsb"><a href="#lodsb" class="headerlink" title="lodsb"></a>lodsb</h2><p>lodsb的操作过程:<br>al=ds:[si]<br>SI++;当DF=1时, 为SI–</p>
 <p>lodsb通常是没有rep前缀的，因为每次把值放在同一个寄存器显然是没有意义的</p>
 <p>例: 设DS:SI 指向 “##AB#12#XY”<br>ES:DI指向一个空的数组，CX=11，通过编程过滤’#’</p>
@@ -242,20 +242,6 @@
 <p>例: jmp dword ptr 32位变量 的用法</p>
 <figure class="highlight x86asm"><table><tr><td class="code"><pre><code class="hljs x86asm">data <span class="hljs-meta">segment</span><br>addr <span class="hljs-built_in">dw</span> <span class="hljs-number">0000h</span>, <span class="hljs-number">0FFFFh</span> <br><span class="hljs-comment">;或写成addr dd 0FFFF0000h</span><br>data ends<br>code <span class="hljs-meta">segment</span><br><span class="hljs-meta">assume</span> <span class="hljs-built_in">cs</span>:code, <span class="hljs-built_in">ds</span>:data<br><span class="hljs-symbol">main:</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, data<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br><span class="hljs-keyword">jmp</span> <span class="hljs-built_in">dword</span> <span class="hljs-built_in">ptr</span> [addr] <span class="hljs-comment">; 重启效果</span><br><span class="hljs-comment">;相当于jmp FFFF:0000</span><br>code ends<br>end main<br></code></pre></td></tr></table></figure>
 
-<hr>
-<p>例: 演示短跳、近跳、远跳 <a href="http://10.71.45.100/bhh/jmp.asm" target="_blank" rel="noopener">http://10.71.45.100/bhh/jmp.asm</a></p>
-<ol start="3">
-<li>循环指令：LOOP<br>loop  dest的操作过程:<br>CX = CX - 1       ; 循环次数减1<br>if(CX != 0)       ; 若CX不等于0，则<br> goto  dest     ; 跳转至dest</li>
-</ol>
-<p>例: 求1+2+3的和<br>mov ax, 0<br>mov cx, 3<br>next:<br>add ax, cx; ax +3, +2, +1<br>loop next; cx=2, 1, 0<br>           ; dec cx<br>           ; jnz next<br>done:</p>
-<p>mov ax, 0<br>mov cx, 0<br>jcxz done  这条指令可以防止cx为0时进入循环<br>next:<br>add ax, cx<br>loop next; 循环10000h次<br>done:</p>
-<ol start="4">
-<li>call, ret指令<br>(1) 汇编语言中的三种参数传递方式<br>① 寄存器传递<br>f:<br>add ax, ax; ax=2*ax<br>ret        ; 返回时ax就是函数值<br>main:<br>mov ax, 3; ax就是f()的参数<br>call f<br>next:<br>mov ah, 4Ch<br>int 21h</li>
-</ol>
-<p>② 变量传递<br>f:<br>   mov ax, var<br>   add ax, ax; ax就是函数值<br>   ret<br>main:<br>   mov var, 3; var是一个16位的变量, 用作参数<br>   call f</p>
-<p>在汇编语言中，用db、dw等关键词定义的变量均为全局变量。在堆栈中定义的变量才是局部变量。<br>③ 堆栈传递<br>f:<br>   push bp<br>   mov bp, sp<br>   mov ax, [bp+4]; 从堆栈中取得参数<br>   add ax, ax<br>   pop bp<br>   ret<br>main:<br>   mov ax, 3<br>   push ax; 参数压入到堆栈<br>   call f<br>   add sp, 2</p>
-<p>(2) C语言函数调用y=f(2,3)求两数之和转化成汇编语言<br>f:<br>   push bp;(4)<br>   mov bp, sp<br>   mov ax, [bp+4]<br>   add ax, [bp+6]<br>   pop bp; (5)<br>   ret; (6)<br>main:<br>   mov ax, 3<br>   push ax; (1)<br>   mov ax, 2<br>   push ax; (2)<br>   call f; (3)<br>here:<br>   add sp, 4;(7)<br>上述程序运行过程中的堆栈布局如下:<br>ss:1FF8 old bp &lt;- bp (4)<br>ss:1FFA here &lt;- (3)(5)<br>ss:1FFC 02   &lt;- (2)(6)<br>ss:1FFE 03   &lt;- (1)<br>ss:2000 ??   &lt;- (7)</p>
-<p>参数个数可变的函数例子: myprintf.c<br><a href="http://10.71.45.100/bhh/myprintf.c" target="_blank" rel="noopener">http://10.71.45.100/bhh/myprintf.c</a></p>
 
 
       

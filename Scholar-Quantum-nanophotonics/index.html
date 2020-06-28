@@ -85,7 +85,35 @@
     </header>
 
     <section>
-      
+      <p>“学者云会面”讲座8</p>
+<a id="more"></a>
+
+<h1 id="Quantum-Technology"><a href="#Quantum-Technology" class="headerlink" title="Quantum Technology"></a>Quantum Technology</h1><h2 id="Secure-Communication"><a href="#Secure-Communication" class="headerlink" title="Secure Communication"></a>Secure Communication</h2><p>量子通信分为量子密钥分发和量子隐形传态。</p>
+<h3 id="量子密钥分发"><a href="#量子密钥分发" class="headerlink" title="量子密钥分发"></a>量子密钥分发</h3><p>传统加密通信一般通过密钥来验证信息安全性，当前常用的RSA等算法已被验证可破解，而量子密钥分发可以实现真正的绝对安全，做到“一次一密”</p>
+<p>BB84 Protocol把密码以密钥的形式通过量子物理原理分配给信息的收发双方。</p>
+<h4 id="量子物理学原理"><a href="#量子物理学原理" class="headerlink" title="量子物理学原理"></a>量子物理学原理</h4><p>光子有两个相互垂直的偏振方向，选取一种测量方式（有“水平垂直方向”和“对角方向”两种）作为测量基，当测量基和光子偏振方向一致，定义信息为1，否则为0，当测量基和光子偏振方向成45°，就不能得出准确的结果。</p>
+<h4 id="生成二进制密钥"><a href="#生成二进制密钥" class="headerlink" title="生成二进制密钥"></a>生成二进制密钥</h4><p>发送方A首先<strong>随机生成</strong>一组二进制比特，并对每1个比特，随机选择测量基；接收方B，收到这些光子之后，再<strong>随机选择</strong>两种测量基中的一种进行测量。A和B通过传统方式（如电磁波）对比双方的测量基，测量基相同的，该数据保留；测量基不同的，该数据抛弃。保留下来的数据，就是最终的密钥。</p>
+<p>如果存在一个窃取者C，如果C只窃听A和B对比测量基，会得到这样形式的信息：不同不同相同相同不同不同相同相同。这个信息对他来说，没有任何意义。C只能去测量A到B的光子。因为<strong>量子的不可克隆性</strong>，C没有办法复制光子，只能抢在B之前进行测量（劫听）。如果C测量，他也要随机选择自己的测量基。如果C去测量刚才那一组光子，他有一半的概率和A选择一样的测量基（光子偏振方向无影响），还有一半的概率，会导致光子改变偏振方向（偏45°）。如果光子的偏振方向改变，那么B的测量准确率肯定受影响。</p>
+<p>验证有无被窃听的方式是：没有C的情况下，A和B之间采用相同测量基的概率是50%；有C的情况下，A和C之间采用相同测量基的概率是50%。B和C之间采用相同测量基的概率是50%，因此A和B之间拿出一小部分测量结果出来对比，有25%相同。</p>
+<p>“通信密钥分发”方式的量子通信，拥有随时发现窃听者的能力，给窃听者以震慑，以此保卫自己的通信安全。</p>
+<h3 id="量子隐形传态"><a href="#量子隐形传态" class="headerlink" title="量子隐形传态"></a>量子隐形传态</h3><p><strong>量子比特</strong>（qubit）与经典比特不同，是0和1的叠加态，可以是0和1这两个向量的所有可能的组合。</p>
+<p><strong>量子纠缠</strong>：一对具有量子纠缠态的粒子，即使相隔极远，当其中一个状态改变时，另一个状态也会即刻发生相应改变。由于量子纠缠是非局域的，即两个纠缠的粒子无论相距多远，测量其中一个的状态必然能同时获得另一个粒子的状态，这个“信息”的获取是不受光速限制的。</p>
+<h4 id="传输协议"><a href="#传输协议" class="headerlink" title="传输协议"></a>传输协议</h4><ol>
+<li>制备一个纠缠粒子对。将粒子1发射到A点，粒子2发送至B点。</li>
+<li>在A点，另一个粒子3代表一个想要传输的量子比特Q。于是A点的粒子1和B点的粒子2对于粒子3一起会形成一个总的态。在A点同时测量粒子1和粒子3，得到一个测量结果。这个测量会使粒子1和粒子2的纠缠态坍缩掉，但同时粒子1和和粒子3却纠缠到了一起。</li>
+<li>A点的一方利用经典信道（如电磁波）把自己的测量结果告诉B点一方。</li>
+<li>B点的一方收到A点的测量结果后，就知道了B点的粒子2处于哪个态。只要对粒子2稍做一个简单的操作，它就会变成粒子3在测量前的状态。也就是粒子3携带的量子比特无损地从A点传输到了B点，而粒子3本身只留在A点，并没有到B点。</li>
+</ol>
+<p>由于步骤3是经典信息传输而且不可忽略，因此它限制了整个量子隐形传态的速度，使得量子隐形传态的信息传输速度无法超过光速。</p>
+<h2 id="Blind-Quantum-Computing"><a href="#Blind-Quantum-Computing" class="headerlink" title="Blind Quantum Computing"></a>Blind Quantum Computing</h2><h3 id="Entanglement-based-Metrology"><a href="#Entanglement-based-Metrology" class="headerlink" title="Entanglement-based Metrology"></a>Entanglement-based Metrology</h3><h3 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h3><p>Loss is proportional to the exponential of negative distance</p>
+<h3 id="Quantum-Repeater"><a href="#Quantum-Repeater" class="headerlink" title="Quantum Repeater"></a>Quantum Repeater</h3><ul>
+<li>Quantum Memory with an optical interface</li>
+<li>Preferably a quantum circuit</li>
+<li>Mass production of devices</li>
+</ul>
+<h2 id="A-chip-integrated-nanophotonic-platform-for-quantum-information-processing"><a href="#A-chip-integrated-nanophotonic-platform-for-quantum-information-processing" class="headerlink" title="A chip-integrated nanophotonic platform for quantum information processing"></a>A chip-integrated nanophotonic platform for quantum information processing</h2><h3 id="Quantum-dot-an-artifical-atom"><a href="#Quantum-dot-an-artifical-atom" class="headerlink" title="Quantum dot : an artifical atom"></a>Quantum dot : an artifical atom</h3><p>use photonic crystal cavity to achieve strong light-matter interaction</p>
+<p>strong atom-photon interactions enable a quantum switch</p>
+
 
       
 
@@ -98,6 +126,15 @@
               2020-06-28
             </time>
           </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Quantum-nanophotonics/">Quantum_nanophotonics</a> }
+  </li>
+
+
+            </div>
           
       </section>
     

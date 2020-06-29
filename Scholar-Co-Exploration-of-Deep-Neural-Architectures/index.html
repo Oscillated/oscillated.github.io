@@ -88,6 +88,45 @@
       <p>“学者云会面”讲座7</p>
 <a id="more"></a>
 
+<h1 id="原有的神经网络架构Problem"><a href="#原有的神经网络架构Problem" class="headerlink" title="原有的神经网络架构Problem"></a>原有的神经网络架构Problem</h1><ol>
+<li>Domain knowledge and excessive labor</li>
+<li>impossible to manually design specific arch for dedicated application in the era of AI democratization</li>
+</ol>
+<h1 id="Neural-Architecture-Search-NAS"><a href="#Neural-Architecture-Search-NAS" class="headerlink" title="Neural Architecture Search (NAS)"></a>Neural Architecture Search (NAS)</h1><img src="https://img.cfssr.xyz/imgs/2020/06/ae0b917dea49aeed.png" style="zoom:33%;" />
+
+<h2 id="完全不考虑硬件能力的NAS-Problem"><a href="#完全不考虑硬件能力的NAS-Problem" class="headerlink" title="完全不考虑硬件能力的NAS Problem"></a>完全不考虑硬件能力的NAS Problem</h2><ol>
+<li>No constraint on hardware resource consumed</li>
+<li>NAS may not meet the design specifications in resource constraint environment</li>
+</ol>
+<p>现有硬件平台不足以支撑网络架构精度提高带来的指数级运算量和参数数量增长</p>
+<h2 id="Hardware-Aware-NAS"><a href="#Hardware-Aware-NAS" class="headerlink" title="Hardware-Aware NAS"></a>Hardware-Aware NAS</h2><img src="https://img.cfssr.xyz/imgs/2020/06/1c30633f054e9f69.png" style="zoom:33%;" />
+
+<p>It works for particular fixed hardware, but not suitable for programmable hardware</p>
+<h2 id="FNAS"><a href="#FNAS" class="headerlink" title="FNAS"></a>FNAS</h2><p><img src="https://img.cfssr.xyz/imgs/2020/06/01ad6c8f06c3d0c9.png" alt=""></p>
+<p>硬件优化评估（以FPGA为例）的循环要比网络训练准确率的循环快得多，如果发现经过硬件优化后的网络时延仍然达不到spec的要求，直接终止网络训练并尝试其他的神经网络架构。因此NAS的搜索效率将会大大提高</p>
+<p><img src="https://img.cfssr.xyz/imgs/2020/06/d0dce1272402c72f.png" alt=""></p>
+<ol>
+<li>On-chip buffer allocation, Computing parallelism （并行计算的数据最优切法tiling parameters）</li>
+<li>High-level graph abstraction（考虑parameter之间的dependence）</li>
+<li>Schedule of tasks in graph on multiple FPGAs（降低时延）</li>
+<li>Latency = pipeline start time + processing time（输出细节FPGA设计+时延）</li>
+</ol>
+<h3 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h3><p>与普通NAS对比，搜索时间大大减少而准确率可以保持不变</p>
+<p>FNAS can significantly push forward the Pareto frontiers between accuracy and efficiency tradeoff</p>
+<img src="https://img.cfssr.xyz/imgs/2020/06/7a14adb089d33096.png" style="zoom: 50%;" />
+
+<h3 id="Limiting-Size"><a href="#Limiting-Size" class="headerlink" title="Limiting Size?"></a>Limiting Size?</h3><p>限定神经网络的参数规模无法有效找出效率最优的硬件架构</p>
+<img src="https://img.cfssr.xyz/imgs/2020/06/afd3edd99d3fa8b0.png" style="zoom:50%;" />
+
+<h1 id="Future-Work"><a href="#Future-Work" class="headerlink" title="Future Work"></a>Future Work</h1><ul>
+<li>Quantization Co-Exploration</li>
+<li>Heterogeneous ASIC Co-Exploration</li>
+<li>Network-on-Chip Co-Exploration</li>
+<li>Computing-in-Memory Co-Exploration</li>
+<li>Secure Inference</li>
+</ul>
+
+
       
 
     </section>

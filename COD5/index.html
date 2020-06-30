@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>COD5 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>COD5</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+ZJU Computer Organization & Design By 刘鹏 5(lec08)
+
+<a id="more"></a>
+
+<h1 id="第二章测验题复习"><a href="#第二章测验题复习" class="headerlink" title="第二章测验题复习"></a>第二章测验题复习</h1><p><img src="https://img.cfssr.xyz/imgs/2020/06/d94f9f56bcfeefef.png" alt=""></p>
+<p>0x0000 0000 AAAA AAAA (srli x7, x5, 3)</p>
+<p>0x____AAAA = <strong>__1010 1010 1010 1<strong>010</strong> -&gt; __</strong> 0101 0101 0101 (andi x7, x7, 0xFEF)</p>
+<p>0101 0100 0101 = 0x545</p>
+<p>逻辑移位 srl sll 补0</p>
+<p>算术移位 sra sla 补最高位数字</p>
+<p>被移位数是16进制数时(0x__)</p>
+<ul>
+<li>把移位的n除以4直接对16进制数移位</li>
+<li>或把16进制数的低位写成2进制来移</li>
+</ul>
+<h1 id="Lec08-RISC-V-Instruction-Representation-R-Format"><a href="#Lec08-RISC-V-Instruction-Representation-R-Format" class="headerlink" title="Lec08:RISC-V Instruction Representation R-Format"></a>Lec08:RISC-V Instruction Representation R-Format</h1><p>指令的RISC-V机器码表示。</p>
+<h2 id="Von-Neumann结构的计算机"><a href="#Von-Neumann结构的计算机" class="headerlink" title="Von Neumann结构的计算机"></a>Von Neumann结构的计算机</h2><ul>
+<li>将程序指令以比特形式存储，可读可写</li>
+</ul>
+<p>当指令和数据都存储在内存中后，需要记录其内存地址</p>
+<p>C的指针就是内存地址，但可能导致错误；Java中对地址使用有限制</p>
+<p>记录当前指令执行的寄存器：</p>
+<ul>
+<li>Program Counter (PC) 或 Instruction Pointer (IP)</li>
+</ul>
+<p>数据大多以字存储（32-bit），每一寄存器的长度也是32-bit，lw sw两指令每次操作一个字的数据长度。</p>
+<p>因此我们将指令也表示为固定的32-bit长度的字（RV32 RV64 RV128）</p>
+<p>将指令分为6种，每种指令对32-bit长度有不同的分割，代表不同信息：</p>
+<ul>
+<li>R-format<ul>
+<li>for register-register arithmetic operations</li>
+</ul>
+</li>
+<li>I-format<ul>
+<li>for register-immediate arithmetic operations and loads </li>
+</ul>
+</li>
+<li>S-format<ul>
+<li>for stores</li>
+</ul>
+</li>
+<li>B-format<ul>
+<li>for branches (minor variant of S-format, called SB before)</li>
+</ul>
+</li>
+<li>U-format<ul>
+<li>for 20-bit upper immediate instructions</li>
+</ul>
+</li>
+<li>J-format<ul>
+<li>for jumps (minor variant of U-format, called UJ before)</li>
+</ul>
+</li>
+</ul>
+<h2 id="R型指令"><a href="#R型指令" class="headerlink" title="R型指令"></a>R型指令</h2><img src="https://img.cfssr.xyz/imgs/2020/06/834b2c2880c19e1e.png" style="zoom:50%;" />
+
+<p>R型指令将一个字分为6部分</p>
+<ul>
+<li>opcode<ul>
+<li>partially specifies what instruction it is</li>
+<li><strong>0110011 for all R-Format register-register arithmetic instructions</strong></li>
+</ul>
+</li>
+<li>funct7+funct3<ul>
+<li>combined with opcode, these two fields describe what operation to perform</li>
+</ul>
+</li>
+<li>rs1 (Source Register #1): specifies register containing first operand</li>
+<li>rs2 (Source Register #2): specifies second register operand</li>
+<li>rd (Destination Register): specifies register which will receive result of computation</li>
+</ul>
+<p>Each register field holds a 5-bit unsigned integer (0-31) corresponding to a register number (x0-x31)</p>
+<img src="https://img.cfssr.xyz/imgs/2020/06/a76d36971eab4da9.png" style="zoom:50%;" />
+
+<img src="https://img.cfssr.xyz/imgs/2020/06/4c43542b1314b542.png" style="zoom:50%;" />
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-06-30T12:31:40.000Z" itemprop="datePublished">
+              2020-06-30
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Computer-Organization-Design/">Computer Organization &amp; Design</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

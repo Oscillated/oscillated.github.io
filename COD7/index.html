@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>COD7 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>COD7</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<p>ZJU Computer Organization &amp; Design By 刘鹏 7(lec10)</p>
+<a id="more"></a>
+
+<h1 id="B-Format"><a href="#B-Format" class="headerlink" title="B Format"></a>B Format</h1><p>分支结构要求读入两个寄存器（但不对其进行写操作）和一个地址</p>
+<p>Instructions stored in a localized area of memory (Code/Text)</p>
+<ul>
+<li>Largest branch distance limited by size of code</li>
+<li>Address of current instruction stored in the program counter (PC)</li>
+</ul>
+<p>使用PC指针的相对寻址方式：Use the immediate field as a two’s-complement offset to PC</p>
+<ul>
+<li>Branches generally change the PC by a small amount</li>
+<li>Can specify $± 2^{11}$ ‘unit’ addresses from the PC</li>
+</ul>
+<p>指令的执行都是从32位长度指令（4 字节）的头开始，所以偏移量的单位地址不选取1字节，这样会有浪费</p>
+<p>做法：</p>
+<ul>
+<li>multiply the offset by four bytes before adding to PC</li>
+<li>This would allow one branch instruction to reach $± 2^{11}$ × 32-bit instructions either side of PC</li>
+</ul>
+<p>好处：</p>
+<ul>
+<li>Four times greater reach than using byte offset</li>
+</ul>
+<p>RISC-V 以字（16 bits）为单位</p>
+<ul>
+<li>Extensions to RISC-V base ISA support 16-bit compressed instructions and also variable-length instructions that are multiples of 16-bits in length</li>
+<li>To enable this, RISC-V scales the branch offset by 2 bytes even when there are no 16-bit instructions</li>
+<li>RISC-V conditional branches can only reach $± 2^{10}$ × 32-bit instructions on either side of PC</li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><img src="https://img.cfssr.xyz/imgs/2020/07/afa94fd211646d4a.png" style="zoom:50%;" />
+
+<ul>
+<li>与S型相似，2个寄存器源和1个12位立即数</li>
+<li>但立即数表示的是-4096到4094的范围（以2字节为步长）</li>
+<li>由于是以2字节为递增步长的，12位立即数实际可表示13位有符号字节偏移，最低一位永远为0，不需要存储</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-07-01T01:10:46.000Z" itemprop="datePublished">
+              2020-07-01
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Computer-Organization-Design/">Computer Organization &amp; Design</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

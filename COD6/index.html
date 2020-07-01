@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>COD6 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>COD6</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>ZJU Computer Organization &amp; Design By 刘鹏 6(lec09)</p>
+<a id="more"></a>
+
+<h1 id="I-Format"><a href="#I-Format" class="headerlink" title="I-Format"></a>I-Format</h1><p>是处理立即数的指令</p>
+<p>在R型指令的形式上做出一些调整</p>
+<img src="https://img.cfssr.xyz/imgs/2020/07/95986b9e5b49aa48.png" style="zoom:50%;" />
+
+<p>缩短funct段，func7与rs2合并成12位field用于表示12位的一个立即数</p>
+<p><strong>opcode = 0010011 for all I-Format Immediate instructions</strong></p>
+<img src="https://img.cfssr.xyz/imgs/2020/07/12086a1e1e833df3.png" style="zoom:50%;" />
+
+<h2 id="移位"><a href="#移位" class="headerlink" title="移位"></a>移位</h2><p>I型指令还可用于移位指令，imm的12位field的末5位表示移位位数（0-31位），funct3和imm高七位合起来表示移位运算类型（funct3区分左移右移，imm第二位区分逻辑移位和算术移位）</p>
+<h2 id="Load"><a href="#Load" class="headerlink" title="Load"></a>Load</h2><p>载入指令也是一种I型指令</p>
+<img src="https://img.cfssr.xyz/imgs/2020/07/6e1caa99042ad164.png" style="zoom:50%;" />
+
+<p>imm代表偏移（4的倍数），rs1代表基址，载入的值存于rd，funct3规定载入值的长度（lb lh lw lbu lhu）。</p>
+<p><strong>opcode = 0000011 for all I-Format Load instructions</strong></p>
+<p>设x2为数组A，则以下代表<code>x14=A[2]</code>(8/4=2)</p>
+<img src="https://img.cfssr.xyz/imgs/2020/07/1213e80e8138915c.png" style="zoom:50%;" />
+
+<img src="https://img.cfssr.xyz/imgs/2020/07/9967a85a26aa4e30.png" style="zoom:50%;" />
+
+<h1 id="S-Format"><a href="#S-Format" class="headerlink" title="S-Format"></a>S-Format</h1><img src="https://img.cfssr.xyz/imgs/2020/07/0e39e84de3e9b253.png" style="zoom:50%;" />
+
+<p>S型指令用于存储</p>
+<p>高7位imm和低7-11的5位inm合成，代表12位偏移值，rs1代表基地址，rs2表示要被存储数据的寄存器编号，funct3规定载入值的长度（sb sh sw）。</p>
+<p>S型指令不会向寄存器写入值（没有rd）</p>
+<p><strong>opcode = 0100011 for all S-Format instructions</strong></p>
+<p>设x2为数组A，则以下代表<code>A[2]=x14</code>(8/4=2)</p>
+<p><img src="https://img.cfssr.xyz/imgs/2020/07/e4bedc5939b44b31.png" style="zoom:50%;" /><img src="https://img.cfssr.xyz/imgs/2020/07/c909f3491314cb93.png" alt=""></p>
+<p><img src="https://img.cfssr.xyz/imgs/2020/07/c909f3491314cb93.png" style="zoom:50%;" /><img src="https://img.cfssr.xyz/imgs/2020/07/334481ae986237f4.png" alt=""></p>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p><img src="https://img.cfssr.xyz/imgs/2020/07/334481ae986237f4.png" alt=""></p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-07-01T01:10:38.000Z" itemprop="datePublished">
+              2020-07-01
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Computer-Organization-Design/">Computer Organization &amp; Design</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

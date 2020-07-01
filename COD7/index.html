@@ -132,9 +132,39 @@
 
 <ul>
 <li>与S型相似，2个寄存器源和1个12位立即数</li>
+<li>funct3表示判断分支的条件</li>
+<li><strong>opcode = 1100011 for all B-Format Immediate instructions</strong></li>
 <li>但立即数表示的是-4096到4094的范围（以2字节为步长）</li>
 <li>由于是以2字节为递增步长的，12位立即数实际可表示13位有符号字节偏移，最低一位永远为0，不需要存储</li>
 </ul>
+<img src="https://oscillated.github.io/COD7/B2.png" style="zoom:50%;" />
+
+<img src="https://oscillated.github.io/COD7/B3.png" style="zoom:50%;" />
+
+<img src="https://oscillated.github.io/COD7/B4.png" style="zoom:50%;" />
+
+<p>立即数的扩展</p>
+<img src="https://oscillated.github.io/COD7/B5.png" style="zoom:50%;" />
+
+<h1 id="U-Format"><a href="#U-Format" class="headerlink" title="U Format"></a>U Format</h1><p>Upper Immediate Instructions</p>
+<img src="https://oscillated.github.io/COD7/B6.png" style="zoom:50%;" />
+
+<p>LUI 装载高位立即数（高20位，把低12位清零）</p>
+<img src="https://oscillated.github.io/COD7/B7.png" style="zoom:50%;" />
+
+<ul>
+<li>常与ADDI一起使用来设置一个寄存器的高低位数字</li>
+<li>同时ADDI加上的数字总是带符号的，在符号位受低位ADDI影响时，需要考虑进位问题进行调整</li>
+</ul>
+<img src="https://oscillated.github.io/COD7/B8.png" style="zoom:50%;" />
+
+<img src="https://oscillated.github.io/COD7/B9.png" style="zoom:50%;" />
+
+<p>AUIPC 做高位立即数加法到PC指针，结果在目的寄存器中</p>
+<ul>
+<li>用于PC指针相对寻址</li>
+</ul>
+<p><code>AUIPC x10, 0 # Puts address of label in x10</code></p>
 
 
       

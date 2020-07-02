@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>COD7 | Oscillate.</title>
+  <title>COD8 | Oscillate.</title>
   
   
   
@@ -81,7 +81,7 @@
             <div>
   <article class='ContentView'>
     <header class='PageTitle'>
-        <h1>COD7</h1>
+        <h1>COD8</h1>
     </header>
 
     <section>
@@ -96,78 +96,54 @@
         });
     </script>
 <meta name="generator" content="Hexo 4.2.0"></head>
-ZJU Computer Organization & Design By 刘鹏 7(lec10)
 
+<p>ZJU Computer Organization &amp; Design By 刘鹏 8(lec11)</p>
 <a id="more"></a>
 
-<h1 id="B-Format"><a href="#B-Format" class="headerlink" title="B Format"></a>B Format</h1><p>分支结构要求读入两个寄存器（但不对其进行写操作）和一个地址</p>
-<p>Instructions stored in a localized area of memory (Code/Text)</p>
-<ul>
-<li>Largest branch distance limited by size of code</li>
-<li>Address of current instruction stored in the program counter (PC)</li>
-</ul>
-<p>使用PC指针的相对寻址方式：Use the immediate field as a two’s-complement offset to PC</p>
-<ul>
-<li>Branches generally change the PC by a small amount</li>
-<li>Can specify $± 2^{11}$ ‘unit’ addresses from the PC</li>
-</ul>
-<p>指令的执行都是从32位长度指令（4 字节）的头开始，所以偏移量的单位地址不选取1字节，这样会有浪费</p>
-<p>做法：</p>
-<ul>
-<li>multiply the offset by four bytes before adding to PC</li>
-<li>This would allow one branch instruction to reach $± 2^{11}$ × 32-bit instructions either side of PC</li>
-</ul>
-<p>好处：</p>
-<ul>
-<li>Four times greater reach than using byte offset</li>
-</ul>
-<p>RISC-V 以字（16 bits）为单位</p>
-<ul>
-<li>Extensions to RISC-V base ISA support 16-bit compressed instructions and also variable-length instructions that are multiples of 16-bits in length</li>
-<li>To enable this, RISC-V scales the branch offset by 2 bytes even when there are no 16-bit instructions</li>
-<li>RISC-V conditional branches can only reach $± 2^{10}$ × 32-bit instructions on either side of PC</li>
-</ul>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><img src="https://img.cfssr.xyz/imgs/2020/07/afa94fd211646d4a.png" style="zoom:50%;" />
+<h1 id="J-Format"><a href="#J-Format" class="headerlink" title="J Format"></a>J Format</h1><img src="https://oscillated.github.io/COD8/J1.png" style="zoom: 80%;" />
 
+<p>J型指令在RISC-V中代表的是jal指令</p>
 <ul>
-<li>与S型相似，2个寄存器源和1个12位立即数</li>
-<li>funct3表示判断分支的条件</li>
-<li><strong>opcode = 1100011 for all B-Format Immediate instructions</strong></li>
-<li>但立即数表示的是-4096到4094的范围（以2字节为步长）</li>
-<li>由于是以2字节为递增步长的，12位立即数实际可表示13位有符号字节偏移，最低一位永远为0，不需要存储</li>
+<li><p>将当前PC+4的值存入返回地址</p>
+<ul>
+<li>普通的j指令将x0存入返回地址（忽略返回地址）</li>
 </ul>
-<img src="https://oscillated.github.io/COD7/B2.png" style="zoom:50%;" />
-
-<img src="https://oscillated.github.io/COD7/B3.png" style="zoom:50%;" />
-
-<img src="https://oscillated.github.io/COD7/B4.png" style="zoom:50%;" />
-
-<p>立即数的扩展</p>
-<img src="https://oscillated.github.io/COD7/B5.png" style="zoom:50%;" />
-
-<h1 id="U-Format"><a href="#U-Format" class="headerlink" title="U Format"></a>U Format</h1><p>Upper Immediate Instructions</p>
-<img src="https://oscillated.github.io/COD7/B6.png" style="zoom: 33%;" />
-
-<p>LUI 装载高位立即数（高20位，把低12位清零）</p>
-<img src="https://oscillated.github.io/COD7/B7.png" style="zoom: 80%;" />
+</li>
+<li><p>然后将当前PC值加上19位的偏移值（相对跳转）</p>
+<ul>
+<li>范围 $±2^{18}$ 32-bit instructions</li>
+</ul>
+</li>
+</ul>
+<h2 id="jal的用法"><a href="#jal的用法" class="headerlink" title="jal的用法"></a>jal的用法</h2><ul>
+<li><code>j Label = jal x0, Label</code><ul>
+<li>舍去了返回地址（固定为0）</li>
+</ul>
+</li>
+<li>jal ra, FuncName<ul>
+<li>调用相对距离$2^{18}$范围内的某个函数</li>
+<li>返回地址存到ra</li>
+</ul>
+</li>
+</ul>
+<h2 id="jalr的用法"><a href="#jalr的用法" class="headerlink" title="jalr的用法"></a>jalr的用法</h2><p>属于I型指令</p>
+<img src="https://oscillated.github.io/COD8/J2.png" style="zoom: 80%;" />
 
 <ul>
-<li>常与ADDI一起使用来设置一个寄存器的高低位数字</li>
-<li>同时ADDI加上的数字总是带符号的（会被符号扩展到32位），当12位立即数最高比特位为1时，得到的是高20位减1再和低12位拼接</li>
-<li>在符号位受低位ADDI影响时，需要考虑进位问题进行调整</li>
+<li><code>ret=jr ra=jalr x0, ra, 0</code><ul>
+<li>ret jr都是jalr的伪代码写法</li>
 </ul>
-<img src="https://oscillated.github.io/COD7/B8.png" style="zoom: 67%;" />
-
-<p>可以把LUI装载的立即数预先加1</p>
-<img src="https://oscillated.github.io/COD7/B9.png" style="zoom: 67%;" />
-
-<p>使用LI指令，为LUI和ADDI的组合</p>
-<p>AUIPC 做高位立即数加法到PC指针，结果在目的寄存器中</p>
-<ul>
-<li>用于PC指针相对寻址</li>
+</li>
+<li><code>lui x1, &lt;high_20_bits&gt; // jalr ra, x1, &lt;low_12_bits&gt;</code><ul>
+<li>调用32位绝对距离范围内的某个函数</li>
 </ul>
-<p><code>AUIPC x10, 0 # Puts address of label in x10</code></p>
-
+</li>
+<li><code>auipc x1, &lt;high_20_bits&gt; // jalr x0, x1, &lt;low_12_bits&gt;</code><ul>
+<li>跳转到32位相对偏移的某个位置</li>
+</ul>
+</li>
+</ul>
+<h1 id="六种指令总结"><a href="#六种指令总结" class="headerlink" title="六种指令总结"></a>六种指令总结</h1><img src="https://oscillated.github.io/COD8/SUM.png" style="zoom: 80%;" />
 
       
 
@@ -176,8 +152,8 @@ ZJU Computer Organization & Design By 刘鹏 7(lec10)
       <section class='ArticleMeta'>
           <div>
             发布于&nbsp;
-            <time datetime="2020-07-01T01:10:46.000Z" itemprop="datePublished">
-              2020-07-01
+            <time datetime="2020-07-02T02:44:45.000Z" itemprop="datePublished">
+              2020-07-02
             </time>
           </div>
           

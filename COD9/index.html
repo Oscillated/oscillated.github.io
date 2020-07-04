@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>COD9 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>COD9</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<p>ZJU Computer Organization &amp; Design By 刘鹏 9(lec12)</p>
+<a id="more"></a>
+
+<h1 id="RISC-V-Datapath-Elements"><a href="#RISC-V-Datapath-Elements" class="headerlink" title="RISC-V Datapath Elements"></a>RISC-V Datapath Elements</h1><img src="https://oscillated.github.io/COD9/arch1.png" style="zoom: 33%;" />
+
+<ul>
+<li>CPU<ul>
+<li>data manipulation and decision-making</li>
+</ul>
+</li>
+<li>Datapath<ul>
+<li>part of processor</li>
+<li>contains hardware necessary to perform operations required by the processor</li>
+</ul>
+</li>
+<li>Control<ul>
+<li>part of processor</li>
+<li>tells the datapath what needs to be done (the brain)</li>
+</ul>
+</li>
+</ul>
+<h2 id="每一时钟周期执行一条指令"><a href="#每一时钟周期执行一条指令" class="headerlink" title="每一时钟周期执行一条指令"></a>每一时钟周期执行一条指令</h2><p>时钟+pc指针+指令内存+寄存器数据+数据内存的工作过程</p>
+<p>单一块处理一条指令（完成所有运算）过于笨重低效。</p>
+<p>考虑把一条指令分成多个阶段，各阶段前后串连构成完整的数据通路。</p>
+<ul>
+<li>每个阶段的电路规模更小，更便于设计实现。</li>
+<li>每个阶段更容易各自进行优化。</li>
+</ul>
+<h2 id="数据通路的五个阶段"><a href="#数据通路的五个阶段" class="headerlink" title="数据通路的五个阶段"></a>数据通路的五个阶段</h2><ol>
+<li>Instruction Fetch (IF) 取址</li>
+<li>Instruction Decode (ID) 译码</li>
+<li>Execute (EX) - ALU (Arithmetic-Logic Unit) 执行运算</li>
+<li>Memory Access (MEM) 访存</li>
+<li>Write Back to Register (WB) 写回寄存器</li>
+</ol>
+<img src="https://oscillated.github.io/COD9/instruction_execution.png" style="zoom: 33%;" />
+
+<h2 id="数据通路的组件"><a href="#数据通路的组件" class="headerlink" title="数据通路的组件"></a>数据通路的组件</h2><h3 id="组合元素"><a href="#组合元素" class="headerlink" title="组合元素"></a>组合元素</h3><img src="https://oscillated.github.io/COD9/comb.png" style="zoom: 33%;" />
+
+<h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h3><img src="https://oscillated.github.io/COD9/reg.png" style="zoom: 33%;" />
+
+<p>写使能为1时，锁存输入值，输出值会在上升沿变为锁存值；写使能为0时，锁存值和输出值保持不变。</p>
+<img src="https://oscillated.github.io/COD9/rf.png" style="zoom: 33%;" />
+
+<p>寄存器文件具有2个32位输出总线busA和busB，1个32位输入总线busW</p>
+<p>选择信号RA,RB分别选择32个寄存器中的1个输出到busA或busB上</p>
+<p>写使能为1时，将busW上的数据写入32个寄存器中</p>
+<p>时钟输入仅在写操作时发挥作用，在读操作时类似一个组合逻辑电路，接收到有效的RA或RB读信号时，经过一定的访问响应时间得到有效的busA和busB数据</p>
+<h3 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h3><img src="https://oscillated.github.io/COD9/memory.png" style="zoom: 33%;" />
+
+<p>1个输入总线DataIn、1个输出总线DataOut、写使能端、地址端、时钟信号端</p>
+<p>读存储器时，由地址端输入的地址，选择对应的地址值数据，输出到DataOut</p>
+<p>写存储器时，首先将写使能信号置“1”表示有效，再将DataIn的值写入到地址端所指的地址上</p>
+<p>时钟信号仅在写操作时发挥作用，在读操作时类似一个组合逻辑电路，接收到有效的RA或RB读信号时，经过一定的访问响应时间得到有效的DataOut数据。</p>
+<h2 id="State-Required-by-RISC-V-32-ISA"><a href="#State-Required-by-RISC-V-32-ISA" class="headerlink" title="State Required by RISC-V 32 ISA"></a>State Required by RISC-V 32 ISA</h2><h3 id="寄存器（x0-x31"><a href="#寄存器（x0-x31" class="headerlink" title="寄存器（x0-x31)"></a>寄存器（x0-x31)</h3><ul>
+<li>由32个32位寄存器构成的寄存器文件，包含对编号0-31的寄存器的索引</li>
+<li>由指令中的rs1字段和rs2字段指定读取的两个源寄存器</li>
+<li>由rd字段指定写入的目的寄存器</li>
+<li>x0寄存器恒为0值，可以忽略其写入操作</li>
+</ul>
+<h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3><p>PC寄存器，保存着当前执行指令的地址</p>
+<h3 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a>存储器</h3><ul>
+<li>将指令和数据保存在一个32位的字节寻址的存储空间中</li>
+<li>使用分立的两块存储器分别作为指令存储器Imem和数据存储器Dmem</li>
+<li>从指令存储器中读取指令（假设其是只读的）</li>
+<li>在数据存储器中读取或存入数据</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-07-04T13:27:44.000Z" itemprop="datePublished">
+              2020-07-04
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Computer-Organization-Design/">Computer Organization &amp; Design</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

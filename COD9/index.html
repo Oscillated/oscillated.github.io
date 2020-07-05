@@ -96,9 +96,8 @@
         });
     </script>
 <meta name="generator" content="Hexo 4.2.0"></head>
+ZJU Computer Organization & Design By 刘鹏 9(lec12)
 
-
-<p>ZJU Computer Organization &amp; Design By 刘鹏 9(lec12)</p>
 <a id="more"></a>
 
 <h1 id="RISC-V-Datapath-Elements"><a href="#RISC-V-Datapath-Elements" class="headerlink" title="RISC-V Datapath Elements"></a>RISC-V Datapath Elements</h1><img src="https://oscillated.github.io/COD9/arch1.png" style="zoom: 33%;" />
@@ -133,20 +132,20 @@
 <li>Memory Access (MEM) 访存</li>
 <li>Write Back to Register (WB) 写回寄存器</li>
 </ol>
-<img src="https://oscillated.github.io/COD9/instruction_execution.png" style="zoom: 33%;" />
+<img src="https://oscillated.github.io/COD9/instruction_execution.png" style="zoom: 50%;" />
 
 <h2 id="数据通路的组件"><a href="#数据通路的组件" class="headerlink" title="数据通路的组件"></a>数据通路的组件</h2><h3 id="组合元素"><a href="#组合元素" class="headerlink" title="组合元素"></a>组合元素</h3><img src="https://oscillated.github.io/COD9/comb.png" style="zoom: 33%;" />
 
-<h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h3><img src="https://oscillated.github.io/COD9/reg.png" style="zoom: 33%;" />
+<h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h3><img src="https://oscillated.github.io/COD9/reg.png" style="zoom: 50%;" />
 
 <p>写使能为1时，锁存输入值，输出值会在上升沿变为锁存值；写使能为0时，锁存值和输出值保持不变。</p>
-<img src="https://oscillated.github.io/COD9/rf.png" style="zoom: 33%;" />
+<img src="https://oscillated.github.io/COD9/rf.png" style="zoom: 50%;" />
 
 <p>寄存器文件具有2个32位输出总线busA和busB，1个32位输入总线busW</p>
 <p>选择信号RA,RB分别选择32个寄存器中的1个输出到busA或busB上</p>
 <p>写使能为1时，将busW上的数据写入32个寄存器中</p>
 <p>时钟输入仅在写操作时发挥作用，在读操作时类似一个组合逻辑电路，接收到有效的RA或RB读信号时，经过一定的访问响应时间得到有效的busA和busB数据</p>
-<h3 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h3><img src="https://oscillated.github.io/COD9/memory.png" style="zoom: 33%;" />
+<h3 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h3><img src="https://oscillated.github.io/COD9/memory.png" style="zoom: 50%;" />
 
 <p>1个输入总线DataIn、1个输出总线DataOut、写使能端、地址端、时钟信号端</p>
 <p>读存储器时，由地址端输入的地址，选择对应的地址值数据，输出到DataOut</p>

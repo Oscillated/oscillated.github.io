@@ -90,6 +90,111 @@
     <header class="title">
       
         <h1>
+          <a href="/COD11/">COD11</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-07-06T13:23:04.000Z" itemprop="datePublished">
+    2020-07-06
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/Computer-Organization-Design/">Computer Organization &amp; Design</a> }
+  </li>
+
+
+  </ul>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/Open-Courses/">Open Courses</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<p>ZJU Computer Organization &amp; Design By 刘鹏 11(lec14)</p>
+<h1 id="I-Format-load-Datapath"><a href="#I-Format-load-Datapath" class="headerlink" title="I Format(load) Datapath"></a>I Format(load) Datapath</h1><h2 id="以lw为例"><a href="#以lw为例" class="headerlink" title="以lw为例"></a>以lw为例</h2><img src="https://oscillated.github.io/COD11/I1.png" style="zoom: 25%;" />
+
+<p> 将寄存器x2再偏移8个字节的数据存入到寄存器x14</p>
+<p>I型指令高位的12位有符号立即数加到rs1处（代表基址寄存器的地址值），构成存入数据地址，这一步与addi类似，但做加法的结果是一个地址值，从这个地址取出数据载入到rd处（代表目的寄存器的地址值）</p>
+<img src="https://oscillated.github.io/COD11/I2.png" style="zoom: 25%;" />
+
+<p>在addi的基础上，做ALU得到的地址需要载入数据存储器获得地址对应的值</p>
+<ol>
+<li>在时钟上升沿从PC寄存器读出指令地址</li>
+<li>在指令寄存器中根据指令地址获得对应指令</li>
+<li>根据指令操作码判断是lr指令，控制器生成存储器使能写入和选择器选择信号</li>
+<li>PC值自增4</li>
+<li>指令中的两个源寄存器地址AddrA和AddrB、一个目的寄存器地址AddrD输入寄存器文件</li>
+<li>寄存器文件根据AddrA源寄存器地址取出其存储的值DataA，将高位立即数通过立即数生成器进行符号扩充，再经一个选择器输入ALU</li>
+<li>ALU加法运算得到结果，作为数据存储器的输入，在控制器输出数据存储器读写使能的读使能信号时，获得数据地址对应的值</li>
+<li>控制器反馈给寄存器文件写使能信号时（下一时钟上升沿），将值DataD写入输入的AddrD地址对应的寄存器中</li>
+</ol>
+<img src="https://oscillated.github.io/COD11/I3.png" style="zoom: 25%;" />
+
+<p>对不同load指令，需要增加额外的逻辑电路来提取一个字节/半字长度的数据值，以及区分符号扩充和零扩充。以上用一个选择器指定不同指令类型即可。</p>
+<h1 id="S-Format"><a href="#S-Format" class="headerlink" title="S Format"></a>S Format</h1><p>S型指令含基地址（编号为rs1的寄存器），12位立即数偏移量地址，目标数据（存储在编号值为rs2的寄存器）</p>
+<img src="https://oscillated.github.io/COD11/S1.png" style="zoom: 25%;" />
+
+<img src="https://oscillated.github.io/COD11/S2.png" style="zoom: 25%;" />
+
+<p>与load指令相比，立即数扩充选择信号、寄存器文件写使能、数据存储器读写使能、最后的选择器写入使能信号都有不同</p>
+<p>最后的选择器写入使能信号无影响，建议实际中固定一个值，防止X状态。</p>
+<p>立即数扩充选择信号分I和S是因为I,S指令的立即数字段在指令编码不同位置</p>
+<img src="https://oscillated.github.io/COD11/S3.png" style="zoom: 25%;" />
+
+<p>扩充后的立即数：</p>
+<ul>
+<li>11-31位直接符号/零扩充(u)</li>
+<li>5-10位取原25-31位</li>
+<li>0-4位取原20-24位（I）或7-11位（S）</li>
+</ul>
+<h1 id="B-Format"><a href="#B-Format" class="headerlink" title="B Format"></a>B Format</h1><img src="https://oscillated.github.io/COD11/B1.png" style="zoom: 25%;" />
+
+<p>B型指令和S型指令非常类似，但是B型指令的立即数代表-4096至4094的以2字节为步长的地址值，实际上表示最低位为0的13位有符号字节偏移</p>
+<p>要实现六个分支指令：beq，bne，blt，bge，bltu，bgeu</p>
+<p>与之前指令的不同之处：</p>
+<ul>
+<li>遇到分支指令时，PC指针增量不是4，而是立即数偏移</li>
+<li>需要计算PC+立即数偏移、比较rs1和rs2，这包括两次运算，而目前只有一个ALU，需要更多硬件。</li>
+</ul>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/COD10/">COD10</a>
         </h1>
       
@@ -137,7 +242,7 @@
 <meta name="generator" content="Hexo 4.2.0"></head>
 
 <p>ZJU Computer Organization &amp; Design By 刘鹏 10(lec13)</p>
-<h1 id="R-Format"><a href="#R-Format" class="headerlink" title="R Format"></a>R Format</h1><h2 id="add指令为例"><a href="#add指令为例" class="headerlink" title="add指令为例"></a>add指令为例</h2><img src="https://oscillated.github.io/COD10/add.png" style="zoom: 33%;" />
+<h1 id="R-Format"><a href="#R-Format" class="headerlink" title="R Format"></a>R Format</h1><h2 id="add指令为例"><a href="#add指令为例" class="headerlink" title="add指令为例"></a>add指令为例</h2><img src="https://oscillated.github.io/COD10/add.png" style="zoom: 25%;" />
 
 <p>需要做的状态改变（伪代码）</p>
 <ul>
@@ -145,7 +250,7 @@
 <li>PC = PC + 4</li>
 </ul>
 <p>add指令的数据通路</p>
-<img src="https://oscillated.github.io/COD10/adddatapath.png" style="zoom: 33%;" />
+<img src="https://oscillated.github.io/COD10/adddatapath.png" style="zoom: 50%;" />
 
 <ol>
 <li>在时钟上升沿从PC寄存器读出指令地址</li>
@@ -157,17 +262,17 @@
 <li>ALU加法运算得到结果，作为寄存器的写输入端值DataD</li>
 <li>控制器反馈给寄存器文件写使能信号时（下一时钟上升沿），将值DataD写入输入的AddrD地址对应的寄存器中</li>
 </ol>
-<img src="https://oscillated.github.io/COD10/addtime.png" style="zoom: 33%;" />
+<img src="https://oscillated.github.io/COD10/addtime.png" style="zoom: 67%;" />
 
 <h2 id="sub指令"><a href="#sub指令" class="headerlink" title="sub指令"></a>sub指令</h2><p>其他过程均与add相同，只是在ALU时需要做减法</p>
 <p>相比较，指令的第30位不同</p>
 <p>解决方法：控制器新引出一个运算选择信号来决定做加法还是减法</p>
-<img src="https://oscillated.github.io/COD10/addsub.png" style="zoom: 33%;" />
+<img src="https://oscillated.github.io/COD10/addsub.png" style="zoom: 80%;" />
 
 <p>R型的其他指令都可通过功能码字段funct3、funct7段的不同编码输出不同ALU运算选择信号来实现功能</p>
-<img src="https://oscillated.github.io/COD10/R.png" style="zoom: 33%;" />
+<img src="https://oscillated.github.io/COD10/R.png" style="zoom: 50%;" />
 
-<h1 id="I-Format"><a href="#I-Format" class="headerlink" title="I Format"></a>I Format</h1><h2 id="addi指令为例"><a href="#addi指令为例" class="headerlink" title="addi指令为例"></a>addi指令为例</h2><img src="https://oscillated.github.io/COD10/addi.png" style="zoom: 33%;" />
+<h1 id="I-Format-arithmetic"><a href="#I-Format-arithmetic" class="headerlink" title="I Format(arithmetic)"></a>I Format(arithmetic)</h1><h2 id="addi指令为例"><a href="#addi指令为例" class="headerlink" title="addi指令为例"></a>addi指令为例</h2><img src="https://oscillated.github.io/COD10/addi.png" style="zoom: 50%;" />
 
 <p>原有的add指令中，一个源寄存器变成了立即数</p>
 <p>修改：第二个源数据增加一个选择器，控制器输出一个立即数选择信号</p>
@@ -177,9 +282,10 @@
 <img src="https://oscillated.github.io/COD10/addidatapath1.png" style="zoom: 33%;" />
 
 <p>控制器的控制信号：IMMSel、RegWEn、BSel、ALUSel</p>
-<h3 id="立即数映射关系"><a href="#立即数映射关系" class="headerlink" title="立即数映射关系"></a>立即数映射关系</h3><img src="https://oscillated.github.io/COD10/imm.png" style="zoom: 33%;" />
+<h3 id="立即数映射关系"><a href="#立即数映射关系" class="headerlink" title="立即数映射关系"></a>立即数映射关系</h3><img src="https://oscillated.github.io/COD10/imm.png" style="zoom: 50%;" />
 
 <h2 id="其他I-Format"><a href="#其他I-Format" class="headerlink" title="其他I Format"></a>其他I Format</h2><p>通过改变ALUSel，可以实现其他的I型指令运算功能</p>
+<p>slti,sltiu,andi, ori,xori,slli,srli, srai</p>
 
       
     </div>
@@ -689,71 +795,13 @@ ZJU Computer Organization & Design By 刘鹏 5(lec08)
 
     </li>
   
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/COD1/">COD1</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2020-05-03T15:22:55.000Z" itemprop="datePublished">
-    2020-05-03
-  </time>
-  
-  | 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/tags/Computer-Organization-Design/">Computer Organization &amp; Design</a> }
-  </li>
-
-
-  </ul>
-  
-  
-  / 
-  <ul>
-    
-  <li class="meta-text">
-  { <a href="/categories/Open-Courses/">Open Courses</a> }
-  </li>
-
-
-  </ul>
-  
-</div>
-
-    </header>
-    <div>
-      
-        <head>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-            inlineMath: [['$','$']]
-            }
-        });
-    </script>
-<meta name="generator" content="Hexo 4.2.0"></head>
-
-
-<p>ZJU Computer Organization &amp; Design By 刘鹏 1(lec01 lec02)</p>
-        
-          <div class="more-link">
-            <a href="/COD1/#more">Read More</a>
-          </div>
-        
-      
-    </div>
-</article>
-
-    </li>
-  
 </ul>
+
+  <section id="nav-wrapper">
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/tags/Computer-Organization-Design/page/2/">2</a><a class="extend next" rel="next" href="/tags/Computer-Organization-Design/page/2/">next »</a>
+    </nav>
+  </section>
 
 
 

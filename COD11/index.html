@@ -142,7 +142,7 @@ ZJU Computer Organization & Design By 刘鹏 11(lec14)
 <p>要实现六个分支指令：beq，bne，blt，bge，bltu，bgeu</p>
 <p>与之前指令的不同之处：</p>
 <ul>
-<li>遇到分支指令时，PC指针增量不是4，而是立即数偏移</li>
+<li>遇到分支指令时，PC指针增量可能不是4，而是立即数偏移</li>
 <li>需要计算PC+立即数偏移、比较rs1和rs2，这包括两次运算，而目前只有一个ALU，需要更多硬件。</li>
 </ul>
 

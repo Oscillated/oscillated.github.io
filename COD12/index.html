@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>COD12 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>COD12</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>ZJU Computer Organization &amp; Design By 刘鹏 12(lec15)</p>
+<a id="more"></a>
+
+<h1 id="B-Format"><a href="#B-Format" class="headerlink" title="B Format"></a>B Format</h1><img src="https://oscillated.github.io/COD11/B1.png" style="zoom: 33%;" />
+
+<p>B型指令和S型指令非常类似，但是B型指令的立即数代表-4096至4094的以2字节为步长的地址值，实际上表示最低位为0的13位有符号字节偏移</p>
+<p>要实现六个分支指令：beq，bne，blt，bge，bltu，bgeu</p>
+<p>与之前指令的不同之处：</p>
+<ul>
+<li>遇到分支指令时，PC指针增量可能不是4，而是立即数偏移</li>
+<li>需要计算PC+立即数偏移、比较rs1和rs2，这包括两次运算，而目前只有一个ALU，需要更多硬件。</li>
+</ul>
+<img src="https://oscillated.github.io/COD12/B1.png" style="zoom: 50%;" />
+
+<ol>
+<li>在时钟上升沿从PC寄存器读出指令地址</li>
+<li>在指令寄存器中根据指令地址获得对应指令</li>
+<li>根据指令操作码判断是B型指令，控制器生成存储器使能写入和选择器选择信号</li>
+<li>寄存器文件获得指令中的两个源寄存器地址AddrA和AddrB，将立即数通过立即数生成器进行符号扩充。</li>
+<li>寄存器文件根据AddrA、AddrB源寄存器地址取出其存储的值DataA、DataB，经过分支比较器得到比较结果，将结果信号（如BrEq、BrLT）传回控制器。</li>
+<li>将扩充立即数与当前PC值传入ALU单元进行加法运算传回下一次PC值的选择器一端。</li>
+<li>控制器获得之前的比较信号结果后根据逻辑决定是否使用加上立即数的PC值。</li>
+</ol>
+<h2 id="分支比较器的结构"><a href="#分支比较器的结构" class="headerlink" title="分支比较器的结构"></a>分支比较器的结构</h2><img src="https://oscillated.github.io/COD12/B2.png" style="zoom: 33%;" />
+
+<ul>
+<li>若A=B，比较器输出BrEq=1</li>
+<li>若A&lt;B，比较器输出BrLT=1</li>
+<li>比较器的输入BrUn选择进行有符号比较（0）或无符号比较（1）</li>
+<li>如果需要进行$A \ge B$的判断，只需对$A&lt;B$的逻辑判断值取反</li>
+</ul>
+<h2 id="B型指令立即数的扩充"><a href="#B型指令立即数的扩充" class="headerlink" title="B型指令立即数的扩充"></a>B型指令立即数的扩充</h2><img src="https://oscillated.github.io/COD12/B3.png" style="zoom: 33%;" />
+
+<p>B型指令与S型指令的立即数排布十分接近，因此扩充时区别不大，只需要2个单比特双路选择器</p>
+<h1 id="I-Format-jalr"><a href="#I-Format-jalr" class="headerlink" title="I Format(jalr)"></a>I Format(jalr)</h1><img src="https://oscillated.github.io/COD12/B4.png" style="zoom: 33%;" />
+
+<p>jalr在分支比较后：</p>
+<ul>
+<li>将返回地址PC+4存储在rd</li>
+<li>将rs+immi作为下一PC值</li>
+<li>其他与I型算术和装载指令相同</li>
+</ul>
+<img src="https://oscillated.github.io/COD12/B5.png" style="zoom: 33%;" />
+
+<p>增加了写回选择器的选择端(pc+4)，其选择信号比特数也增加一位</p>
+<h1 id="J-Format"><a href="#J-Format" class="headerlink" title="J Format"></a>J Format</h1><img src="https://oscillated.github.io/COD12/B6.png" style="zoom: 33%;" />
+
+<p>jalr在分支比较后：</p>
+<ul>
+<li>将返回地址PC+4存储在rd</li>
+<li>将pc+immi作为下一PC值</li>
+<li>位置偏移距离不超过$\pm 2^{19}$，以2字节为步长</li>
+</ul>
+<p>J型指令的立即数生成器需要另外编码（逻辑电路结构）</p>
+<img src="https://oscillated.github.io/COD12/B7.png" style="zoom: 33%;" />
+
+<h1 id="U-Format"><a href="#U-Format" class="headerlink" title="U Format"></a>U Format</h1><img src="https://oscillated.github.io/COD12/U1.png" style="zoom: 33%;" />
+
+<p>对lui、auipc都是20位立即数、5位目的寄存器、7位指令码的结果</p>
+<p>U型指令的立即数生成器需要另外编码（逻辑电路结构）</p>
+<p>LUI - 将这个20位立即数写入目的寄存器</p>
+<img src="https://oscillated.github.io/COD12/U2.png" style="zoom: 33%;" />
+
+<p>AUIPC - 将这个20位立即数与PC值的和写入目的寄存器</p>
+<img src="https://oscillated.github.io/COD12/U3.png" style="zoom: 33%;" />
+
+<h1 id="完整的RISC-V32I-数据通路结构"><a href="#完整的RISC-V32I-数据通路结构" class="headerlink" title="完整的RISC-V32I 数据通路结构"></a>完整的RISC-V32I 数据通路结构</h1><img src="https://oscillated.github.io/COD12/COM.png" style="zoom: 33%;" />
+
+<p>能在每一时间周期内执行一条RISC-V指令，每条指令不一定用到数据通路里的所有路线或单元</p>
+<p>取址、译码、执行、访存、写回五个阶段</p>
+<p>控制器：确定如何执行指令</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-07-07T02:27:01.000Z" itemprop="datePublished">
+              2020-07-07
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/Computer-Organization-Design/">Computer Organization &amp; Design</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

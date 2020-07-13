@@ -120,7 +120,7 @@
 <li>将扩充立即数与当前PC值传入ALU单元进行加法运算传回下一次PC值的选择器一端。</li>
 <li>控制器获得之前的比较信号结果后根据逻辑决定是否使用加上立即数的PC值。</li>
 </ol>
-<h2 id="分支比较器的结构"><a href="#分支比较器的结构" class="headerlink" title="分支比较器的结构"></a>分支比较器的结构</h2><img src="https://oscillated.github.io/COD12/B2.png" style="zoom: 33%;" />
+<h2 id="分支比较器的结构"><a href="#分支比较器的结构" class="headerlink" title="分支比较器的结构"></a>分支比较器的结构</h2><img src="https://oscillated.github.io/COD12/B2.png" style="zoom: 15%;" />
 
 <ul>
 <li>若A=B，比较器输出BrEq=1</li>
@@ -139,7 +139,7 @@
 <li>将rs+immi作为下一PC值</li>
 <li>其他与I型算术和装载指令相同</li>
 </ul>
-<img src="https://oscillated.github.io/COD12/B5.png" style="zoom: 33%;" />
+<img src="https://oscillated.github.io/COD12/B5.png" style="zoom: 50%;" />
 
 <p>增加了写回选择器的选择端(pc+4)，其选择信号比特数也增加一位</p>
 <h1 id="J-Format"><a href="#J-Format" class="headerlink" title="J Format"></a>J Format</h1><img src="https://oscillated.github.io/COD12/B6.png" style="zoom: 33%;" />
@@ -151,19 +151,19 @@
 <li>位置偏移距离不超过$\pm 2^{19}$，以2字节为步长</li>
 </ul>
 <p>J型指令的立即数生成器需要另外编码（逻辑电路结构）</p>
-<img src="https://oscillated.github.io/COD12/B7.png" style="zoom: 33%;" />
+<img src="https://oscillated.github.io/COD12/B7.png" style="zoom: 50%;" />
 
 <h1 id="U-Format"><a href="#U-Format" class="headerlink" title="U Format"></a>U Format</h1><img src="https://oscillated.github.io/COD12/U1.png" style="zoom: 33%;" />
 
 <p>对lui、auipc都是20位立即数、5位目的寄存器、7位指令码的结果</p>
 <p>U型指令的立即数生成器需要另外编码（逻辑电路结构）</p>
 <p>LUI - 将这个20位立即数写入目的寄存器</p>
-<img src="https://oscillated.github.io/COD12/U2.png" style="zoom: 33%;" />
+<img src="https://oscillated.github.io/COD12/U2.png" style="zoom: 50%;" />
 
 <p>AUIPC - 将这个20位立即数与PC值的和写入目的寄存器</p>
-<img src="https://oscillated.github.io/COD12/U3.png" style="zoom: 33%;" />
+<img src="https://oscillated.github.io/COD12/U3.png" style="zoom: 50%;" />
 
-<h1 id="完整的RISC-V32I-数据通路结构"><a href="#完整的RISC-V32I-数据通路结构" class="headerlink" title="完整的RISC-V32I 数据通路结构"></a>完整的RISC-V32I 数据通路结构</h1><img src="https://oscillated.github.io/COD12/COM.png" style="zoom: 33%;" />
+<h1 id="完整的RISC-V32I-数据通路结构"><a href="#完整的RISC-V32I-数据通路结构" class="headerlink" title="完整的RISC-V32I 数据通路结构"></a>完整的RISC-V32I 数据通路结构</h1><img src="https://oscillated.github.io/COD12/COM.png" style="zoom: 50%;" />
 
 <p>能在每一时间周期内执行一条RISC-V指令，每条指令不一定用到数据通路里的所有路线或单元</p>
 <p>取址、译码、执行、访存、写回五个阶段</p>

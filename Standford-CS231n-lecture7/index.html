@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Standford-CS231n-Lecture7 | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Standford-CS231n-Lecture7</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>Standford cs231n:Convolutional Neural Networks for Visual Recognition By Fei-Fei Li, Justin Johnson, Serena Yeung lecture7</p>
+<a id="more"></a>
+
+<h1 id="Minimal-Neural-Network-Case-Study"><a href="#Minimal-Neural-Network-Case-Study" class="headerlink" title="Minimal Neural Network Case Study"></a>Minimal Neural Network Case Study</h1><p>Table of Contents:</p>
+<ul>
+<li><a href="https://cs231n.github.io/neural-networks-case-study/#data" target="_blank" rel="noopener">Generating some data</a></li>
+<li>Training a Softmax Linear Classifier<ul>
+<li><a href="https://cs231n.github.io/neural-networks-case-study/#init" target="_blank" rel="noopener">Initialize the parameters</a></li>
+<li><a href="https://cs231n.github.io/neural-networks-case-study/#scores" target="_blank" rel="noopener">Compute the class scores</a></li>
+<li><a href="https://cs231n.github.io/neural-networks-case-study/#loss" target="_blank" rel="noopener">Compute the loss</a></li>
+<li><a href="https://cs231n.github.io/neural-networks-case-study/#grad" target="_blank" rel="noopener">Computing the analytic gradient with backpropagation</a></li>
+<li><a href="https://cs231n.github.io/neural-networks-case-study/#update" target="_blank" rel="noopener">Performing a parameter update</a></li>
+<li><a href="https://cs231n.github.io/neural-networks-case-study/#together" target="_blank" rel="noopener">Putting it all together: Training a Softmax Classifier</a></li>
+</ul>
+</li>
+<li><a href="https://cs231n.github.io/neural-networks-case-study/#net" target="_blank" rel="noopener">Training a Neural Network</a></li>
+<li><a href="https://cs231n.github.io/neural-networks-case-study/#summary" target="_blank" rel="noopener">Summary</a></li>
+</ul>
+<p>In this section we’ll walk through a complete implementation of a toy Neural Network in 2 dimensions. We’ll first implement a simple linear classifier and then extend the code to a 2-layer Neural Network. As we’ll see, this extension is surprisingly simple and very few changes are necessary.</p>
+<h2 id="Generating-some-data"><a href="#Generating-some-data" class="headerlink" title="Generating some data"></a>Generating some data</h2><p>Let’s generate a classification dataset that is not easily linearly separable. Our favorite example is the spiral dataset, which can be generated as follows:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">N = <span class="hljs-number">100</span> <span class="hljs-comment"># number of points per class</span><br>D = <span class="hljs-number">2</span> <span class="hljs-comment"># dimensionality</span><br>K = <span class="hljs-number">3</span> <span class="hljs-comment"># number of classes</span><br>X = np.zeros((N*K,D)) <span class="hljs-comment"># data matrix (each row = single example)</span><br>y = np.zeros(N*K, dtype=<span class="hljs-string">'uint8'</span>) <span class="hljs-comment"># class labels</span><br><span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(K):<br>  ix = range(N*j,N*(j+<span class="hljs-number">1</span>))<br>  r = np.linspace(<span class="hljs-number">0.0</span>,<span class="hljs-number">1</span>,N) <span class="hljs-comment"># radius</span><br>  t = np.linspace(j*<span class="hljs-number">4</span>,(j+<span class="hljs-number">1</span>)*<span class="hljs-number">4</span>,N) + np.random.randn(N)*<span class="hljs-number">0.2</span> <span class="hljs-comment"># theta</span><br>  X[ix] = np.c_[r*np.sin(t), r*np.cos(t)]<br>  y[ix] = j<br><span class="hljs-comment"># lets visualize the data:</span><br>plt.scatter(X[:, <span class="hljs-number">0</span>], X[:, <span class="hljs-number">1</span>], c=y, s=<span class="hljs-number">40</span>, cmap=plt.cm.Spectral)<br>plt.show()<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cs231n.github.io/assets/eg/spiral_raw.png" alt="img"></p>
+<p>The toy spiral data consists of three classes (blue, red, yellow) that are not linearly separable.</p>
+<p>Normally we would want to preprocess the dataset so that each feature has zero mean and unit standard deviation, but in this case the features are already in a nice range from -1 to 1, so we skip this step.</p>
+<h2 id="Training-a-Softmax-Linear-Classifier"><a href="#Training-a-Softmax-Linear-Classifier" class="headerlink" title="Training a Softmax Linear Classifier"></a>Training a Softmax Linear Classifier</h2><h3 id="Initialize-the-parameters"><a href="#Initialize-the-parameters" class="headerlink" title="Initialize the parameters"></a>Initialize the parameters</h3><p>Lets first train a Softmax classifier on this classification dataset. As we saw in the previous sections, the Softmax classifier has a linear score function and uses the cross-entropy loss. The parameters of the linear classifier consist of a weight matrix <code>W</code> and a bias vector <code>b</code> for each class. Lets first initialize these parameters to be random numbers:</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-comment"># initialize parameters randomly</span><br><span class="hljs-attr">W</span> = <span class="hljs-number">0.01</span> * np.random.randn(D,K)<br><span class="hljs-attr">b</span> = np.zeros((<span class="hljs-number">1</span>,K))<br></code></pre></td></tr></table></figure>
+
+<p>Recall that <code>D = 2</code> is the dimensionality and <code>K = 3</code> is the number of classes.</p>
+<h3 id="Compute-the-class-scores"><a href="#Compute-the-class-scores" class="headerlink" title="Compute the class scores"></a>Compute the class scores</h3><p>Since this is a linear classifier, we can compute all class scores very simply in parallel with a single matrix multiplication:</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-comment"># compute class scores for a linear classifier</span><br><span class="hljs-attr">scores</span> = np.dot(X, W) + b<br></code></pre></td></tr></table></figure>
+
+<p>In this example we have 300 2-D points, so after this multiplication the array <code>scores</code> will have size [300 x 3], where each row gives the class scores corresponding to the 3 classes (blue, red, yellow).</p>
+<h3 id="Compute-the-loss"><a href="#Compute-the-loss" class="headerlink" title="Compute the loss"></a>Compute the loss</h3><p>The second key ingredient we need is a loss function, which is a differentiable objective that quantifies our unhappiness with the computed class scores. Intuitively, we want the correct class to have a higher score than the other classes. When this is the case, the loss should be low and otherwise the loss should be high. There are many ways to quantify this intuition, but in this example lets use the cross-entropy loss that is associated with the Softmax classifier. Recall that if $f$ is the array of class scores for a single example (e.g. array of 3 numbers here), then the Softmax classifier computes the loss for that example as:<br>$$<br>L_i = - \log(\frac{e^{f_{y_i}}}{\sum_j e^{f_j}})<br>$$<br>We can see that the Softmax classifier interprets every element of $f$ as holding the (unnormalized) log probabilities of the three classes. We exponentiate these to get (unnormalized) probabilities, and then normalize them to get probabilites. Therefore, the expression inside the log is the normalized probability of the correct class. Note how this expression works: this quantity is always between 0 and 1. When the probability of the correct class is very small (near 0), the loss will go towards (positive) infinity. Conversely, when the correct class probability goes towards 1, the loss will go towards zero because $\log(1) = 0$. Hence, the expression for $L_i$ is low when the correct class probability is high, and it’s very high when it is low.</p>
+<p>Recall also that the full Softmax classifier loss is then defined as the average cross-entropy loss over the training examples and the regularization:<br>$$<br>L = \frac{1}{N}\sum_i L_i + \frac{1}{2}\lambda \sum_k \sum_l W_{k,l}^2<br>$$<br>Given the array of <code>scores</code> we’ve computed above, we can compute the loss. First, the way to obtain the probabilities is straight forward:</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">num_examples</span> = X.shape[<span class="hljs-number">0</span>]<br><span class="hljs-comment"># get unnormalized probabilities</span><br><span class="hljs-attr">exp_scores</span> = np.exp(scores)<br><span class="hljs-comment"># normalize them for each example</span><br><span class="hljs-attr">probs</span> = exp_scores / np.sum(exp_scores, axis=<span class="hljs-number">1</span>, keepdims=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
+
+<p>We now have an array <code>probs</code> of size [300 x 3], where each row now contains the class probabilities. In particular, since we’ve normalized them every row now sums to one. We can now query for the log probabilities assigned to the correct classes in each example:</p>
+<figure class="highlight maxima"><table><tr><td class="code"><pre><code class="hljs maxima">correct_logprobs = -<span class="hljs-built_in">np</span>.<span class="hljs-built_in">log</span>(probs[<span class="hljs-built_in">range</span>(num_examples),y])<br></code></pre></td></tr></table></figure>
+
+<p>The array <code>correct_logprobs</code> is a 1D array of just the probabilities assigned to the correct classes for each example. The full loss is then the average of these log probabilities and the regularization loss:</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-comment"># compute the loss: average cross-entropy loss and regularization</span><br><span class="hljs-attr">data_loss</span> = np.sum(correct_logprobs)/num_examples<br><span class="hljs-attr">reg_loss</span> = <span class="hljs-number">0.5</span>*reg*np.sum(W*W)<br><span class="hljs-attr">loss</span> = data_loss + reg_loss<br></code></pre></td></tr></table></figure>
+
+<p>In this code, the regularization strength $\lambda$ is stored inside the <code>reg</code>. The convenience factor of <code>0.5</code> multiplying the regularization will become clear in a second. Evaluating this in the beginning (with random parameters) might give us <code>loss = 1.1</code>, which is <code>np.log(1.0/3)</code>, since with small initial random weights all probabilities assigned to all classes are about one third. We now want to make the loss as low as possible, with <code>loss = 0</code> as the absolute lower bound. But the lower the loss is, the higher are the probabilities assigned to the correct classes for all examples.</p>
+<h3 id="Computing-the-Analytic-Gradient-with-Backpropagation"><a href="#Computing-the-Analytic-Gradient-with-Backpropagation" class="headerlink" title="Computing the Analytic Gradient with Backpropagation"></a>Computing the Analytic Gradient with Backpropagation</h3><p>We have a way of evaluating the loss, and now we have to minimize it. We’ll do so with gradient descent. That is, we start with random parameters (as shown above), and evaluate the gradient of the loss function with respect to the parameters, so that we know how we should change the parameters to decrease the loss. Let’s introduce the intermediate variable $p$, which is a vector of the (normalized) probabilities. The loss for one example is:<br>$$<br>p_k = \frac{e^{f_k}}{\sum_j e^{f_j}} \quad \quad L_i = -\log(p_{y_i})<br>$$<br>We now wish to understand how the computed scores inside $f$ should change to decrease the loss $L_i$ that this example contributes to the full objective. In other words, we want to derive the gradient $\frac{\partial L_i}{\partial f_k}$. The loss $L_i$ is computed from $p$, which in turn depends on $f$. It’s a fun exercise to the reader to use the chain rule to derive the gradient, but it turns out to be extremely simple and interpretible in the end, after a lot of things cancel out:<br>$$<br>\frac{\partial L_i}{\partial f_k} = p_k - 1(y_i=k)<br>$$<br>Notice how elegant and simple this expression is. Suppose the probabilities we computed were <code>p = [0.2, 0.3, 0.5]</code>, and that the correct class was the middle one (with probability 0.3). According to this derivation the gradient on the scores would be <code>df = [0.2, -0.7, 0.5]</code>. Recalling what the interpretation of the gradient, we see that this result is highly intuitive: increasing the first or last element of the score vector <code>f</code> (the scores of the incorrect classes) leads to an <em>increased</em> loss (due to the positive signs +0.2 and +0.5) - and increasing the loss is bad, as expected. However, increasing the score of the correct class has <em>negative</em> influence on the loss. The gradient of -0.7 is telling us that increasing the correct class score would lead to a decrease of the loss $L_i$, which makes sense.</p>
+<p>All of this boils down to the following code. Recall that <code>probs</code> stores the probabilities of all classes (as rows) for each example. To get the gradient on the scores, which we call <code>dscores</code>, we proceed as follows:</p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><code class="hljs nix"><span class="hljs-attr">dscores</span> = probs<br>dscores[range(num_examples),y] <span class="hljs-attr">-=</span> <span class="hljs-number">1</span><br>dscores /= num_examples<br></code></pre></td></tr></table></figure>
+
+<p>Lastly, we had that <code>scores = np.dot(X, W) + b</code>, so armed with the gradient on <code>scores</code> (stored in <code>dscores</code>), we can now backpropagate into <code>W</code> and <code>b</code>:</p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><code class="hljs nix"><span class="hljs-attr">dW</span> = np.dot(X.T, dscores)<br><span class="hljs-attr">db</span> = np.sum(dscores, <span class="hljs-attr">axis=0,</span> <span class="hljs-attr">keepdims=True)</span><br>dW += reg*W <span class="hljs-comment"># don't forget the regularization gradient</span><br></code></pre></td></tr></table></figure>
+
+<p>Where we see that we have backpropped through the matrix multiply operation, and also added the contribution from the regularization. Note that the regularization gradient has the very simple form <code>reg*W</code> since we used the constant <code>0.5</code> for its loss contribution (i.e. $\frac{d}{dw} (\frac{1}{2} \lambda w^2) = \lambda w$). This is a common convenience trick that simplifies the gradient expression.</p>
+<h3 id="Performing-a-parameter-update"><a href="#Performing-a-parameter-update" class="headerlink" title="Performing a parameter update"></a>Performing a parameter update</h3><p>Now that we’ve evaluated the gradient we know how every parameter influences the loss function. We will now perform a parameter update in the <em>negative</em> gradient direction to <em>decrease</em> the loss:</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><code class="hljs pgsql"># <span class="hljs-keyword">perform</span> a parameter <span class="hljs-keyword">update</span><br>W += -step_size * dW<br>b += -step_size * db<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="Putting-it-all-together-Training-a-Softmax-Classifier"><a href="#Putting-it-all-together-Training-a-Softmax-Classifier" class="headerlink" title="Putting it all together: Training a Softmax Classifier"></a>Putting it all together: Training a Softmax Classifier</h3><p>Putting all of this together, here is the full code for training a Softmax classifier with Gradient descent:</p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><code class="hljs nix"><span class="hljs-comment">#Train a Linear Classifier</span><br><br><span class="hljs-comment"># initialize parameters randomly</span><br><span class="hljs-attr">W</span> = <span class="hljs-number">0.01</span> * np.random.randn(D,K)<br><span class="hljs-attr">b</span> = np.zeros((<span class="hljs-number">1</span>,K))<br><br><span class="hljs-comment"># some hyperparameters</span><br><span class="hljs-attr">step_size</span> = <span class="hljs-number">1</span>e-<span class="hljs-number">0</span><br><span class="hljs-attr">reg</span> = <span class="hljs-number">1</span>e-<span class="hljs-number">3</span> <span class="hljs-comment"># regularization strength</span><br><br><span class="hljs-comment"># gradient descent loop</span><br><span class="hljs-attr">num_examples</span> = X.shape[<span class="hljs-number">0</span>]<br>for i <span class="hljs-keyword">in</span> range(<span class="hljs-number">200</span>):<br><br>  <span class="hljs-comment"># evaluate class scores, [N x K]</span><br>  <span class="hljs-attr">scores</span> = np.dot(X, W) + b<br><br>  <span class="hljs-comment"># compute the class probabilities</span><br>  <span class="hljs-attr">exp_scores</span> = np.exp(scores)<br>  <span class="hljs-attr">probs</span> = exp_scores / np.sum(exp_scores, <span class="hljs-attr">axis=1,</span> <span class="hljs-attr">keepdims=True)</span> <span class="hljs-comment"># [N x K]</span><br><br>  <span class="hljs-comment"># compute the loss: average cross-entropy loss and regularization</span><br>  <span class="hljs-attr">correct_logprobs</span> = -np.log(probs[range(num_examples),y])<br>  <span class="hljs-attr">data_loss</span> = np.sum(correct_logprobs)/num_examples<br>  <span class="hljs-attr">reg_loss</span> = <span class="hljs-number">0.5</span>*reg*np.sum(W*W)<br>  <span class="hljs-attr">loss</span> = data_loss + reg_loss<br>  <span class="hljs-keyword">if</span> i % <span class="hljs-number">10</span> == <span class="hljs-number">0</span>:<br>    print <span class="hljs-string">"iteration %d: loss %f"</span> % (i, loss)<br><br>  <span class="hljs-comment"># compute the gradient on scores</span><br>  <span class="hljs-attr">dscores</span> = probs<br>  dscores[range(num_examples),y] <span class="hljs-attr">-=</span> <span class="hljs-number">1</span><br>  dscores /= num_examples<br><br>  <span class="hljs-comment"># backpropate the gradient to the parameters (W,b)</span><br>  <span class="hljs-attr">dW</span> = np.dot(X.T, dscores)<br>  <span class="hljs-attr">db</span> = np.sum(dscores, <span class="hljs-attr">axis=0,</span> <span class="hljs-attr">keepdims=True)</span><br><br>  dW += reg*W <span class="hljs-comment"># regularization gradient</span><br><br>  <span class="hljs-comment"># perform a parameter update</span><br>  W += -step_size * dW<br>  b += -step_size * db<br></code></pre></td></tr></table></figure>
+
+<p>Running this prints the output:</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript">iteration <span class="hljs-number">0</span>: loss <span class="hljs-number">1.096956</span><br>iteration <span class="hljs-number">10</span>: loss <span class="hljs-number">0.917265</span><br>iteration <span class="hljs-number">20</span>: loss <span class="hljs-number">0.851503</span><br>iteration <span class="hljs-number">30</span>: loss <span class="hljs-number">0.822336</span><br>iteration <span class="hljs-number">40</span>: loss <span class="hljs-number">0.807586</span><br>iteration <span class="hljs-number">50</span>: loss <span class="hljs-number">0.799448</span><br>iteration <span class="hljs-number">60</span>: loss <span class="hljs-number">0.794681</span><br>iteration <span class="hljs-number">70</span>: loss <span class="hljs-number">0.791764</span><br>iteration <span class="hljs-number">80</span>: loss <span class="hljs-number">0.789920</span><br>iteration <span class="hljs-number">90</span>: loss <span class="hljs-number">0.788726</span><br>iteration <span class="hljs-number">100</span>: loss <span class="hljs-number">0.787938</span><br>iteration <span class="hljs-number">110</span>: loss <span class="hljs-number">0.787409</span><br>iteration <span class="hljs-number">120</span>: loss <span class="hljs-number">0.787049</span><br>iteration <span class="hljs-number">130</span>: loss <span class="hljs-number">0.786803</span><br>iteration <span class="hljs-number">140</span>: loss <span class="hljs-number">0.786633</span><br>iteration <span class="hljs-number">150</span>: loss <span class="hljs-number">0.786514</span><br>iteration <span class="hljs-number">160</span>: loss <span class="hljs-number">0.786431</span><br>iteration <span class="hljs-number">170</span>: loss <span class="hljs-number">0.786373</span><br>iteration <span class="hljs-number">180</span>: loss <span class="hljs-number">0.786331</span><br>iteration <span class="hljs-number">190</span>: loss <span class="hljs-number">0.786302</span><br></code></pre></td></tr></table></figure>
+
+<p>We see that we’ve converged to something after about 190 iterations. We can evaluate the training set accuracy:</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># evaluate training set accuracy</span><br>scores = np.dot(X, W) + b<br>predicted_class = np.argmax(scores, <span class="hljs-attribute">axis</span>=1)<br><span class="hljs-builtin-name">print</span> <span class="hljs-string">'training accuracy: %.2f'</span> % (np.mean(predicted_class == y))<br></code></pre></td></tr></table></figure>
+
+<p>This prints <strong>49%</strong>. Not very good at all, but also not surprising given that the dataset is constructed so it is not linearly separable. We can also plot the learned decision boundaries:</p>
+<p><img src="https://cs231n.github.io/assets/eg/spiral_linear.png" alt="img"></p>
+<p>Linear classifier fails to learn the toy spiral dataset.</p>
+<h2 id="Training-a-Neural-Network"><a href="#Training-a-Neural-Network" class="headerlink" title="Training a Neural Network"></a>Training a Neural Network</h2><p>Clearly, a linear classifier is inadequate for this dataset and we would like to use a Neural Network. One additional hidden layer will suffice for this toy data. We will now need two sets of weights and biases (for the first and second layers):</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-comment"># initialize parameters randomly</span><br><span class="hljs-attr">h</span> = <span class="hljs-number">100</span> <span class="hljs-comment"># size of hidden layer</span><br><span class="hljs-attr">W</span> = <span class="hljs-number">0.01</span> * np.random.randn(D,h)<br><span class="hljs-attr">b</span> = np.zeros((<span class="hljs-number">1</span>,h))<br><span class="hljs-attr">W2</span> = <span class="hljs-number">0.01</span> * np.random.randn(h,K)<br><span class="hljs-attr">b2</span> = np.zeros((<span class="hljs-number">1</span>,K))<br></code></pre></td></tr></table></figure>
+
+<p>The forward pass to compute scores now changes form:</p>
+<figure class="highlight scala"><table><tr><td class="code"><pre><code class="hljs scala"># evaluate <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">scores</span> <span class="hljs-keyword">with</span> <span class="hljs-title">a</span> 2<span class="hljs-title">-layer</span> <span class="hljs-title">Neural</span> <span class="hljs-title">Network</span></span><br><span class="hljs-class"><span class="hljs-title">hidden_layer</span> </span>= np.maximum(<span class="hljs-number">0</span>, np.dot(<span class="hljs-type">X</span>, <span class="hljs-type">W</span>) + b) # note, <span class="hljs-type">ReLU</span> activation<br>scores = np.dot(hidden_layer, <span class="hljs-type">W2</span>) + b2<br></code></pre></td></tr></table></figure>
+
+<p>Notice that the only change from before is one extra line of code, where we first compute the hidden layer representation and then the scores based on this hidden layer. Crucially, we’ve also added a non-linearity, which in this case is simple ReLU that thresholds the activations on the hidden layer at zero.</p>
+<p>Everything else remains the same. We compute the loss based on the scores exactly as before, and get the gradient for the scores <code>dscores</code> exactly as before. However, the way we backpropagate that gradient into the model parameters now changes form, of course. First lets backpropagate the second layer of the Neural Network. This looks identical to the code we had for the Softmax classifier, except we’re replacing <code>X</code> (the raw data), with the variable <code>hidden_layer</code>):</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-comment"># backpropate the gradient to the parameters</span><br><span class="hljs-comment"># first backprop into parameters W2 and b2</span><br><span class="hljs-attr">dW2</span> = np.dot(hidden_layer.T, dscores)<br><span class="hljs-attr">db2</span> = np.sum(dscores, axis=<span class="hljs-number">0</span>, keepdims=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
+
+<p>However, unlike before we are not yet done, because <code>hidden_layer</code> is itself a function of other parameters and the data! We need to continue backpropagation through this variable. Its gradient can be computed as:</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">dhidden</span> = np.dot(dscores, W2.T)<br></code></pre></td></tr></table></figure>
+
+<p>Now we have the gradient on the outputs of the hidden layer. Next, we have to backpropagate the ReLU non-linearity. This turns out to be easy because ReLU during the backward pass is effectively a switch. Since (r = max(0, x)), we have that $\frac{dr}{dx} = 1(x &gt; 0) $. Combined with the chain rule, we see that the ReLU unit lets the gradient pass through unchanged if its input was greater than 0, but <em>kills it</em> if its input was less than zero during the forward pass. Hence, we can backpropagate the ReLU in place simply with:</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># backprop the ReLU non-linearity</span><br><span class="hljs-string">dhidden[hidden_layer</span> <span class="hljs-string">&lt;=</span> <span class="hljs-number">0</span><span class="hljs-string">]</span> <span class="hljs-string">=</span> <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<p>And now we finally continue to the first layer weights and biases:</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-comment"># finally into W,b</span><br><span class="hljs-attr">dW</span> = np.dot(X.T, dhidden)<br><span class="hljs-attr">db</span> = np.sum(dhidden, axis=<span class="hljs-number">0</span>, keepdims=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
+
+<p>We’re done! We have the gradients <code>dW,db,dW2,db2</code> and can perform the parameter update. Everything else remains unchanged. The full code looks very similar:</p>
+<figure class="highlight nix"><table><tr><td class="code"><pre><code class="hljs nix"><span class="hljs-comment"># initialize parameters randomly</span><br><span class="hljs-attr">h</span> = <span class="hljs-number">100</span> <span class="hljs-comment"># size of hidden layer</span><br><span class="hljs-attr">W</span> = <span class="hljs-number">0.01</span> * np.random.randn(D,h)<br><span class="hljs-attr">b</span> = np.zeros((<span class="hljs-number">1</span>,h))<br><span class="hljs-attr">W2</span> = <span class="hljs-number">0.01</span> * np.random.randn(h,K)<br><span class="hljs-attr">b2</span> = np.zeros((<span class="hljs-number">1</span>,K))<br><br><span class="hljs-comment"># some hyperparameters</span><br><span class="hljs-attr">step_size</span> = <span class="hljs-number">1</span>e-<span class="hljs-number">0</span><br><span class="hljs-attr">reg</span> = <span class="hljs-number">1</span>e-<span class="hljs-number">3</span> <span class="hljs-comment"># regularization strength</span><br><br><span class="hljs-comment"># gradient descent loop</span><br><span class="hljs-attr">num_examples</span> = X.shape[<span class="hljs-number">0</span>]<br>for i <span class="hljs-keyword">in</span> range(<span class="hljs-number">10000</span>):<br><br>  <span class="hljs-comment"># evaluate class scores, [N x K]</span><br>  <span class="hljs-attr">hidden_layer</span> = np.maximum(<span class="hljs-number">0</span>, np.dot(X, W) + b) <span class="hljs-comment"># note, ReLU activation</span><br>  <span class="hljs-attr">scores</span> = np.dot(hidden_layer, W2) + b2<br><br>  <span class="hljs-comment"># compute the class probabilities</span><br>  <span class="hljs-attr">exp_scores</span> = np.exp(scores)<br>  <span class="hljs-attr">probs</span> = exp_scores / np.sum(exp_scores, <span class="hljs-attr">axis=1,</span> <span class="hljs-attr">keepdims=True)</span> <span class="hljs-comment"># [N x K]</span><br><br>  <span class="hljs-comment"># compute the loss: average cross-entropy loss and regularization</span><br>  <span class="hljs-attr">correct_logprobs</span> = -np.log(probs[range(num_examples),y])<br>  <span class="hljs-attr">data_loss</span> = np.sum(correct_logprobs)/num_examples<br>  <span class="hljs-attr">reg_loss</span> = <span class="hljs-number">0.5</span>*reg*np.sum(W*W) + <span class="hljs-number">0.5</span>*reg*np.sum(W2*W2)<br>  <span class="hljs-attr">loss</span> = data_loss + reg_loss<br>  <span class="hljs-keyword">if</span> i % <span class="hljs-number">1000</span> == <span class="hljs-number">0</span>:<br>    print <span class="hljs-string">"iteration %d: loss %f"</span> % (i, loss)<br><br>  <span class="hljs-comment"># compute the gradient on scores</span><br>  <span class="hljs-attr">dscores</span> = probs<br>  dscores[range(num_examples),y] <span class="hljs-attr">-=</span> <span class="hljs-number">1</span><br>  dscores /= num_examples<br><br>  <span class="hljs-comment"># backpropate the gradient to the parameters</span><br>  <span class="hljs-comment"># first backprop into parameters W2 and b2</span><br>  <span class="hljs-attr">dW2</span> = np.dot(hidden_layer.T, dscores)<br>  <span class="hljs-attr">db2</span> = np.sum(dscores, <span class="hljs-attr">axis=0,</span> <span class="hljs-attr">keepdims=True)</span><br>  <span class="hljs-comment"># next backprop into hidden layer</span><br>  <span class="hljs-attr">dhidden</span> = np.dot(dscores, W2.T)<br>  <span class="hljs-comment"># backprop the ReLU non-linearity</span><br>  dhidden[hidden_layer &lt;= <span class="hljs-number">0</span>] = <span class="hljs-number">0</span><br>  <span class="hljs-comment"># finally into W,b</span><br>  <span class="hljs-attr">dW</span> = np.dot(X.T, dhidden)<br>  <span class="hljs-attr">db</span> = np.sum(dhidden, <span class="hljs-attr">axis=0,</span> <span class="hljs-attr">keepdims=True)</span><br><br>  <span class="hljs-comment"># add regularization gradient contribution</span><br>  dW2 += reg * W2<br>  dW += reg * W<br><br>  <span class="hljs-comment"># perform a parameter update</span><br>  W += -step_size * dW<br>  b += -step_size * db<br>  W2 += -step_size * dW2<br>  b2 += -step_size * db2<br></code></pre></td></tr></table></figure>
+
+<p>This prints:</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><code class="hljs angelscript">iteration <span class="hljs-number">0</span>: loss <span class="hljs-number">1.098744</span><br>iteration <span class="hljs-number">1000</span>: loss <span class="hljs-number">0.294946</span><br>iteration <span class="hljs-number">2000</span>: loss <span class="hljs-number">0.259301</span><br>iteration <span class="hljs-number">3000</span>: loss <span class="hljs-number">0.248310</span><br>iteration <span class="hljs-number">4000</span>: loss <span class="hljs-number">0.246170</span><br>iteration <span class="hljs-number">5000</span>: loss <span class="hljs-number">0.245649</span><br>iteration <span class="hljs-number">6000</span>: loss <span class="hljs-number">0.245491</span><br>iteration <span class="hljs-number">7000</span>: loss <span class="hljs-number">0.245400</span><br>iteration <span class="hljs-number">8000</span>: loss <span class="hljs-number">0.245335</span><br>iteration <span class="hljs-number">9000</span>: loss <span class="hljs-number">0.245292</span><br></code></pre></td></tr></table></figure>
+
+<p>The training accuracy is now:</p>
+<figure class="highlight maxima"><table><tr><td class="code"><pre><code class="hljs maxima"># evaluate training set accuracy<br>hidden_layer = <span class="hljs-built_in">np</span>.maximum(<span class="hljs-number">0</span>, <span class="hljs-built_in">np</span>.dot(X, W) + b)<br>scores = <span class="hljs-built_in">np</span>.dot(hidden_layer, W2) + b2<br>predicted_class = <span class="hljs-built_in">np</span>.argmax(scores, axis=<span class="hljs-number">1</span>)<br><span class="hljs-built_in">print</span> 'training accuracy: <span class="hljs-symbol">%</span>.2f' <span class="hljs-symbol">%</span> (<span class="hljs-built_in">np</span>.<span class="hljs-built_in">mean</span>(predicted_class == y))<br></code></pre></td></tr></table></figure>
+
+<p>Which prints <strong>98%</strong>!. We can also visualize the decision boundaries:</p>
+<p><img src="https://cs231n.github.io/assets/eg/spiral_net.png" alt="img"></p>
+<p>Neural Network classifier crushes the spiral dataset.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>We’ve worked with a toy 2D dataset and trained both a linear network and a 2-layer Neural Network. We saw that the change from a linear classifier to a Neural Network involves very few changes in the code. The score function changes its form (1 line of code difference), and the backpropagation changes its form (we have to perform one more round of backprop through the hidden layer to the first layer of the network).</p>
+<ul>
+<li>IPython Notebook code <a href="http://cs.stanford.edu/people/karpathy/cs231nfiles/minimal_net.html" target="_blank" rel="noopener">rendered as HTML</a>.</li>
+<li>Download the <a href="http://cs.stanford.edu/people/karpathy/cs231nfiles/minimal_net.ipynb" target="_blank" rel="noopener">ipynb file</a></li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-08-09T01:17:49.000Z" itemprop="datePublished">
+              2020-08-09
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/cs231n/">cs231n</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/a-minimal-neural-network-case/">a minimal neural network case</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

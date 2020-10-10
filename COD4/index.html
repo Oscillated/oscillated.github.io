@@ -116,16 +116,18 @@
 <li>push decrements sp</li>
 <li>pop increments sp</li>
 </ul>
-<p><img src="https://oscillated.github.io/COD4/sp.png" style="zoom: 67%;" />content of stack</p>
-<ul>
+<img src="https://oscillated.github.io/COD4/sp.png" style="zoom: 67%;" />
+
+<h3 id="content-of-stack"><a href="#content-of-stack" class="headerlink" title="content of stack"></a>content of stack</h3><ul>
 <li>return instruction address (ra)</li>
 <li>parameters</li>
 <li>space for other local variables</li>
 </ul>
 <figure class="highlight mipsasm"><table><tr><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">addi </span><span class="hljs-built_in">sp</span>,<span class="hljs-built_in">sp</span>,-<span class="hljs-number">8</span> 	<span class="hljs-comment"># adjust stack for 2 items</span><br><span class="hljs-keyword">sw </span><span class="hljs-built_in">s1</span>, <span class="hljs-number">4</span>(<span class="hljs-built_in">sp</span>) 	<span class="hljs-comment"># save s1 for use afterwards</span><br><span class="hljs-keyword">sw </span><span class="hljs-built_in">s0</span>, <span class="hljs-number">0</span>(<span class="hljs-built_in">sp</span>) 	<span class="hljs-comment"># save s0 for use afterwards</span><br><span class="hljs-keyword">add </span><span class="hljs-built_in">s0</span>,<span class="hljs-built_in">a0</span>,<span class="hljs-built_in">a1</span> 	<span class="hljs-comment"># f = g + h</span><br><span class="hljs-keyword">add </span><span class="hljs-built_in">s1</span>,<span class="hljs-built_in">a2</span>,<span class="hljs-built_in">a3</span> 	<span class="hljs-comment"># s1 = i + j</span><br><span class="hljs-keyword">sub </span><span class="hljs-built_in">a0</span>,<span class="hljs-built_in">s0</span>,<span class="hljs-built_in">s1</span> 	<span class="hljs-comment"># return value (g + h) – (i + j) in a0</span><br><span class="hljs-keyword">lw </span><span class="hljs-built_in">s0</span>, <span class="hljs-number">0</span>(<span class="hljs-built_in">sp</span>) 	<span class="hljs-comment"># restore register s0 for caller</span><br><span class="hljs-keyword">lw </span><span class="hljs-built_in">s1</span>, <span class="hljs-number">4</span>(<span class="hljs-built_in">sp</span>) 	<span class="hljs-comment"># restore register s1 for caller</span><br><span class="hljs-keyword">addi </span><span class="hljs-built_in">sp</span>,<span class="hljs-built_in">sp</span>,<span class="hljs-number">8</span> 	<span class="hljs-comment"># adjust stack to delete 2 items</span><br><span class="hljs-keyword">jr </span><span class="hljs-built_in">ra</span> 			<span class="hljs-comment"># jump back to calling routine</span><br></code></pre></td></tr></table></figure>
 
-<p><img src="https://oscillated.github.io/COD4/call_sp.png" style="zoom: 67%;" />Recursive Function Calls</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">sumSquare</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> mult(x, x) + y;<br>&#125;<br></code></pre></td></tr></table></figure>
+<img src="https://oscillated.github.io/COD4/call_sp.png" style="zoom: 67%;" />
+
+<h3 id="Recursive-Function-Calls"><a href="#Recursive-Function-Calls" class="headerlink" title="Recursive Function Calls"></a>Recursive Function Calls</h3><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">sumSquare</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> mult(x, x) + y;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p><strong>Need to save sumSquare return address(ra) before calling mult, because ra will be overwritten by the call(jal) to mul</strong></p>
 <p><strong>Use stack.</strong></p>
@@ -168,8 +170,9 @@
 </ul>
 </li>
 </ul>
-<p><img src="https://oscillated.github.io/COD4/RV32-memory.png" style="zoom: 67%;" />Conclusion</p>
-<ul>
+<img src="https://oscillated.github.io/COD4/RV32-memory.png" style="zoom: 67%;" />
+
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Registers we know so far (All of them!)<ul>
 <li>a0-a7 for function arguments, a0-a1 for return values</li>
 <li>sp, stack pointer, ra return address</li>

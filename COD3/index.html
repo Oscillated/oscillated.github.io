@@ -152,8 +152,7 @@
 <li>Instruction is fetched from memory, then control unit executes instruction using datapath and memory system, and updates program counter (default is add +4 bytes to PC, to move to next sequential instruction; branches, jumps alter)</li>
 <li>the CPU must keep track of calling a function</li>
 </ul>
-<p><img src="https://oscillated.github.io/COD3/execution.png" style="zoom: 67%;" />Calling a function</p>
-<ol>
+<h2 id="Calling-a-function"><a href="#Calling-a-function" class="headerlink" title="Calling a function"></a><img src="https://oscillated.github.io/COD3/execution.png" style="zoom: 67%;" />Calling a function</h2><ol>
 <li>放置传递函数Put parameters in a place where function can access them</li>
 <li>移交控制权到函数Transfer control to function</li>
 <li>申请函数的存储空间Acquire (local) storage resources needed for function</li>
@@ -167,7 +166,9 @@
 <li><em>ra</em>: one return address register to return to the point of origin (x1)</li>
 <li>s0-s1 (x8-x9) and s2-s11 (x18-x27): saved register</li>
 </ul>
-<p><img src="https://oscillated.github.io/COD3/instruction.png" style="zoom: 67%;" />use <strong>jr</strong> instead of <strong>j</strong> : sum might be called by many places, so we can’t return to a fixed place. </p>
+<img src="https://oscillated.github.io/COD3/instruction.png" style="zoom: 67%;" />
+
+<p>use <strong>jr</strong> instead of <strong>j</strong> : sum might be called by many places, so we can’t return to a fixed place. </p>
 <p>The calling proc to sum must be able to say “return here” somehow. ra stores the pre-determined return address before calling the sum function</p>
 <p><strong>jal</strong> : Single instruction to jump and save return address(actually <strong>link and jump</strong>)</p>
 <p><code>jal FunctionLabel</code></p>

@@ -114,12 +114,14 @@
 </li>
 </ul>
 <p>So we handle instructions in registers with <strong>load/store</strong> bus between processor and memory</p>
-<p><img src="https://img.cfssr.xyz/imgs/2020/05/e6717b99cbd239eb.png" alt=""></p>
+<img src="https://oscillated.github.io/COD2/load_store.png" style="zoom: 67%;" />
+
 <h2 id="Memory-addresses-are-in-bytes"><a href="#Memory-addresses-are-in-bytes" class="headerlink" title="Memory addresses are in bytes"></a>Memory addresses are in bytes</h2><ul>
 <li>8 bit is called a <strong>byte</strong></li>
 <li>a <strong>word</strong> equals 4 bytes, Word addresses are 4 bytes apart</li>
 </ul>
-<h3 id="little-endian-big-endian-convention"><a href="#little-endian-big-endian-convention" class="headerlink" title="little-endian/big-endian convention"></a>little-endian/big-endian convention</h3><p><img src="https://img.cfssr.xyz/imgs/2020/05/1768dfe481948137.png" alt=""></p>
+<h3 id="little-endian-big-endian-convention"><a href="#little-endian-big-endian-convention" class="headerlink" title="little-endian/big-endian convention"></a>little-endian/big-endian convention</h3><img src="https://oscillated.github.io/COD2/little-endian.png" style="zoom: 67%;" />
+
 <h2 id="Load-from-Memory-to-Register"><a href="#Load-from-Memory-to-Register" class="headerlink" title="Load from Memory to Register"></a>Load from Memory to Register</h2><figure class="highlight c"><table><tr><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">int</span> A[<span class="hljs-number">100</span>];<br>g = h + A[<span class="hljs-number">3</span>];<br></code></pre></td></tr></table></figure>
 
 <p><strong>lw</strong>: data flow is $\leftarrow$</p>
@@ -146,12 +148,12 @@
 
 <p>additional <strong>“sign-extend”</strong> operation</p>
 <ul>
-<li>for lb<ul>
-<li><img src="https://img.cfssr.xyz/imgs/2020/05/def0ef2c5b8352b7.png" alt=""></li>
-</ul>
+<li><p>for lb</p>
+<ul>
+<li><p><img src="https://oscillated.github.io/COD2/sign-extend.png" style="zoom: 67%;" />for lbu</p>
 </li>
-<li>for lbu<ul>
-<li>use 0 to fill out all high bits</li>
+<li><p>use 0 to fill out all high bits</p>
+</li>
 </ul>
 </li>
 </ul>

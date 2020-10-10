@@ -102,34 +102,26 @@
 
 <h1 id="I-Format"><a href="#I-Format" class="headerlink" title="I-Format"></a>I-Format</h1><p>是处理立即数的指令</p>
 <p>在R型指令的形式上做出一些调整</p>
-<img src="https://img.cfssr.xyz/imgs/2020/07/95986b9e5b49aa48.png" style="zoom:50%;" />
+<img src="https://oscillated.github.io/COD6/I1.png" style="zoom: 67%;" />
 
 <p>缩短funct段，func7与rs2合并成12位field用于表示12位的一个立即数</p>
 <p><strong>opcode = 0010011 for all I-Format Immediate instructions</strong></p>
-<img src="https://img.cfssr.xyz/imgs/2020/07/12086a1e1e833df3.png" style="zoom:50%;" />
-
-<h2 id="移位"><a href="#移位" class="headerlink" title="移位"></a>移位</h2><p>I型指令还可用于移位指令，imm的12位field的末5位表示移位位数（0-31位），funct3和imm高七位合起来表示移位运算类型（funct3区分左移右移，imm第二位区分逻辑移位和算术移位）</p>
+<p><img src="https://oscillated.github.io/COD6/I2.png" style="zoom: 67%;" />移位</p>
+<p>I型指令还可用于移位指令，imm的12位field的末5位表示移位位数（0-31位），funct3和imm高七位合起来表示移位运算类型（funct3区分左移右移，imm第二位区分逻辑移位和算术移位）</p>
 <h2 id="Load"><a href="#Load" class="headerlink" title="Load"></a>Load</h2><p>载入指令也是一种I型指令</p>
-<img src="https://img.cfssr.xyz/imgs/2020/07/6e1caa99042ad164.png" style="zoom:50%;" />
-
-<p>imm代表偏移（4的倍数），rs1代表基址，载入的值存于rd，funct3规定载入值的长度（lb lh lw lbu lhu）。</p>
+<p><img src="https://oscillated.github.io/COD6/I3.png" style="zoom: 67%;" />imm代表偏移（4的倍数），rs1代表基址，载入的值存于rd，funct3规定载入值的长度（lb lh lw lbu lhu）。</p>
 <p><strong>opcode = 0000011 for all I-Format Load instructions</strong></p>
 <p>设x2为数组A，则以下代表<code>x14=A[2]</code>(8/4=2)</p>
-<img src="https://img.cfssr.xyz/imgs/2020/07/1213e80e8138915c.png" style="zoom:50%;" />
-
-<img src="https://img.cfssr.xyz/imgs/2020/07/9967a85a26aa4e30.png" style="zoom:50%;" />
-
-<h1 id="S-Format"><a href="#S-Format" class="headerlink" title="S-Format"></a>S-Format</h1><img src="https://img.cfssr.xyz/imgs/2020/07/0e39e84de3e9b253.png" style="zoom:50%;" />
-
-<p>S型指令用于存储</p>
+<h1 id="S-Format"><a href="#S-Format" class="headerlink" title="S-Format"></a><img src="https://oscillated.github.io/COD6/I4.png" style="zoom: 67%;" /><img src="https://oscillated.github.io/COD6/I5.png" style="zoom: 67%;" />S-Format</h1><p><img src="https://oscillated.github.io/COD6/S1.png" style="zoom: 67%;" />S型指令用于存储</p>
 <p>高7位imm和低7-11的5位inm合成，代表12位偏移值，rs1代表基地址，rs2表示要被存储数据的寄存器编号，funct3规定载入值的长度（sb sh sw）。</p>
 <p>S型指令不会向寄存器写入值（没有rd）</p>
 <p><strong>opcode = 0100011 for all S-Format instructions</strong></p>
 <p>设x2为数组A，则以下代表<code>A[2]=x14</code>(8/4=2)</p>
-<p><img src="https://img.cfssr.xyz/imgs/2020/07/e4bedc5939b44b31.png" style="zoom:50%;" /><img src="https://img.cfssr.xyz/imgs/2020/07/c909f3491314cb93.png" alt=""></p>
-<p><img src="https://img.cfssr.xyz/imgs/2020/07/c909f3491314cb93.png" style="zoom:50%;" /><img src="https://img.cfssr.xyz/imgs/2020/07/334481ae986237f4.png" alt=""></p>
-<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p><img src="https://img.cfssr.xyz/imgs/2020/07/334481ae986237f4.png" alt=""></p>
+<img src="https://oscillated.github.io/COD6/S2.png" style="zoom: 67%;" />
 
+<img src="https://oscillated.github.io/COD6/S3.png" style="zoom: 67%;" />
+
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><img src="https://oscillated.github.io/COD6/Sum.png" style="zoom: 67%;" />
 
       
 

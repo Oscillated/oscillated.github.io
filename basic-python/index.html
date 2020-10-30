@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Basic_python | Oscillate.</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avatar.jfif)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Oscillate.</div>
+        
+            <div>Keep walking.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a href="https://github.com/Oscillated" target="_blank" rel="noopener">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a href="https://twitter.com/LcOscillate" target="_blank" rel="noopener">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+            
+                <a href="mailto:lcoscillation@gmail.com">
+                    <img src="/assets/gmail.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Basic_python</h1>
+    </header>
+
+    <section>
+      <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<p>嵌入式人工智能社团2020.11.1内训</p>
+<a id="more"></a>
+
+<p>[TOC]</p>
+<p>这篇博客将在Issues里更新各种Python和VS Code安装问题，欢迎大家在群里或者私戳我询问安装问题~</p>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>Python是一门解释型语言，需要安装Python解释器，它是Python运行的内核；同时为了使写代码的界面不那么丑，还需要安装支持Python语言的编辑器/开发工具软件，常用的有Pycharm、VS Code、Vim、Sublime等等。各位可以凭自己喜好使用。</p>
+<p>这次我们以Windows下的VS Code作为Python的代码环境，它是微软推出的一款免费编辑器，采用的是“轻量化+插件化”的设计思路，通过安装不同的插件，VS Code能胜任不同代码环境的开发工作。</p>
+<ul>
+<li>没有用Pycharm是因为我的Pycharm学生版过期用不了了，并且Pycharm体积比较大，对基本的语法学习来说有些多余。</li>
+<li>Vim在类Unix系统中用得比较多，考虑到大家的电脑大多是Windows就没有用。</li>
+<li>Sublime个人没有太多接触过。</li>
+</ul>
+<h2 id="安装Python"><a href="#安装Python" class="headerlink" title="安装Python"></a>安装Python</h2><p>Python的安装，基本按照这篇<a href="https://blog.csdn.net/Zhangguohao666/article/details/105040139" target="_blank" rel="noopener">Python参考安装教程</a> ，文章最后的虚拟环境可以不用跟着装。</p>
+<ol>
+<li><p>在<a href="https://www.python.org/downloads/" target="_blank" rel="noopener">python官网</a>下载Python3，需要装<strong>64位</strong>的，版本可以任选一个3.7.x或者3.8.x下载（Python3.9刚发布，可能会有小bug或者后续不兼容的问题）。如果是MacOS或者Linux系统，则需要安装对应系统的Python IDE。</p>
+</li>
+<li><p>下载后打开安装程序，注意勾选”Add Python 3.X to PATH”，它把Python解释器的路径加入系统环境变量，在后面VS Code会方便一些。安装时有一些选项，参考上面的安装教程链接里的说明图。</p>
+</li>
+<li><p>配置环境变量，照教程做一步步做就行。</p>
+</li>
+<li><p>检查安装是否成功，win+r，输入cmd打开命令行，敲<code>python --version</code>弹出版本号，基本就安装成功了。再敲<code>python</code>进入python环境，<code>print(&quot;Hello, world!&quot;)</code>，检查一下能否使用。退出环境的话，敲<code>exit()</code>；退出命令行，再敲一个<code>exit</code>。</p>
+</li>
+</ol>
+<h2 id="安装VS-Code"><a href="#安装VS-Code" class="headerlink" title="安装VS Code"></a>安装VS Code</h2><p>参照这篇<a href="https://blog.csdn.net/Zhangguohao666/article/details/105665412" target="_blank" rel="noopener">VS Code参考安装教程</a>，然后回到<a href="https://blog.csdn.net/Zhangguohao666/article/details/105040139" target="_blank" rel="noopener">Python参考安装教程</a>，装完VS Code部分。</p>
+<ol>
+<li><p>打开VS Code，侧边栏的扩展（Extensions）点开后，搜索Python，安装Python扩展插件。</p>
+</li>
+<li><p>配置Python环境的时候需要注意在配置文件中把pythonPath设置好，VS Code依照这个路径将程序在解释器中运行。</p>
+</li>
+<li><p>测试一下，比如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">print(<span class="hljs-string">"Hello, world!"</span>)<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>还有一些在VS Code中进行Python的调试和控制台运行等操作，这里不详讲了。</p>
+</li>
+</ol>
+<h1 id="Issues"><a href="#Issues" class="headerlink" title="Issues"></a>Issues</h1><p>…</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-10-30T11:33:06.000Z" itemprop="datePublished">
+              2020-10-30
+            </time>
+          </div>
+          
+            <div>
+              tags: 
+  <li class="meta-text">
+  { <a href="/tags/python/">python</a> }
+  </li>
+
+
+            </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    <div>© 2020 - clc </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>
